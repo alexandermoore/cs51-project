@@ -1,5 +1,5 @@
 from maze import *
-#from solver import *
+from solver import *
 
 class Generator:
 	#CONSTANTS
@@ -43,7 +43,7 @@ class Generator:
         return total_time/len(mazes)
     
     def generate(m):
-        return False
+        return "unimplemented"
 
 
 
