@@ -53,5 +53,5 @@ def display (maze):
     print "+\r"
 
 # Uncomment this to test the display function 
-display(maze.mango)
+display(maze.m)
 

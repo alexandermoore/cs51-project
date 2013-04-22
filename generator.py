@@ -1,9 +1,11 @@
-#Constants
-num_mazes = 10
+from maze import *
 
 
 class Generator:
-	#FIELDS
+	#CONSTANTS
+    num_mazes = 10
+    
+    #FIELDS
 	start_loc_x = 1
 	start_loc_y = 1
 	p_jump = 1

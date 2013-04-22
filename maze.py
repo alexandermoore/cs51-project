@@ -1,9 +1,10 @@
-#Constants
-x_dim = 20
-y_dim = 20
 
 class Maze:
-
+    
+    #CONSTANTS
+    x_dim = 20
+    y_dim = 20
+    
     # An n x m list of booleans.
     board = []
 
