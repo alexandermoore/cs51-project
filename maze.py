@@ -1,9 +1,9 @@
-#Constants
-x_dim = 20
-y_dim = 20
+#CONSTANTS
+maze_x_dim = 20
+maze_y_dim = 20
 
 class Maze:
-
+        
     # An n x m list of booleans.
     board = []
 
@@ -28,10 +28,10 @@ class Maze:
     
     def make_board(self):
         board = []
-        for val in range(y_dim):
+        for val in range(maze_y_dim):
             board.append([])
         for row in board:
-            for val in range(x_dim):
+            for val in range(maze_x_dim):
                 row.append(False)
         return board
     
