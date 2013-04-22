@@ -40,7 +40,7 @@ def display (maze):
     for i in list:
         sys.stdout.write("|")
         for j in i:
-            if j == True : sys.stdout.write(square + ' ')
+            if j == False : sys.stdout.write(square + ' ')
             elif j == "start" : sys.stdout.write("s ")
             elif j == "end" : sys.stdout.write("e ")
             else : sys.stdout.write("  ")
@@ -53,5 +53,5 @@ def display (maze):
     print "+\r"
 
 # Uncomment this to test the display function 
-display(maze.m)
+display(maze.mango)
 

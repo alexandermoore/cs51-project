@@ -27,4 +27,5 @@ class Maze:
         self.start = (0,1)
         self.end = (5,8)
 
-m = Maze()
+mango = Maze()
+
