@@ -1,5 +1,5 @@
 from maze import *
-from solver import *
+#from solver import *
 
 class Generator:
 	#CONSTANTS
