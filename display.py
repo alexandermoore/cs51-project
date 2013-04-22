@@ -8,7 +8,7 @@ def display (maze):
     #square = u"\uFFED"
  
     # Choose shape to represent a non-walkable square
-    square = u"\u25A9" #big square diagonal crosshatch
+    square = unicode(u"\u25A9") #big square diagonal crosshatch
 
     # Get board from object maze
     list = maze.board
@@ -54,3 +54,4 @@ def display (maze):
 
 # Uncomment this to test the display function 
 display(maze.m)
+
