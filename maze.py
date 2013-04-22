@@ -12,7 +12,7 @@ class Maze:
     usable_squares = []
 
     # Coordinates of the START square
-    start = (False,False)
+    start = (False,False) 
 
     # Coordinates of the END square
     end = (False,False)
