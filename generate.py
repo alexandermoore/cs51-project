@@ -19,7 +19,7 @@ class generator:
         end_time = .66
         
         #initialize maze
-        m.start = (start_loc_col * maze_num_cols, start_loc_row * maze_num_rows)
+        m.start = (start_loc_row * maze_num_rows, start_loc_col * maze_num_cols)
         
         # local variables
         coordinates = m.start
@@ -52,7 +52,7 @@ class generator:
             far = m.board[move(shift_sq,dir)]
             left = m.board[move(shift_sq,(dir-1) % 4)]
             right = m.board[move(shift_sq,(dir+1) % 4)]
-            border = (shift_sq[0] = 0) or (shift_sq[1] = 0) or (shift_sq[0] = maze_num_cols-1) or (shift_sq[1] = maze_num_rows-1)
+            border = (shift_sq[0] = 0) or (shift_sq[1] = 0) or (shift_sq[0] = maze_num_rows-1) or (shift_sq[1] = maze_num_cols-1)
             return (not(mid or far or left or right or border))
         
         # checks whether a new path can branch off from this square
@@ -84,21 +84,21 @@ class generator:
             while success = False:
                 if check_sq(m.usable_squares[proposal_square]):
                     success = True
-                elif proposal_sq = len(m.usable_squares)-1:
-                    if proposal_sq = 0:
+                elif proposal_square = len(m.usable_squares)-1:
+                    if proposal_square = 0:
                         # usable squares exhausted; set end of maze if not already set
                         if m.end = (False,False):
                             m.end = coordinates
                         break
                     # go back to start of usable_squares after reaching end
-                    proposal_sq = 0
+                    proposal_square = 0
                 else
                     # if proposal square fails, remove it and try next one
                     m.usable_squares.remove(m.usable_squares[proposal_square])
-                    proposal_sq = propoal_sq + 1
+                    proposal_square = propoal_square + 1
             
             if success = True:
-                coordinates = usable_squares[1]
+                coordinates = usable_squares[proposal_square]
             
             return success
         

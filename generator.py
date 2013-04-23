@@ -31,8 +31,8 @@ class Generator:
         end_time = params[6]
         for val in range(num_mazes):
             m = Maze()
-            generate(m)
-            #simple_solver.solve(m)
+            self.generate(m)
+            Solver.solve(m)
             mazes.append(m)
         self.calc_average_runtime
 	
