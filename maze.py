@@ -24,8 +24,8 @@ class Maze:
     # A board customized to a specific initial state
     def __init__(self):
         self.board = self.make_board()
-	self.start = (False,False)
-	self.end = (False,False)
+        self.start = (False,False)
+        self.end = (False,False)
     
     def make_board(self):
         board = []
