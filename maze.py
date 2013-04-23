@@ -1,6 +1,6 @@
 #CONSTANTS
-maze_x_dim = 20
-maze_y_dim = 20
+maze_num_cols = 20
+maze_num_rows = 20
 
 class Maze:
         
@@ -28,10 +28,10 @@ class Maze:
     
     def make_board(self):
         board = []
-        for val in range(maze_y_dim):
+        for val in range(maze_num_rows):
             board.append([])
         for row in board:
-            for val in range(maze_x_dim):
+            for val in range(maze_num_cols):
                 row.append(False)
         return board
     

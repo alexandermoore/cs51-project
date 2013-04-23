@@ -26,7 +26,7 @@ class Solver:
 
         # walkable
         def walkable(new_x,new_y,board):
-            if (new_x >= 0 and new_x < maze_x_dim and new_y >= 0 and new_y < maze_y_dim):
+            if (new_x >= 0 and new_x < maze_num_cols and new_y >= 0 and new_y < maze_num_rows):
                 if(board[new_x][new_y] == True):
                     return True
        	        else:
