@@ -5,15 +5,16 @@ class generator:
     def generate(self):
 
         # variables that I get from elsewhere
-        x_dim = 20
-        y_dim = 30
+        maze_x_dim = 20
+        maze_y_dim = 30
         start_loc_x = 0.23
-        start__y = 0.87
+        start_loc_y = 0.87
         p_birds_eye = 0.76
-        # if jumping randomly, then list of usable squares. if p_birds eye succeeds, do birds_eye implement
-
+        # if jumping randomly, then list of usable squares. if p_birds eye succeeds, do birds_eye implementation
         return_dist = 0.87
         p_jump = 0.789
+        p_forward = 0.34
+        end_time = .66
 
         # list of tuples. 1st 
         usable_squares = []
