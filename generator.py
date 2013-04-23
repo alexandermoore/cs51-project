@@ -6,8 +6,8 @@ class Generator:
     num_mazes = 10
     
     #FIELDS
-    start_loc_x = 1
-    start_loc_y = 1
+    start_loc_col = 1
+    start_loc_row = 1
     p_jump = 1
     p_forward = 1
     p_birds_eye = 1
@@ -15,15 +15,15 @@ class Generator:
     end_time = 1
     mazes = []
     avg_runtime = False
-    parameter_list = [start_loc_x,start_loc_y,p_jump,p_forward,p_birds_eye,return_dist,end_time,mazes,avg_runtime]
+    parameter_list = [start_loc_col,start_loc_row,p_jump,p_forward,p_birds_eye,return_dist,end_time,mazes,avg_runtime]
 	
 	#METHODS
 	
-	#Constructor takes in params, float list of [start_loc_x,start_loc_y,p_jump,p_forward,p_birds_eye,
+	#Constructor takes in params, float list of [start_loc_col,start_loc_row,p_jump,p_forward,p_birds_eye,
 	#return_dist,end_time]
     def __init__(self,params):
-        start_loc_x = params[0]
-        start_loc_y = params[1]
+        start_loc_col = params[0]
+        start_loc_row = params[1]
         p_jump = params[2]
         p_forward = params[3]
         p_birds_eye = params[4]
