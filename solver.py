@@ -1,10 +1,5 @@
-#import sys
-#sys.setrecursionlimit()
-
 import random
 import maze
-
-# Our solver doesn't work yet. :'( 
 
 # Here's the latest code in progress:
 from maze import *
@@ -285,4 +280,3 @@ class Solver:
 maze = maze.m
 simple_solver = Solver()
 simple_solver.solve(maze)
-
