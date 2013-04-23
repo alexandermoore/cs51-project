@@ -8,10 +8,10 @@ class generator:
     def generate(self,m):
 
         # variables that I get from elsewhere (will be deleted in actual implementation)
-        maze_x_dim = 20
-        maze_y_dim = 20
-        start_loc_x = 0.23
-        start_loc_y = 0.87
+        maze_num_cols = 20
+        maze_num_rows = 20
+        start_loc_col = 0.23
+        start_loc_row = 0.87
         p_birds_eye = 0.76
         return_dist = 0.87
         p_jump = 0.789
@@ -19,12 +19,12 @@ class generator:
         end_time = .66
         
         #initialize maze
-        m.start = (start_loc_x * maze_x_dim, start_loc_y * maze_y_dim)
+        m.start = (start_loc_col * maze_num_cols, start_loc_row * maze_num_rows)
         
         # local variables
         coordinates = m.start
         direction = random.randrange (0, 3, 1)
-        place_end = maze_x_dim * maze_y_dim * end_time / 2
+        place_end = maze_num_cols * maze_num_rows * end_time / 2
         
         # enumeration
         North = 0
@@ -52,7 +52,7 @@ class generator:
             far = m.board[move(shift_sq,dir)]
             left = m.board[move(shift_sq,(dir-1) % 4)]
             right = m.board[move(shift_sq,(dir+1) % 4)]
-            border = (shift_sq[0] = 0) or (shift_sq[1] = 0) or (shift_sq[0] = maze_x_dim-1) or (shift_sq[1] = maze_y_dim-1)
+            border = (shift_sq[0] = 0) or (shift_sq[1] = 0) or (shift_sq[0] = maze_num_cols-1) or (shift_sq[1] = maze_num_rows-1)
             return (not(mid or far or left or right or border))
         
         # checks whether a new path can branch off from this square
