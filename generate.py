@@ -6,7 +6,7 @@ class generator:
 
         # variables that I get from elsewhere
         maze_x_dim = 20
-        maze_y_dim = 30
+        maze_y_dim = 20
         start_loc_x = 0.23
         start_loc_y = 0.87
         p_birds_eye = 0.76
@@ -15,26 +15,22 @@ class generator:
         p_jump = 0.789
         p_forward = 0.34
         end_time = .66
-
-        # list of tuples. 1st 
-        usable_squares = []
         
     
-        # variables from my code
-        should_jump = random.uniform(0,1)
-        should_birds = random.unifrom(0,1)
-        direction_rand = random.randrange (0, 3, 1)
-
+        # local variables
+        direction = random.randrange (0, 3, 1)
+        coordinates = 
+        
+        # enumeration
         North = 0
         South = 1
         West  = 2
         East  = 3
     
-        coordinates = (start_loc_x, start_loc_y)
         def direction =
             return_dis * 
 
-        # ifi you can go there, true
+        # if you can go there, true
         # if you can't false
     
         end_time
