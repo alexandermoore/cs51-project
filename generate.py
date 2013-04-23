@@ -15,7 +15,7 @@ class generator:
         return_dist = 0.87
         p_jump = 0.789
 
-        # lsit of tuples. 1st 
+        # list of tuples. 1st 
         usable_squares = []
         
     
@@ -30,7 +30,7 @@ class generator:
         East  = 3
     
         coordinates = (start_loc_x, start_loc_y)
-        def directio =
+        def direction =
             return_dis * 
 
         # ifi you can go there, true
