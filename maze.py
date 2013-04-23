@@ -38,3 +38,6 @@ class Maze:
     
 m = Maze()
 
+x = not(False)
+print x
+
