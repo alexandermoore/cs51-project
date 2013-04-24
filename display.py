@@ -51,9 +51,6 @@ class MazeDisplay:
         print "+\r"
 
 # Uncomment to test the display function 
-#display_object = MazeDisplay()
-#display_object.display(m)
+# display_object = MazeDisplay()
+# display_object.display(m)
 
-# this is what's currently in the specs
-#display = MazeDisplay()
-#display.display(m)
