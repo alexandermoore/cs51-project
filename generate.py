@@ -111,8 +111,12 @@ class generator:
                     
         def add_square(square):
             dist = math.sqrt(math.pow(square[0] - start_coord[0],2) + math.pow(square[1] - start_coord[1],2))
-        
-                
+            insert_loc = 0
+            while m.usable_squares[insert_loc][1] < dist:
+                if insert_loc == len[m.usable_squares]:
+                    break
+                insert_loc = insert_loc + 1
+            m.usable_squares.insert((square,dist),insert_loc)
             
         
         
