@@ -8,7 +8,7 @@ def display (maze):
     #square = u"\uFFED"
  
     # Choose shape to represent a non-walkable square
-    square = u"\u25A9" #big square diagonal crosshatch
+    square = "X" #unicode(u"\u25A9") #big square diagonal crosshatch
 
     # Get board from object maze
     list = maze.board
@@ -40,11 +40,11 @@ def display (maze):
     for i in list:
         sys.stdout.write("|")
         for j in i:
-            if j == True : sys.stdout.write(square + ' ')
-            elif j == "start" : sys.stdout.write("S ")
-            elif j == "end" : sys.stdout.write("E ")
+            if j == False : sys.stdout.write(square + ' ')
+            elif j == "start" : sys.stdout.write("s ")
+            elif j == "end" : sys.stdout.write("e ")
             else : sys.stdout.write("  ")
-        print "|   \r"
+        print "|" + " \r"
 
     # Create lower border
     sys.stdout.write("+")
@@ -52,10 +52,6 @@ def display (maze):
         sys.stdout.write("--")
     print "+\r"
 
-# Sample maze
-#my_list = [[True,True,True,True,False,True,True,False,False,True],
-#           [True,False,True,True,True,False,False,False,True,False],
-#           [True,False,False,True,False,True,False,True,True,False],
-#           [False,True,False,True,False,False,False,True,True,False]]
-
+# Uncomment this to test the display function 
 display(maze.m)
+
