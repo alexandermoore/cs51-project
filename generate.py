@@ -26,7 +26,8 @@ class generator:
         # local variables
         coordinates = m.start
         direction = random.randrange (0, 3, 1)
-        end_countdown = math.floor(maze_num_cols * maze_num_rows * end_time / 2)
+        end_placement_countdown = math.floor(maze_num_cols * maze_num_rows * end_time / 2)
+        maze_incomplete = True
         
         # enumeration
         North = 0
@@ -83,7 +84,7 @@ class generator:
             
             # try to find proposal square that can branch off a new path
             success = False
-            while success == False:
+            while not(success):
                 if check_sq(m.usable_squares[proposal_square]):
                     success = True
                 elif proposal_square == len(m.usable_squares)-1:
@@ -98,17 +99,18 @@ class generator:
                     # if proposal square fails, remove it and try next one
                     m.usable_squares.remove(m.usable_squares[proposal_square])
                     proposal_square = propoal_square + 1
-            
+                    
             if success == True:
                 coordinates = usable_squares[proposal_square][0]
-            
             return success
         
+        # begin a new path (for instance, after jumping)
         def new_path():
             while not(check_dir(coordinates,direction)):
                 direction = (direction + 1) % 4
             coorinates = move(coordinates,direction)
-                    
+        
+        # adds a given square to m.usable_squares
         def add_square(square):
             dist = math.sqrt(math.pow(square[0] - start_coord[0],2) + math.pow(square[1] - start_coord[1],2))
             insert_loc = 0
@@ -117,8 +119,38 @@ class generator:
                     break
                 insert_loc = insert_loc + 1
             m.usable_squares.insert((square,dist),insert_loc)
-            
         
+        # begin tunneling from start
+        add_square(coordinates)
+        m.board[coordinates] = True
+        new_path()
+        
+        # keep adding new squares to maze until no more can be added
+        while maze_incomplete:
+            add_square(coordinates)
+            m.board[coordinates] = True
+            if end_placement_countdown == 0:  
+                m.end = coordinates
+            end_placement_countdown = end_placement_countdown - 1
+            should_jump = random.random()
+            if should_jump < p_jump:
+                maze_incomplete = jump()
+            should_forward = random.random()
+            should_right = random.random()
+            if should_forward < p_forward and check_dir(coordinates,direction):
+                move(coordinates,direction)
+            elif should_right < 0.5 and check_dir(coordinates,(direction + 1) % 4):
+                direction = (direction + 1) % 4
+                move(coordinates,direction)
+            elif check_dir(coordinates,(direction - 1) % 4):
+                direction = (direction - 1) % 4
+                move(coordinates,direction)
+            elif check_dir(coordinates,(direction + 1) % 4):
+                direction = (direction + 1) % 4
+                move(coordinates,direction)
+            else:
+                maze_incomplete = jump()
+            
         
 
         
