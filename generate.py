@@ -75,7 +75,7 @@ class generator:
             should_birds = random.random()
             if should_birds < p_birds_eye:
                 # find closest square further than min_dist
-                min_dist = math.sqrt(math.pow(coordinates[0] - start_coord[0],2) + math.pow(coordinates[1] - start_coord[1],2)) * return_dist
+                min_dist = math.sqrt(math.pow(coordinates[0] - m.start[0],2) + math.pow(coordinates[1] - m.start[1],2)) * return_dist
                 while m.usable_squares[proposal_square][1] < min_dist:
                     proposal_square = proposal_square + 1
             else:
@@ -112,10 +112,11 @@ class generator:
         
         # adds a given square to m.usable_squares
         def add_square(square):
-            dist = math.sqrt(math.pow(square[0] - start_coord[0],2) + math.pow(square[1] - start_coord[1],2))
+            dist = math.sqrt(math.pow(square[0] - m.start[0],2) + math.pow(square[1] - m.start[1],2))
             insert_loc = 0
             while m.usable_squares[insert_loc][1] < dist:
-                if insert_loc == len[m.usable_squares]:
+                if insert_loc == len[m.usable_squares] - 1:
+                    insert_loc = insert_loc + 1
                     break
                 insert_loc = insert_loc + 1
             m.usable_squares.insert((square,dist),insert_loc)
@@ -151,9 +152,6 @@ class generator:
             else:
                 maze_incomplete = jump()
             
-        
+generator_object = generator()
 
-        
-    
-    
-    
+generator_object.generate(mango)
