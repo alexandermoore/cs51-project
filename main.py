@@ -39,5 +39,5 @@ print "\n\nBEST GENERATOR: "
 print current_gen.fittest[0].parameter_list
 
 # Display the fittest maze of them all	
-#display = MazeDisplay()
-#display.display(current_generation.fittest[0])
+#display_object = MazeDisplay()
+#display_object.display(current_generation.fittest[0])
