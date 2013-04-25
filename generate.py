@@ -19,8 +19,8 @@ class generator:
         end_time = .66
         
         #initialize maze
-        start_row = math.floor(start_loc_row * (maze_num_rows-2) + 1.5)
-        start_col = math.floor(start_loc_col * (maze_num_cols-2) + 1.5)
+        start_row = int(math.floor(start_loc_row * (maze_num_rows-2) + 1.5))
+        start_col = int(math.floor(start_loc_col * (maze_num_cols-2) + 1.5))
         m.start = (start_row, start_col)
         
         # local variables
@@ -122,8 +122,8 @@ class generator:
             m.usable_squares.insert((square,dist),insert_loc)
         
         # begin tunneling from start
-        add_square(coordinates)
-        m.board[coordinates] = True
+        m.usable_squares = [(coordinates,0)]
+        m.board[coordinates[0]][coordinates[1]] = True
         new_path()
         
         # keep adding new squares to maze until no more can be added
