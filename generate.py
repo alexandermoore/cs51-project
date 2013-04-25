@@ -47,6 +47,7 @@ class generator:
                 return(square[0],square[1]-1)
             else:
                 print "error: moved not passed a valid direction"
+            return
         
         # checks whether a path can be extended from square in the direction dir
         def check_dir(square,dir):
@@ -66,12 +67,8 @@ class generator:
             west = check_dir(square,West)
             return (north or east or south or west)
         
-        # jumps to some square in usable_squares or returns False if unsuccessful
-        def jump():
-            # index of square in usable_squares
-            proposal_square = 0
-            
-            # decide how to jump
+        # gets proposal_square
+        def get_proposal_square()
             should_birds = random.random()
             if should_birds < p_birds_eye:
                 # find closest square further than min_dist
@@ -81,6 +78,11 @@ class generator:
             else:
                 # choose random square
                 proposal_square = random.randint(0,len(m.usable_squares) - 1)
+            return proposal_square
+        
+        # jumps to some square in usable_squares or returns False if unsuccessful
+        def jump():
+            proposal_square = get_proposal_square()
             
             # try to find proposal square that can branch off a new path
             success = False
