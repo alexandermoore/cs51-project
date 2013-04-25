@@ -1,6 +1,7 @@
 import random
 import maze
 
+# trying to merge
 # Here's the latest code in progress:
 from maze import *
 

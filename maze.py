@@ -13,13 +13,14 @@ class Maze:
     usable_squares = []
 
     # Coordinates of the START square
-    start = (False,False) 
+    start = (None,None) 
 
     # Coordinates of the END square
-    end = (False,False)
+    end = (None,None)
+
 
     # Runtime
-    runtime = False
+    runtime = None
 
     # A board customized to a specific initial state
     def __init__(self):
@@ -36,6 +37,7 @@ class Maze:
                 row.append(False)
         return board
     
-m = Maze()
+mango = Maze()
 
+m = Maze()
 

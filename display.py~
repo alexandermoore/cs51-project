@@ -1,57 +1,59 @@
 import sys
-import maze
+from maze import*
 
-def display (maze):
-    #square = u"\u25A0" #small filled in square
-    #square = u"\u20DE" #big enclosing square 
-    #square = u"\u25FC"
-    #square = u"\uFFED"
- 
-    # Choose shape to represent a non-walkable square
-    square = "X" #unicode(u"\u25A9") #big square diagonal crosshatch
+class MazeDisplay:
 
-    # Get board from object maze
-    list = maze.board
+    def display (self,maze):
 
-    # Define START coordinates
-    start_x = maze.start[0]
-    start_y = maze.start[1]
+        # Choose shape to represent a non-walkable square
+        square = "X" #unicode(u"\u25A9") #big square diagonal crosshatch
 
-    # Define END coordinates
-    end_x = maze.end[0]
-    end_y = maze.end[1]
+        # Get board from object maze
+        list = maze.board
 
-    # Update board (change booleans to "start" and "end")
-    list[start_x][start_y] = "start"
-    list[end_x][end_y] = "end"
+        # Define START coordinates
+        start_x = maze.start[0]
+        start_y = maze.start[1]
 
-    # Set border to number of columns 
-    border_length = 0
-    for i in list:
-        border_length = len(i)
+        # Define END coordinates
+        end_x = maze.end[0]
+        end_y = maze.end[1]
 
-    # Create upper border
-    sys.stdout.write("+")
-    for i in range(border_length):
-        sys.stdout.write("--")
-    print "+\r"
+        # Update board (change booleans to "start" and "end")
+        list[start_x][start_y] = "start"
+        list[end_x][end_y] = "end"
 
-    # Print board
-    for i in list:
-        sys.stdout.write("|")
-        for j in i:
-            if j == False : sys.stdout.write(square + ' ')
-            elif j == "start" : sys.stdout.write("s ")
-            elif j == "end" : sys.stdout.write("e ")
-            else : sys.stdout.write("  ")
-        print "|" + " \r"
+        # Set border to number of columns 
+        border_length = 0
+        for i in list:
+            border_length = len(i)
 
-    # Create lower border
-    sys.stdout.write("+")
-    for i in range(border_length):
-        sys.stdout.write("--")
-    print "+\r"
+        # Create upper border
+        sys.stdout.write("+")
+        for i in range(border_length):
+            sys.stdout.write("--")
+        print "+\r"
 
-# Uncomment this to test the display function 
-display(maze.m)
+        # Print board
+        for i in list:
+            sys.stdout.write("|")
+            for j in i:
+                if j == False : sys.stdout.write(square + ' ')
+                elif j == "start" : sys.stdout.write("s ")
+                elif j == "end" : sys.stdout.write("e ")
+                else : sys.stdout.write("  ")
+            print "|" + " \r"
 
+        # Create lower border
+        sys.stdout.write("+")
+        for i in range(border_length):
+            sys.stdout.write("--")
+        print "+\r"
+
+# Uncomment to test the display function 
+#display_object = MazeDisplay()
+#display_object.display(m)
+
+# this is what's currently in the specs
+#display = MazeDisplay()
+#display.display(m)
