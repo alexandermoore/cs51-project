@@ -12,21 +12,14 @@ class Maze:
     # The list must be ordered from closest to start to furthest
     usable_squares = []
 
-    # Coordinates of the START square (row,column)
+    # Coordinates of the START square
     start = (False,False) 
 
-    # Coordinates of the END square (row,column)
+    # Coordinates of the END square
     end = (False,False)
 
-    # Coordinates of the START square
-    start = (None,None) 
-
-    # Coordinates of the END square
-    end = (None,None)
-
-
     # Runtime
-    runtime = None
+    runtime = False
 
     # A board customized to a specific initial state
     def __init__(self):
@@ -43,7 +36,6 @@ class Maze:
                 row.append(False)
         return board
     
-mango = Maze()
-
 m = Maze()
+
 
