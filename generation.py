@@ -12,33 +12,36 @@ class Generator :
                 return p
             else :
                 return 0.0
-        def test2(p) :
-            return (p-p*p)
-        def test3(p,e) :
-            return p*x**e
-        new_lst = [test2(params[e],e,x) for e in range(0,len(params))]
+
+        new_lst = [test(params[e]) for e in range(0,len(params))]
         self.avg_runtime = sum(new_lst)
     
 
 class Generation :
-    # Genetic algorithm parameters
+    
+    #############################
+    #   FIELDS
+    ############################# 
+    # # of parameters in Generator class
+    generator_param_count = 6
     
     # The top "num_fittest" generators will be taken from each generation
     # for breeding.
-    num_fittest = 5
+    num_fittest = 0
     # Size of each new generation
-    pop_size = 100
+    pop_size = 0
     # Fittest members of current population
     fittest = []
     # Generator objects in population
     generators = []
-    # # of parameters in Generator class
-    generator_param_count = 6
     # Number of random generators to add each time
     num_random = 0
     # Number of members from the fittest generators to keep in the population. Implements "elitism" so best genes are allowed to survive.
-    num_elites = 2
+    num_elites = 0
 
+    #############################
+    #   METHODS
+    ############################# 
     '''
     __init__
     Constructor. Initializes num_fittest, pop_size, num_random and num_elites.
@@ -111,7 +114,7 @@ class Generation :
         # Get upper bound for random number (2nd part of tuple in last element of list)
         upper_bound = prob_list[-1][1]
         num = random.random()*upper_bound
-        # Make a copy of prob_list so we don't modify the original
+
         prob_list_cpy = list(prob_list)
 
         # Figure out which element was selected
