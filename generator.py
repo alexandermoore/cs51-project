@@ -61,9 +61,10 @@ class Generator:
     
     def generate(self,m):
         #initialize maze
-        start_row = int(math.floor(self.start_loc_row * (maze_num_rows-2) + 1.5))
-        start_col = int(math.floor(self.start_loc_col * (maze_num_cols-2) + 1.5))
+        start_row = int(math.floor(self.start_loc_row * (maze_num_rows-3) + 1.5))
+        start_col = int(math.floor(self.start_loc_col * (maze_num_cols-3) + 1.5))
         m.start = (start_row, start_col)
+        self.maze_incomplete = True
         
         # enumeration
         North = 0
@@ -74,10 +75,10 @@ class Generator:
         #variables for generate function
         self.coordinates = m.start
         self.direction = random.randrange (0, 3, 1)
-        self.end_placement_countdown = math.floor(maze_num_cols * maze_num_rows * end_time / 2)
+        self.end_placement_countdown = math.floor(maze_num_cols * maze_num_rows * self.end_time / 2)
         self.maze_incomplete = True
         
-        # gives self.coordinates of moving from square in self.direction dir
+        # gives coordinates of moving from square in direction dir
         def move(square,dir):
             if (dir == North):
                 return(square[0]+1,square[1])
@@ -91,11 +92,12 @@ class Generator:
                 print "error: moved not passed a valid self.direction"
             return
         
-        # checks whether a path can be extended from square in the self.direction dir
+        # checks whether a path can be extended from square in the direction dir
         def check_dir(square,dir):
+            print square
             shift_sq = move(square,dir)
-            mid = m.board[shift_sq]
-            far = m.board[move(shift_sq,dir)]
+            mid = m.board[shift_sq[0]][shift_sq[1]]
+            far = m.board[move(shift_sq,dir)[0]][move(shift_sq,dir)[1]]
             left = m.board[move(shift_sq,(dir-1) % 4)]
             right = m.board[move(shift_sq,(dir+1) % 4)]
             border = (shift_sq[0] == 0) or (shift_sq[1] == 0) or (shift_sq[0] == maze_num_rows-1) or (shift_sq[1] == maze_num_cols-1)
