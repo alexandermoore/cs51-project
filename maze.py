@@ -18,6 +18,7 @@ class Maze:
     # Coordinates of the END square
     end = (None,None)
 
+
     # Runtime
     runtime = None
 
@@ -36,4 +37,7 @@ class Maze:
                 row.append(False)
         return board
     
+mango = Maze()
+
 m = Maze()
+
