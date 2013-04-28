@@ -52,9 +52,9 @@ class Generator:
             maze_incomplete = True
             self.generate(m)
             display_object.display(m)
-            simple_solver.solve(m)
+            self.pythagorean_solve(m)
             self.mazes.append(m)
-        self.calc_average_runtime
+        self.calc_avg_runtime
 	
     def calc_avg_runtime(self):
         total_time = 0
@@ -82,7 +82,6 @@ class Generator:
         
         # gives coordinates of moving from square in direction dir
         def move(square,dir):
-    #        print 'move'
             if (dir == North):
                 return(square[0]+1,square[1])
             elif dir == South:
@@ -97,22 +96,21 @@ class Generator:
         
         # checks whether a path can be extended from square in the direction dir
         def check_dir(square,dir):
-            print square
-
             shift_sq = move(square,dir)
             border = (shift_sq[0] == 0) or (shift_sq[1] == 0) or (shift_sq[0] == maze_num_rows-1) or (shift_sq[1] == maze_num_cols-1)
             if border:
                 return False
             mid = m.board[shift_sq[0]][shift_sq[1]]
-            far = m.board[move(shift_sq,dir)[0]][move(shift_sq,dir)[1]]
             left = m.board[move(shift_sq,(dir-1) % 4)[0]][move(shift_sq,(dir-1) % 4)[1]]
             right = m.board[move(shift_sq,(dir+1) % 4)[0]][move(shift_sq,(dir+1) % 4)[1]]
-            return (not(mid or far or left or right))
+            shift_sq_2 = move(shift_sq,dir)
+            far = m.board[shift_sq_2[0]][shift_sq_2[1]]
+            far_left = m.board[move(shift_sq_2,(dir-1) % 4)[0]][move(shift_sq_2,(dir-1) % 4)[1]]
+            far_right = m.board[move(shift_sq_2,(dir+1) % 4)[0]][move(shift_sq_2,(dir+1) % 4)[1]]
+            return (not(mid or far or left or right or far_left or far_right))
         
         # checks whether a new path can branch off from this square
         def check_sq(square):
-            print 'check square'
-            
             north = check_dir(square,North)
             east = check_dir(square,East)
             south = check_dir(square,South)
@@ -135,13 +133,10 @@ class Generator:
         
         # jumps to some square in usable_squares or returns False if unsuccessful
         def jump():
-            print "jump"
             proposal_square = get_proposal_square()
             # try to find proposal square that can branch off a new path
             success = False
             while not(success):
-                print "length(new): " + str(len(m.usable_squares))
-                print proposal_square
                 if check_sq(m.usable_squares[proposal_square][0]):
                     success = True
                 else:
@@ -151,25 +146,19 @@ class Generator:
                             m.end = self.coordinates
                         break
                     else:
-                        proposal_square = (proposal_square + 1) % len(m.usable_squares)
-                    
+                        proposal_square = (proposal_square + 1) % len(m.usable_squares)        
             if success == True:
                 self.coordinates = m.usable_squares[proposal_square][0]
             return success
         
         # begin a new path (for instance, after jumping)
         def new_path():
-            print "new path"
-            
             while not(check_dir(self.coordinates,self.direction)):
-                print self.direction
                 self.direction = (self.direction + 1) % 4
             coorinates = move(self.coordinates,self.direction)
         
         # adds a given square to m.usable_squares
         def add_square(square):
-            print "add square"
-            
             dist = math.sqrt(math.pow(square[0] - m.start[0],2) + math.pow(square[1] - m.start[1],2))
             insert_loc = 0
             while m.usable_squares[insert_loc][1] < dist:
@@ -180,39 +169,28 @@ class Generator:
             m.usable_squares.insert(insert_loc,(square,dist))
         
         def continue_path():
-            print "continue path"
-            
             should_forward = random.random()
             should_right = random.random()
             if should_forward < self.p_forward and check_dir(self.coordinates,self.direction):
-                print "forward"
                 self.coordinates = move(self.coordinates,self.direction)
             elif should_right < 0.5 and check_dir(self.coordinates,(self.direction + 1) % 4):
-                print "right"
                 self.direction = (self.direction + 1) % 4
                 self.coordinates = move(self.coordinates,self.direction)
             elif check_dir(self.coordinates,(self.direction - 1) % 4):
-                print 'left'
                 self.direction = (self.direction - 1) % 4
                 self.coordinates = move(self.coordinates,self.direction)
             elif check_dir(self.coordinates,(self.direction + 1) % 4):
-                print 'right cuz blocking'
                 self.direction = (self.direction + 1) % 4
                 self.coordinates = move(self.coordinates,self.direction)
             elif check_dir(self.coordinates,self.direction):
-                print 'forward cuz blocking'
                 self.coordinates = move(self.coordinates,self.direction)
             elif check_dir(self.coordinates,(self.direction + 2) % 4):
-                print 'went back cuz blocking'
                 self.direction = (self.direction + 2) % 4
                 self.coordinates = move(self.coordinates,self.direction)
             else:
-                print 'must jump'
                 self.maze_incomplete = jump()
                 if self.maze_incomplete:
-                    print "continue path repeat"
                     continue_path()
-            print "done continuing path"
             return
    
         
@@ -235,8 +213,11 @@ class Generator:
                     break
             continue_path()
      #       display_object.display(m)
-     #       print m.usable_squares
-
+    
+    def pythagorean_solve(self,m):
+        dist = math.sqrt(math.pow(m.end[0] - m.start[0],2) + math.pow(m.end[1] - m.start[1],2))
+        m.runtime = dist
+        return
 
 
 

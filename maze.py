@@ -20,7 +20,7 @@ class Maze:
 
 
     # Runtime
-    runtime = 0
+    runtime = None
 
     # A board customized to a specific initial state
     def __init__(self):
