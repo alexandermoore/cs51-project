@@ -26,25 +26,32 @@ result = "<TABLE ID='TMaze' CELLSPACING=0 CELLPADDING=0> \n"
 
 # set border
 for i in range (n_rows):
-    result += "<TR HEIGHT = 25>"
+    result += "<TR HEIGHT = 30>"
 
     for j in range (n_cols):
-        result += "<TD WIDTH=24 style='"
+        result += "<TD WIDTH=30 align=center style='"
         if i==0:
-            result += "BORDER-TOP: 2px black solid;"
-        if i==n_rows-1 or (list[i][j]==False and list[i][j+1]==False):
-            result += "BORDER-BOTTOM: 2px black solid;"
-        if j==0 or (list[i][j] == False):
-            result += "BORDER-LEFT: 2px black solid;"
+            result += "BORDER-TOP: 3px black solid;"
+        if i==n_rows-1:
+            result += "BORDER-BOTTOM: 3px black solid;"
+        if j==0:
+            result += "BORDER-LEFT: 3px black solid;"
         if j==n_cols-1:
-            result += "BORDER-RIGHT: 2px black solid;"
+            result += "BORDER-RIGHT: 3px black solid;"
+        
+
+        if (list[i][j]==False):
+            result += "BACKGROUND-COLOR:#B20000;"
         result += "'>"
+            
 
         # set start and end
         if i == start_x and j == start_y:
-            result += 'S' 
+            result += "<font color='990000' FACE='SANS-SERIF' ><b>S</b></font>"
         if i == end_x and j == end_y:
-            result += 'E'
+            result += "<font color='990000' FACE='SANS-SERIF' ><b>E</b></font>"
+
+            
 
         else:
             result += "&nbsp;"
