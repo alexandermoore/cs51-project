@@ -9,13 +9,13 @@ class Generator:
     #FIELDS
 	
     #parameters
-    start_loc_col = 1
-    start_loc_row = 1
-    p_jump = 1
-    p_forward = 1
-    p_birds_eye = 1
-    return_dist = 1
-    end_time = 1
+    start_loc_col = None
+    start_loc_row = None
+    p_jump = None
+    p_forward = None
+    p_birds_eye = None
+    return_dist = None
+    end_time = None
     
     # variables for class
     mazes = []
@@ -39,13 +39,13 @@ class Generator:
 	#Constructor takes in params, float list of [start_loc_col,start_loc_row,p_jump,p_forward,p_birds_eye,
 	#return_dist,end_time]
     def __init__(self,params):
-        start_loc_col = params[0]
-        start_loc_row = params[1]
-        p_jump = params[2]
-        p_forward = params[3]
-        p_birds_eye = params[4]
-        return_dist = params[5]
-        end_time = params[6]
+        self.start_loc_col = params[0]
+        self.start_loc_row = params[1]
+        self.p_jump = params[2]
+        self.p_forward = params[3]
+        self.p_birds_eye = params[4]
+        self.return_dist = params[5]
+        self.end_time = params[6]
         for val in range(num_mazes):
             m = Maze()
             self.generate(m)
@@ -98,8 +98,8 @@ class Generator:
             shift_sq = move(square,dir)
             mid = m.board[shift_sq[0]][shift_sq[1]]
             far = m.board[move(shift_sq,dir)[0]][move(shift_sq,dir)[1]]
-            left = m.board[move(shift_sq,(dir-1) % 4)]
-            right = m.board[move(shift_sq,(dir+1) % 4)]
+            left = m.board[move(shift_sq,(dir-1) % 4)[0]][move(shift_sq,(dir-1) % 4)[1]]
+            right = m.board[move(shift_sq,(dir+1) % 4)[0]][move(shift_sq,(dir+1) % 4)[1]]
             border = (shift_sq[0] == 0) or (shift_sq[1] == 0) or (shift_sq[0] == maze_num_rows-1) or (shift_sq[1] == maze_num_cols-1)
             return (not(mid or far or left or right or border))
         
