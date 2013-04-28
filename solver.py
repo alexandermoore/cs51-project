@@ -45,7 +45,8 @@ class Solver:
                 if walkable(cur_x,cur_y-1,board) == True:
                     cur_y = cur_y-1
 		    maze.runtime += 1
-		    compass = "W"		   
+		    compass = "W"	
+		    print cur_x,cur_y,compass	   
 		    if (cur_x,cur_y) == maze.end:
 		        return	
 	            else:
@@ -55,6 +56,7 @@ class Solver:
 	        else:
                     if walkable(cur_x-1,cur_y,board) == True:
                         cur_x = cur_x-1
+		    	print cur_x,cur_y,compass
 		        maze.runtime += 1
                         print maze.runtime
 		        if (cur_x,cur_y) == maze.end:
@@ -69,6 +71,7 @@ class Solver:
 			    maze.runtime += 1
 			    print maze.runtime
 			    compass = "E"
+		            print cur_x,cur_y,compass
 			    if (cur_x,cur_y) == maze.end:
 			        return
 			    else:
@@ -77,10 +80,11 @@ class Solver:
     		        # move backward
 		        else:
                             if walkable(cur_x+1,cur_y,board) == True:
-                                cur_x = cur_x + 1
+                                cur_x = cur_x + 1	
 			        maze.runtime += 1
                                 print maze.runtime 
 			        compass = "S"
+		                print cur_x,cur_y,compass
 			        if (cur_x,cur_y) == maze.end:
                                     print maze.runtime
 				    return
@@ -96,6 +100,7 @@ class Solver:
 		    maze.runtime += 1
                     print maze.runtime
 		    compass = "E"
+		    print cur_x,cur_y,compass
 		    if (cur_x,cur_y) == maze.end:
 	                return
 		    else:
@@ -105,6 +110,7 @@ class Solver:
                 else:
                     if walkable(cur_x+1,cur_y,board) == True:
                         cur_x = cur_x + 1 
+    		        print cur_x,cur_y,compass
                         maze.runtime += 1
 			print maze.runtime
                         if(cur_x,cur_y) == maze.end:
@@ -116,9 +122,11 @@ class Solver:
                     else: 
                         if walkable(cur_x,cur_y-1,board) == True:
                             cur_y = cur_y - 1
+
                             maze.runtime += 1
 			    print maze.runtime
                             compass = "W"
+		            print cur_x,cur_y,compass
                             if (cur_x,cur_y) == maze.end:
                                 return
                             else:
@@ -128,9 +136,11 @@ class Solver:
                         else:
                             if walkable(cur_x-1,cur_y,board) == True:
                                 cur_x = cur_x - 1
+	
                                 maze.runtime += 1
 				print maze.runtime
                                 compass = "N"
+		                print cur_x,cur_y,compass
                                 if (cur_x,cur_y) == maze.end:
                                     return
                                 else:
@@ -142,8 +152,10 @@ class Solver:
                 # try to go left
                 if walkable(cur_x+1,cur_y,board) == True:
                     cur_x = cur_x + 1
+
 	            maze.runtime += 1
 	            compass = "S"
+		    print cur_x,cur_y,compass
 		    if (cur_x,cur_y) == maze.end:
 	                return
 	            else:
@@ -153,8 +165,10 @@ class Solver:
                 else:
                     if walkable(cur_x,cur_y-1,board) == True:
                         cur_y = cur_y - 1 
+
                         maze.runtime += 1
 			print maze.runtime
+		        print cur_x,cur_y,compass
                         if(cur_x,cur_y) == maze.end:
                             return
                         else:
@@ -164,9 +178,11 @@ class Solver:
                     else: 
                         if walkable(cur_x-1,cur_y,board) == True:
                             cur_x = cur_x - 1
+
                             maze.runtime += 1
 			    print maze.runtime
                             compass = "N"
+		            print cur_x,cur_y,compass
                             if (cur_x,cur_y) == maze.end:
                                 return
                             else:
@@ -176,8 +192,10 @@ class Solver:
                         else:
                             if walkable(cur_x,cur_y+1,board) == True:
                                 cur_y = cur_y + 1
+	
                                 maze.runtime += 1
                                 compass = "E"
+		                print cur_x,cur_y,compass
                                 if (cur_x,cur_y) == maze.end:
                                     return
                                 else:
@@ -189,8 +207,10 @@ class Solver:
                 # try to go left
                 if walkable(cur_x-1,cur_y,board) == True:
                     cur_x = cur_x - 1
+
 	            maze.runtime += 1
 	            compass = "N"
+		    print cur_x,cur_y,compass
 	            if (cur_x,cur_y) == maze.end:
 	                return
 	            else:
@@ -200,7 +220,9 @@ class Solver:
                 else:
                     if walkable(cur_x,cur_y+1,board) == True:
                         cur_y = cur_y + 1 
+			print cur_x,cur_y,compass
                         maze.runtime += 1
+		               
                         if(cur_x,cur_y) == maze.end:
                             return
                         else:
@@ -210,8 +232,10 @@ class Solver:
                     else: 
                         if walkable(cur_x+1,cur_y,board) == True:
                             cur_x = cur_x + 1
+
                             maze.runtime += 1
                             compass = "S"
+		            print cur_x,cur_y,compass
                             if (cur_x,cur_y) == maze.end:
                                 return
                             else:
@@ -221,8 +245,10 @@ class Solver:
                         else:
                             if walkable(cur_x,cur_y-1,board) == True:
                                 cur_y = cur_y - 1
+
                                 maze.runtime += 1
                                 compass = "W"
+		                print cur_x,cur_y,compass
                                 if (cur_x,cur_y) == maze.end:
                                     return
                                 else:
