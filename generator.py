@@ -93,7 +93,7 @@ class Generator:
                 return(square[0],square[1]-1)
             else:
                 print "error: moved not passed a valid self.direction"
-            return
+                return
         
         # checks whether a path can be extended from square in the direction dir
         def check_dir(square,dir):
@@ -201,6 +201,10 @@ class Generator:
                 self.coordinates = move(self.coordinates,self.direction)
             elif check_dir(self.coordinates,self.direction):
                 print 'forward cuz blocking'
+                self.coordinates = move(self.coordinates,self.direction)
+            elif check_dir(self.coordinates,(self.direction + 2) % 4):
+                print 'went back cuz blocking'
+                self.direction = (self.direction + 2) % 4
                 self.coordinates = move(self.coordinates,self.direction)
             else:
                 print 'must jump'
