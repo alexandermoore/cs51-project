@@ -26,7 +26,7 @@ class Maze:
         self.board = self.make_board()
         self.start = (False,False)
         self.end = (False,False)
-    
+
     def make_board(self):
         board = []
         for val in range(maze_num_rows):
