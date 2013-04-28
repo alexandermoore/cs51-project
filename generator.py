@@ -96,12 +96,14 @@ class Generator:
         def check_dir(square,dir):
             print square
             shift_sq = move(square,dir)
+            border = (shift_sq[0] == 0) or (shift_sq[1] == 0) or (shift_sq[0] == maze_num_rows-1) or (shift_sq[1] == maze_num_cols-1)
+            if border:
+                return False
             mid = m.board[shift_sq[0]][shift_sq[1]]
             far = m.board[move(shift_sq,dir)[0]][move(shift_sq,dir)[1]]
             left = m.board[move(shift_sq,(dir-1) % 4)[0]][move(shift_sq,(dir-1) % 4)[1]]
             right = m.board[move(shift_sq,(dir+1) % 4)[0]][move(shift_sq,(dir+1) % 4)[1]]
-            border = (shift_sq[0] == 0) or (shift_sq[1] == 0) or (shift_sq[0] == maze_num_rows-1) or (shift_sq[1] == maze_num_cols-1)
-            return (not(mid or far or left or right or border))
+            return (not(mid or far or left or right))
         
         # checks whether a new path can branch off from this square
         def check_sq(square):
@@ -165,13 +167,13 @@ class Generator:
                     insert_loc = insert_loc + 1
                     break
                 insert_loc = insert_loc + 1
-            m.usable_squares.insert((square,dist),insert_loc)
+            m.usable_squares.insert(insert_loc,(square,dist))
         
         def continue_path():
             should_forward = random.random()
             should_right = random.random()
             while True:
-                if should_forward < p_forward and check_dir(self.coordinates,self.direction):
+                if should_forward < self.p_forward and check_dir(self.coordinates,self.direction):
                     move(self.coordinates,self.direction)
                 elif should_right < 0.5 and check_dir(self.coordinates,(self.direction + 1) % 4):
                     self.direction = (self.direction + 1) % 4
@@ -197,12 +199,12 @@ class Generator:
         # keep adding new squares to maze until no more can be added
         while self.maze_incomplete:
             add_square(self.coordinates)
-            m.board[self.coordinates] = True
+            m.board[self.coordinates[0]][self.coordinates[1]] = True
             if self.end_placement_countdown == 0:  
                 m.end = self.coordinates
             self.end_placement_countdown = self.end_placement_countdown - 1
             should_jump = random.random()
-            if should_jump < p_jump:
+            if should_jump < self.p_jump:
                 self.maze_incomplete = jump()
             continue_path()
         
@@ -211,6 +213,6 @@ class Generator:
 
 
 
-g = Generator([0.5,0.5,0.5,0.5,0.5,0.5,0.5])
+g = Generator([1,1,0.5,0.5,0.5,0.5,0.5])
 
 	
