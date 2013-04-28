@@ -222,6 +222,12 @@ class Generator:
 
 
 
-g = Generator([0.5,0.5,0.5,0.5,0.5,0.5,0.5])
-
+g = Generator([1.0,0.0,0.1,0.1,0.5,0.5,0.5])
+        #self.start_loc_col = params[0]
+        #self.start_loc_row = params[1]
+        #self.p_jump = params[2]
+        #self.p_forward = params[3]
+        #self.p_birds_eye = params[4]
+        #self.return_dist = params[5]
+        #self.end_time = params[6]
 	
