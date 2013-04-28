@@ -12,7 +12,11 @@ class Generator :
                 return p
             else :
                 return 0.0
-        new_lst = [test(params[e]) for e in range(0,len(params))]
+        def test2(p) :
+            return (p-p*p)
+        def test3(p,e) :
+            return p*x**e
+        new_lst = [test2(params[e],e,x) for e in range(0,len(params))]
         self.avg_runtime = sum(new_lst)
     
 
@@ -34,44 +38,61 @@ class Generation :
     num_random = 0
     # Number of members from the fittest generators to keep in the population. Implements "elitism" so best genes are allowed to survive.
     num_elites = 2
-    
-    # Initialize num_fittest, pop_size, num_random and num_elites.
-    # TYPES: __init__(Generation, int, int, int) : unit
+
+    '''
+    __init__
+    Constructor. Initializes num_fittest, pop_size, num_random and num_elites.
+    RETURNS: No return value.
+    -num_fit (int): Assigned to self.num_fittest
+    -int pop_sz (int) : Assigned to self.pop_size
+    -num_rnd (int) : Assigned to self.num_random
+    -elites (int) : Assigned to self.num_elites
+    '''    
     def __init__(self,num_fit,pop_sz,num_rnd,elites) :
         self.num_fittest = num_fit
         self.pop_size = pop_sz
         self.num_random = num_rnd
         self.num_elites = elites
     
-    # Updates "fittest" with the most fit Generators.
-    # TYPES: update_fittest() : unit   
+    '''
+    update_fittest
+    Updates self.fittest with the most fit Generators in self.generators (the population).
+    RETURNS: No return value.
+    '''   
     def update_fittest(self) :
-        # Sort by avg_runtime and get top num_fittest
         self.generators.sort(key = lambda x: x.avg_runtime)
         self.generators.reverse()
         self.fittest = self.generators[:self.num_fittest]
         
     # Spawns a new Generation of Generators with random parameters.
     # TYPES: spawn_random_generation() : unit
+    '''
+    spawn_random_generation
+    Spawns a new Generation of Generators with random parameters. Stores the result in self.generators.
+    RETURNS: No return value
+    '''
     def spawn_random_generation(self) :
         self.generators = self.__make_random_generators(self.pop_size)
     
+    '''
+    __make_random_generators
+    Creates a list of "count" Generators with random parameters.
+    RETURNS: The list of Generators. (Generator list)
+    -count (int) : The number of generators to create.
+    '''
     def __make_random_generators(self,count) :
         rand_gens = []
-        # Create pop_size new generators with random parameters.
         for i in range(0, count) :
             new_gen = Generator([random.random() for x in range (0,self.generator_param_count)])
             rand_gens.append(new_gen)
         return rand_gens
-    
-    # Helper function. Each generator in the list will be associated with
-    # a range of numbers. 
-    # If the randomly selected number is in an object's
-    # range, then that objects is the one that was selected. This allows for
-    # proper weighting of probabilities. The "range" need only be represented
-    # by an upper bound, for the check works like so:
-    #   Iterate through each element in the list-- if random number is less
-    #   than an element's upper bound then it is selected.
+
+    '''
+    __add_probabilities
+    Associates each generator in a list of generators with a number based on their fitness for the purposes of probability. More fit generators have more space between the previous number and their own, increasing the likelihood of them being selected by __ger_probabilistic_random. Used to prepare a list of generators for __get_probabilistic_random.
+    RETURNS: A list of pairs, each containing (original generator, associated number). (Generator * int) list
+    -gens (Generator list) : The original list of generators.
+    '''
     def __add_probabilities(self,gens) :
         prob_list = []
         upper_bound = 0
@@ -80,15 +101,19 @@ class Generation :
             prob_list.append((g, upper_bound))
         return prob_list
     
-    # Gets a random probabilistically selected element from prob_list. 
-    # Returns a tuple of the element and the rest of the list without the element.
+    '''
+    __get_probabilistic_random
+    Returns the first part of a tuple (the generator) in a random element from prob_list. Elements whose associated number ranges cover more distance are more likely to be chosen. These number ranges are decided based on fitness in __add_probabilities.
+    RETURNS: A pair containing the selected element's generator and the original list without that element. (Generator * ((Generator * int) list))
+    -prob_list (Generator * int) list : List of generator * time pairs outputted from __add_probabilities.
+    '''
     def __get_probabilistic_random(self,prob_list) :
         # Get upper bound for random number (2nd part of tuple in last element of list)
         upper_bound = prob_list[-1][1]
-        # Choose a random number
         num = random.random()*upper_bound
         # Make a copy of prob_list so we don't modify the original
         prob_list_cpy = list(prob_list)
+
         # Figure out which element was selected
         # By default, winner = last element
         winner = prob_list[-1]
@@ -97,33 +122,31 @@ class Generation :
                 winner = o[0]
                 prob_list_cpy.remove(o)
                 break
-        # return the random element
         return (winner, prob_list_cpy)
-        
-    # Spawns a new generation of generators created by breeding the 
-    # Generators contained in fittest.
-    # TYPES: spawn_next_generation() : Generation
+      
+    '''
+    spawn_next_generation
+    Spawns a new generation of generators created by breeding the Generators contained in fittest. The new generation contains the children resulting from this breeding, self.num_elites of the fittest Generators from the previous generation, and self.num_random new random Generators.
+    RETURNS: The newly spawned Generation. (Generation)
+    '''
     def spawn_next_generation(self) :
-    
-        # Add probabilities to the fittest for "roulette wheel" selection.
+
         prob_fittest = self.__add_probabilities(self.fittest)
-        
-        # Create children from the parents
+
         children = []
         for i in range(0, self.pop_size - self.num_random - self.num_elites) :
             children.append(self.__spawn_child(prob_fittest))
-        
-        # Create the new generation
+            
         new_gen = Generation(self.num_fittest,self.pop_size,self.num_random,self.num_elites)
-        # Change generators of the new generation to contain the children, random new generators and the elites from this generation.
         new_gen.generators = children + self.__make_random_generators(self.num_random) + self.fittest[:self.num_elites]
         return new_gen
     
-    # Outputs one child of two probabilistically selected members of
-    # prob_fittest. Probability weight is based on fitness (runtimes) and
-    # should be contained in prob_fittest.
-    # Private.
-    # TYPES: __spawn_child( (Generator * int) List) : Generator
+    '''
+    __spawn_child
+    Outputs one child of two probabilistically selected members of prob_fittest. Probability weight is based on fitness (runtimes), so the argument list of Generators should be one that was outputted by __add_probabilities.
+    RETURNS: The child Generator (Generator)
+    -prob_fittest (Generator * int) list : A list of generators to spawn children from. Should be the result of calling __add_probabilities on a list of Generators.
+    '''
     def __spawn_child (self,prob_fittest) :
         # Select the first parent.
         p1_tuple = self.__get_probabilistic_random(prob_fittest)
@@ -133,7 +156,12 @@ class Generation :
         # Breed a child and return it
         return self.__breed(p1, p2)
     
-    # Mutates a gene.
+    '''
+    __mutate
+    Mutates a gene (parameter) based on a Gaussian centered at its original value.
+    RETURNS: The mutated gene (float)
+    -gene (float) : The gene (parameter) to mutate. Expected to be between 0 and 1.
+    '''
     def __mutate(self,gene) :
         chance = 0.1
         stddev = 0.2
@@ -152,35 +180,39 @@ class Generation :
         #    gene
         #return gene
     
-    # Breeds generators g1 and g2 via some crossing over method.
+    '''
+    __breed
+    Breeds g1 and g2 via some crossing over method.
+    RETURNS: The resulting child (Generator)
+    -g1 (Generator) : The first parent of the child.
+    -g2 (Generator) : The second parent of the child.
+    '''
     def __breed(self,g1, g2) :
         # THIS IS A WEIGHTED UNIFORM CROSSOVER.
         # http://en.wikipedia.org/wiki/Crossover_(genetic_algorithm)#Uniform_Crossover_and_Half_Uniform_Crossover
         # More fit = more likely to pass on genes.
-        
-        # Get each one's runtime to calculate weight.
+
         g1r = float(g1.avg_runtime)
         g2r = float(g2.avg_runtime)
-        # g1's share of the total fitness.
         weight = g1r / (g1r + g2r)
+        
         # Cross over parameters randomly
         params1 = g1.parameter_list
         params2 = g2.parameter_list
         newparams = []
         for i in range(0,self.generator_param_count) :
-            # If in g1's share of fitness, pass on g1's parameter.
-            # Otherwise pass on g2's parameter.
             if (random.random() < weight) :
                 gene = params1[i]
             else :
                 gene = params2[i]
             newparams = newparams + [self.__mutate(gene)]
-        # Return the child with the new parameters
         return Generator(newparams)
     
-    # Creates the list of most fit Generators and returns the average runtime
-    # of the most fit generator.
-    # TYPES: run : float
+    '''
+    run
+    Creates a list of the most fit Generators in the current generation and outputs the average runtime of the fittest one.
+    RETURNS: The average runtime of the most fit generators (float).
+    '''
     def run(self) :
         self.update_fittest()
         return self.fittest[0].avg_runtime
