@@ -20,14 +20,14 @@ class Maze:
 
 
     # Runtime
-    runtime = None
+    runtime = 0
 
     # A board customized to a specific initial state
     def __init__(self):
         self.board = self.make_board()
         self.start = (False,False)
         self.end = (False,False)
-    
+
     def make_board(self):
         board = []
         for val in range(maze_num_rows):
