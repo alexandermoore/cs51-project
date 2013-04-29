@@ -3,7 +3,7 @@ import operator
 from maze import *
 
 class SmartSolver:
-
+   
     def smart_solver(self,m):	# maze to m
 
         compass = "N"
