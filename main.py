@@ -1,6 +1,6 @@
 from generation import *
 from display import *
-
+from htmldisp import *
 # Create a new generation
 # 5 fittest breed next generation, population size of 250, 50 of which are random and 2 of which are the fittest from the previous generation.
 # (num_fittest, pop_size, num_random, num_elites)
@@ -59,6 +59,10 @@ print best_generator.parameter_list
 print best_generator.avg_runtime
 
 # Display the fittest mazes
-display_object = MazeDisplay()
+display_obj = MazeDisplay()
+htmldisplay_obj = HTMLDisplay()
 for m in best_generator.mazes :
     display_object.display(m)
+print "DISPLAYING FIRST ONE"
+display_obj.display(best_generator.mazes[0])
+htmldisplay_obj.display(best_generator.mazes[0])
