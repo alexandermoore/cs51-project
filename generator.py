@@ -37,19 +37,22 @@ class Generator:
     
 	#METHODS
 	
-    ''' 
-    __init__
+    ''' __init__
     Constructor. Initializes the parameters and creates each of mazes, including runtime. It then
     calculates the average runtime. The only input is a list of seven floats between 0 and 1.
     RETURNS: No return value.
-    -params[0] : 
-    -params[1]
-    -params[2]
-    -params[3]
-    -params[4]
-    -params[5]
-    -params[6]
-    -params[7]
+    -params[0] : start_loc_col = starting location as ratio of column/maze_num_cols
+    -params[1] : start_loc_row = starting location as ratio of row/maze_num_rows
+    -params[2] : p_jump = probability of jumping somewhere else in the maze when adding next square
+    -params[3] : p_forward = if continuing current path, probability of moving forward (as opposed 
+    to turning)
+    -params[4] : p_birds_eye = if jumping, probability of doing so through a "birds-eye" calculation 
+    as opposed to picking a random square
+    -params[5] : return_dist = if doing a "birds-eye" jump, return_dist is the ratio of the desired 
+    distance from start (in the square jumped to) to the current distance from the start distance 
+    from start to desired distance from start in the square jumped to
+    -params[6] : end_time = rough approximation of what percentage of maze will be completed when 
+    end is placed
     ''' 
     def __init__(self,params):
         self.start_loc_col = params[0]
@@ -66,8 +69,11 @@ class Generator:
             display_object.display(m)
             self.pythagorean_solve(m)
             self.mazes.append(m)
-        self.calc_avg_runtime
+        self.avg_runtime = self.calc_avg_runtime
 	
+    ''' calc_avg_runtime
+    Takes the average of the runtimes of all mazes in mazes[].
+    '''
     def calc_avg_runtime(self):
         total_time = 0
         for maze in mazes:
@@ -75,11 +81,9 @@ class Generator:
         return total_time/len(mazes)
     
     def generate(self,m):
-        #initialize maze
-        
         # Convert start parameters into row/column numbers in a fair way, giving each square an equal opportunity to be selected (+1.5 so the (maze_num_rows - 2)th square has a fair chance to be selected)
-        start_row = int(math.floor(self.start_loc_row * (maze_num_rows-3) + 1.5))
-        start_col = int(math.floor(self.start_loc_col * (maze_num_cols-3) + 1.5))
+        start_row = int(self.start_loc_row * (maze_num_rows-3) + 1.5)
+        start_col = int(self.start_loc_col * (maze_num_cols-3) + 1.5)
         m.start = (start_row, start_col)
         
         # enumeration
@@ -91,7 +95,7 @@ class Generator:
         #variables for generate function
         self.coordinates = m.start
         self.direction = random.randrange (0, 3, 1)
-        self.end_placement_countdown = math.floor((maze_num_cols - 2) * (maze_num_rows - 2) * self.end_time / 2)
+        self.end_placement_countdown = math.floor((maze_num_cols - 1) * (maze_num_rows - 1) * self.end_time / 2)
         self.maze_incomplete = True
         
         # gives coordinates of moving from square in direction dir
