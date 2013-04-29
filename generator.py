@@ -1,7 +1,7 @@
 from maze import *
 import math
 import random
-from solver import *
+#from solver import *
 from display import *
 
 num_mazes = 10
@@ -77,7 +77,7 @@ class Generator:
         #variables for generate function
         self.coordinates = m.start
         self.direction = random.randrange (0, 3, 1)
-        self.end_placement_countdown = math.floor(maze_num_cols * maze_num_rows * self.end_time / 2)
+        self.end_placement_countdown = math.floor((maze_num_cols - 2) * (maze_num_rows - 2) * self.end_time / 2)
         self.maze_incomplete = True
         
         # gives coordinates of moving from square in direction dir
@@ -212,7 +212,7 @@ class Generator:
                 if not(self.maze_incomplete):
                     break
             continue_path()
-     #       display_object.display(m)
+         #   display_object.display(m)
     
     def pythagorean_solve(self,m):
         dist = math.sqrt(math.pow(m.end[0] - m.start[0],2) + math.pow(m.end[1] - m.start[1],2))
@@ -222,7 +222,7 @@ class Generator:
 
 
 
-g = Generator([1.0,0.0,0.1,0.1,0.5,0.5,0.5])
+g = Generator([0.5,0.5,0.2,0.5,0.5,0.5,0.9])
         #self.start_loc_col = params[0]
         #self.start_loc_row = params[1]
         #self.p_jump = params[2]

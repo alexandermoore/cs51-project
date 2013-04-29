@@ -1,6 +1,6 @@
 import random
-# from generator import *
-
+from generator import *
+'''
 class Generator :
 
     parameter_list = []
@@ -18,7 +18,7 @@ class Generator :
             return p*x**e
         new_lst = [test2(params[e],e,x) for e in range(0,len(params))]
         self.avg_runtime = sum(new_lst)
-    
+   ''' 
 
 class Generation :
     # Genetic algorithm parameters
@@ -33,7 +33,7 @@ class Generation :
     # Generator objects in population
     generators = []
     # # of parameters in Generator class
-    generator_param_count = 6
+    generator_param_count = 7
     # Number of random generators to add each time
     num_random = 0
     # Number of members from the fittest generators to keep in the population. Implements "elitism" so best genes are allowed to survive.

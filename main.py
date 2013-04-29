@@ -3,7 +3,7 @@ from generation import *
 
 # Create a new generation
 # 5 fittest breed next generation, population size of 250, 50 of which are random and 2 of which are the fittest from the previous generation.
-current_gen = Generation(5,250,50,2)
+current_gen = Generation(5,5,1,1)
 current_gen.spawn_random_generation()
 
 # Set the definition of "no more progress"-- evolution
@@ -28,7 +28,7 @@ while(True) :
     # if change is non-negligible then spawn the next
     # generation and try again. Otherwise you've got an
     # optimal generation.
-    if (abs(new_fitness - old_fitness) > negligible) :
+    if (new_fitness - old_fitness > negligible) :
         old_fitness = new_fitness
         current_gen = current_gen.spawn_next_generation()
     else :
