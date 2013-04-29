@@ -1,71 +1,75 @@
 import sys
 import HTML
-#from maze import*
+from generator import *
+from maze import *
 
 
-
-# open an HTML file to show output in a browser
-HTMLFILE = 'Maze_output.html'
-f = open(HTMLFILE, 'w')
-
-#board from ob
-list = [[True, True, True, False, False], [False, False, True, True, False]]
-n_rows = 2
-n_cols = 5
+class HTMLDisplay:
+    def display (self, maze):
         
+        # open an HTML file to show output in a browser
+        HTMLFILE = 'Maze_output.html'
+        f = open(HTMLFILE, 'w')
 
-# Define START coordinates
-start_x = 0
-start_y = 0
+        #board from ob
+        list =  maze.board
+        n_rows = maze_num_rows
+        n_cols = maze_num_cols
+                
 
-# Define END coordinates
-end_x = 2
-end_y = 4
+        # Define START coordinates
+        start_x = maze.start[0]
+        start_y = maze.start[1]
 
-result = "<TABLE ID='TMaze' CELLSPACING=0 CELLPADDING=0> \n"
+        # Define END coordinates
+        end_x = maze.end[0]
+        end_y = maze.end[1]
 
-# set border
-for i in range (n_rows):
-    result += "<TR HEIGHT = 25>"
+        result = "<TABLE ID='TMaze' CELLSPACING=0 CELLPADDING=0> \n"
 
-    for j in range (n_cols):
-        result += "<TD WIDTH=24 style='"
-        if i==0:
-            result += "BORDER-TOP: 2px black solid;"
-        if i==n_rows-1:
-            result += "BORDER-BOTTOM: 2px black solid;"
-        if j==0:
-            result += "BORDER-LEFT: 2px black solid;"
-        if j==n_cols-1 or (list[i][j] == False):
-            result += "BORDER-RIGHT: 2px black solid;"
-        result += "'>"
+        # set border
+        for i in range (n_rows):
+            result += "<TR HEIGHT = 30>"
 
-        # set start and end
-        if i == start_x and j == start_y:
-            result += 'S' 
-        elif i == end_x and j == end_y:
-            result += 'E'
+            for j in range (n_cols):
+                result += "<TD WIDTH=30 align=center style='"
+                if i==0:
+                    result += "BORDER-TOP: 3px black solid;"
+                if i==n_rows-1:
+                    result += "BORDER-BOTTOM: 3px black solid;"
+                if j==0:
+                    result += "BORDER-LEFT: 3px black solid;"
+                if j==n_cols-1:
+                    result += "BORDER-RIGHT: 3px black solid;"
+                
 
-        else:
-            result += "&nbsp;"
-        result += "</TD>\n"
+                if (list[i][j]==False):
+                    result += "BACKGROUND-COLOR:#99CCFF;"
+                result += "'>"
+                    
 
-    result += "</TR>\n"
-            
-result += "</TABLE>\n"
+                # set start and end
+                if i == start_x and j == start_y:
+                    result += "<font color='336633' FACE='SANS-SERIF' size=4pt ><b>S</b></font>"
+                if i == end_x and j == end_y:
+                    result += "<font color='990000' FACE='SANS-SERIF' size=4pt><b>E</b></font>"
 
-""" Print board
-            for i in list:
-            sys.stdout.write("|")
-            for j in i:
-                if j == False : sys.stdout.write(square + ' ')
-                elif j == "start" : sys.stdout.write("s ")
-                elif j == "end" : sys.stdout.write("e ")
-                else : sys.stdout.write("  ")
-            print "|" + " \r"
-"""
+                    
 
-#return result
-htmlcode = HTML.table(result)
-f.write(result)
+                else:
+                    result += "&nbsp;"
+                result += "</TD>\n"
+
+            result += "</TR>\n"
+                    
+        result += "</TABLE>\n"
+
+
+        #return result
+        f.write(result)
+
+display_object = HTMLDisplay()
+g = Generator([0.1,0.8,0.2,0.5,0.5,0.5,0.9])
+display_object.display(g.mazes[0])
+        
    
