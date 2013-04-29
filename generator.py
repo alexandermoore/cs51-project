@@ -37,8 +37,20 @@ class Generator:
     
 	#METHODS
 	
-	#Constructor takes in params, float list of [start_loc_col,start_loc_row,p_jump,p_forward,p_birds_eye,
-	#return_dist,end_time]
+    ''' 
+    __init__
+    Constructor. Initializes the parameters and creates each of mazes, including runtime. It then
+    calculates the average runtime. The only input is a list of seven floats between 0 and 1.
+    RETURNS: No return value.
+    -params[0] : 
+    -params[1]
+    -params[2]
+    -params[3]
+    -params[4]
+    -params[5]
+    -params[6]
+    -params[7]
+    ''' 
     def __init__(self,params):
         self.start_loc_col = params[0]
         self.start_loc_row = params[1]
