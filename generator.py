@@ -63,14 +63,16 @@ class Generator:
         self.return_dist = params[5]
         self.end_time = params[6]
         self.parameter_list = [self.start_loc_col,self.start_loc_row,self.p_jump,self.p_forward,self.p_birds_eye,self.return_dist,self.end_time]
+        self.mazes = []
         for val in range(num_mazes):
             m = Maze()
             maze_incomplete = True
             self.generate(m)
-            display_object.display(m)
+            #display_object.display(m)
             self.pythagorean_solve(m)
             self.mazes.append(m)
         self.avg_runtime = self.calc_avg_runtime()
+        #print len(self.mazes)
 	
     ''' calc_avg_runtime
     Takes the average of the runtimes of all mazes in mazes[].
