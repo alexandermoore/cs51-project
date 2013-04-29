@@ -86,6 +86,8 @@ class Generator:
     Takes a maze object and builds the maze. This includes: adding the maze to the board, adding
     coordinates to start and end, but not adding a value to runtime. Leaves usable_squares empty.
     RETURNS: No return value.
+    - m : a maze with a board consisting of all Falses; no start, end, or runtime values; and an
+    empty usable_squares list.
     '''
     def generate(self,m):
         # Convert start parameters into row/column numbers in a fair way, giving each square an equal opportunity to be selected (+1.5 so the (maze_num_rows - 2)th square has a fair chance to be selected)
@@ -241,7 +243,9 @@ class Generator:
          #   display_object.display(m)
     
     ''' pythagorean_solve
-    
+    Gives a dummy value for runtime, which is equal to the distance between start and end
+    RETURNS: No return value.
+    - m : a maze that needs a runtime value
     '''
     def pythagorean_solve(self,m):
         dist = math.sqrt(math.pow(m.end[0] - m.start[0],2) + math.pow(m.end[1] - m.start[1],2))
