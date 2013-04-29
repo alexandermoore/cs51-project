@@ -1,6 +1,6 @@
 #CONSTANTS
-maze_num_rows = 20
-maze_num_cols = 20
+maze_num_rows = 100
+maze_num_cols = 100
 
 class Maze:
         
