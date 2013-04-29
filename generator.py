@@ -76,6 +76,8 @@ class Generator:
     
     def generate(self,m):
         #initialize maze
+        
+        # Convert start parameters into row/column numbers in a fair way, giving each square an equal opportunity to be selected (+1.5 so the (maze_num_rows - 2)th square has a fair chance to be selected)
         start_row = int(math.floor(self.start_loc_row * (maze_num_rows-3) + 1.5))
         start_col = int(math.floor(self.start_loc_col * (maze_num_cols-3) + 1.5))
         m.start = (start_row, start_col)
@@ -93,6 +95,7 @@ class Generator:
         self.maze_incomplete = True
         
         # gives coordinates of moving from square in direction dir
+        # Invariant: Cannot be called on a square on the border
         def move(square,dir):
             if (dir == North):
                 return(square[0]+1,square[1])
@@ -103,8 +106,8 @@ class Generator:
             elif dir == West:
                 return(square[0],square[1]-1)
             else:
-                print "error: moved not passed a valid self.direction"
-                return
+                print "error: moved not passed a valid direction"
+            return
         
         # checks whether a path can be extended from square in the direction dir
         def check_dir(square,dir):
