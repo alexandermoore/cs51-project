@@ -1,67 +1,69 @@
 import sys
 import HTML
-#from maze import*
+from maze import*
 
 
-
-# open an HTML file to show output in a browser
-HTMLFILE = 'Maze_output.html'
-f = open(HTMLFILE, 'w')
-
-#board from ob
-list = [[True, True, False, True, False], [True, False, True, False, True],[True, False, True, True, True]]
-n_rows = 3
-n_cols = 5
+class HTMLDisplay:
+    def display (self, maze):
         
+        # open an HTML file to show output in a browser
+        HTMLFILE = 'Maze_output.html'
+        f = open(HTMLFILE, 'w')
 
-# Define START coordinates
-start_x = 0
-start_y = 0
+        #board from ob
+        list =  maze.board
+        n_rows = maze.maze_num_rows
+        n_cols = maze.maze_num_cols
+                
 
-# Define END coordinates
-end_x = 2
-end_y = 4
+        # Define START coordinates
+        start_x = maze.start[0]
+        start_y = maze.start[1]
 
-result = "<TABLE ID='TMaze' CELLSPACING=0 CELLPADDING=0> \n"
+        # Define END coordinates
+        end_x = maze.end[0]
+        end_y = maze.end[1]
 
-# set border
-for i in range (n_rows):
-    result += "<TR HEIGHT = 30>"
+        result = "<TABLE ID='TMaze' CELLSPACING=0 CELLPADDING=0> \n"
 
-    for j in range (n_cols):
-        result += "<TD WIDTH=30 align=center style='"
-        if i==0:
-            result += "BORDER-TOP: 3px black solid;"
-        if i==n_rows-1:
-            result += "BORDER-BOTTOM: 3px black solid;"
-        if j==0:
-            result += "BORDER-LEFT: 3px black solid;"
-        if j==n_cols-1:
-            result += "BORDER-RIGHT: 3px black solid;"
-        
+        # set border
+        for i in range (n_rows):
+            result += "<TR HEIGHT = 30>"
 
-        if (list[i][j]==False):
-            result += "BACKGROUND-COLOR:#B20000;"
-        result += "'>"
-            
+            for j in range (n_cols):
+                result += "<TD WIDTH=30 align=center style='"
+                if i==0:
+                    result += "BORDER-TOP: 3px black solid;"
+                if i==n_rows-1:
+                    result += "BORDER-BOTTOM: 3px black solid;"
+                if j==0:
+                    result += "BORDER-LEFT: 3px black solid;"
+                if j==n_cols-1:
+                    result += "BORDER-RIGHT: 3px black solid;"
+                
 
-        # set start and end
-        if i == start_x and j == start_y:
-            result += "<font color='990000' FACE='SANS-SERIF' ><b>S</b></font>"
-        if i == end_x and j == end_y:
-            result += "<font color='990000' FACE='SANS-SERIF' ><b>E</b></font>"
+                if (list[i][j]==False):
+                    result += "BACKGROUND-COLOR:#B20000;"
+                result += "'>"
+                    
 
-            
+                # set start and end
+                if i == start_x and j == start_y:
+                    result += "<font color='990000' FACE='SANS-SERIF' ><b>S</b></font>"
+                if i == end_x and j == end_y:
+                    result += "<font color='990000' FACE='SANS-SERIF' ><b>E</b></font>"
 
-        else:
-            result += "&nbsp;"
-        result += "</TD>\n"
+                    
 
-    result += "</TR>\n"
-            
-result += "</TABLE>\n"
+                else:
+                    result += "&nbsp;"
+                result += "</TD>\n"
+
+            result += "</TR>\n"
+                    
+        result += "</TABLE>\n"
 
 
-#return result
-f.write(result)
+        #return result
+        f.write(result)
    
