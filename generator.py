@@ -18,7 +18,7 @@ class Generator:
     return_dist = None
     end_time = None
     
-    # variables for class
+    # variables
     mazes = []
     avg_runtime = None
     parameter_list = []
@@ -28,12 +28,6 @@ class Generator:
     East = 1
     South  = 2
     West = 3
-    
-    #variables for generate function
-    coordinates = (None,None)
-    direction = None
-    end_placement_countdown = None
-    maze_incomplete = None
     
 	#METHODS
 	
@@ -92,7 +86,7 @@ class Generator:
     empty usable_squares list.
     '''
     def generate(self,m):
-        # Convert start parameters into row/column numbers in a fair way, giving each square an equal opportunity to be selected (+1.5 so the (maze_num_rows - 2)th square has a fair chance to be selected)
+        # Convert start parameters into row/column numbers in a fair way, giving each square an equal opportunity to be selected (+1.5 so the (maze_num_rows - 3)th square has a fair chance to be selected)
         start_row = int(self.start_loc_row * (maze_num_rows-3) + 1.5)
         start_col = int(self.start_loc_col * (maze_num_cols-3) + 1.5)
         m.start = (start_row, start_col)
@@ -104,13 +98,18 @@ class Generator:
         West = 3
         
         #variables for generate function
-        self.coordinates = m.start
-        self.direction = random.randrange (0, 3, 1)
-        self.end_placement_countdown = math.floor((maze_num_cols - 1) * (maze_num_rows - 1) * self.end_time / 2)
-        self.maze_incomplete = True
+        m.coodinates = m.start
+        m.direction = random.randrange (0, 3, 1)
+        m.end_placement_countdown = math.floor((maze_num_cols - 1) * (maze_num_rows - 1) * self.end_time / 2)
+        m.maze_incomplete = True
         
-        # gives coordinates of moving from square in direction dir
-        # Invariant: Cannot be called on a square on the border
+        ''' move
+        Gives coordinates of moving from square in direction dir. DOES NOT change m.coodinates.
+        Cannot be called from a square on the border.
+        RETURNS: No return value.
+        -square : the square being moved from
+        -dir : the direction in which to move
+        '''
         def move(square,dir):
             if (dir == North):
                 return(square[0]+1,square[1])
@@ -125,6 +124,10 @@ class Generator:
             return
         
         # checks whether a path can be extended from square in the direction dir
+        ''' check_dir
+        Checks whether or not it is valid to move in direction dir from square. It checks the
+        five surrounding squares.
+        '''
         def check_dir(square,dir):
             shift_sq = move(square,dir)
             border = (shift_sq[0] == 0) or (shift_sq[1] == 0) or (shift_sq[0] == maze_num_rows-1) or (shift_sq[1] == maze_num_cols-1)
@@ -153,7 +156,7 @@ class Generator:
             should_birds = random.random()
             if should_birds < self.p_birds_eye:
                 # find closest square further than min_dist
-                min_dist = math.sqrt(math.pow(self.coordinates[0] - m.start[0],2) + math.pow(self.coordinates[1] - m.start[1],2)) * self.return_dist
+                min_dist = math.sqrt(math.pow(m.coodinates[0] - m.start[0],2) + math.pow(m.coodinates[1] - m.start[1],2)) * self.return_dist
                 while m.usable_squares[proposal_square][1] < min_dist:
                     proposal_square = proposal_square + 1
             else:
@@ -173,19 +176,19 @@ class Generator:
                     m.usable_squares.remove(m.usable_squares[proposal_square])
                     if len(m.usable_squares) == 0:
                         if m.end == (None,None):
-                            m.end = self.coordinates
+                            m.end = m.coodinates
                         break
                     else:
                         proposal_square = (proposal_square + 1) % len(m.usable_squares)        
             if success == True:
-                self.coordinates = m.usable_squares[proposal_square][0]
+                m.coodinates = m.usable_squares[proposal_square][0]
             return success
         
         # begin a new path (for instance, after jumping)
         def new_path():
-            while not(check_dir(self.coordinates,self.direction)):
-                self.direction = (self.direction + 1) % 4
-            coorinates = move(self.coordinates,self.direction)
+            while not(check_dir(m.coodinates,m.direction)):
+                m.direction = (m.direction + 1) % 4
+            coorinates = move(m.coodinates,m.direction)
         
         # adds a given square to m.usable_squares
         def add_square(square):
@@ -201,48 +204,47 @@ class Generator:
         def continue_path():
             should_forward = random.random()
             should_right = random.random()
-            if should_forward < self.p_forward and check_dir(self.coordinates,self.direction):
-                self.coordinates = move(self.coordinates,self.direction)
-            elif should_right < 0.5 and check_dir(self.coordinates,(self.direction + 1) % 4):
-                self.direction = (self.direction + 1) % 4
-                self.coordinates = move(self.coordinates,self.direction)
-            elif check_dir(self.coordinates,(self.direction - 1) % 4):
-                self.direction = (self.direction - 1) % 4
-                self.coordinates = move(self.coordinates,self.direction)
-            elif check_dir(self.coordinates,(self.direction + 1) % 4):
-                self.direction = (self.direction + 1) % 4
-                self.coordinates = move(self.coordinates,self.direction)
-            elif check_dir(self.coordinates,self.direction):
-                self.coordinates = move(self.coordinates,self.direction)
-            elif check_dir(self.coordinates,(self.direction + 2) % 4):
-                self.direction = (self.direction + 2) % 4
-                self.coordinates = move(self.coordinates,self.direction)
+            if should_forward < self.p_forward and check_dir(m.coodinates,m.direction):
+                m.coodinates = move(m.coodinates,m.direction)
+            elif should_right < 0.5 and check_dir(m.coodinates,(m.direction + 1) % 4):
+                m.direction = (m.direction + 1) % 4
+                m.coodinates = move(m.coodinates,m.direction)
+            elif check_dir(m.coodinates,(m.direction - 1) % 4):
+                m.direction = (m.direction - 1) % 4
+                m.coodinates = move(m.coodinates,m.direction)
+            elif check_dir(m.coodinates,(m.direction + 1) % 4):
+                m.direction = (m.direction + 1) % 4
+                m.coodinates = move(m.coodinates,m.direction)
+            elif check_dir(m.coodinates,m.direction):
+                m.coodinates = move(m.coodinates,m.direction)
+            elif check_dir(m.coodinates,(m.direction + 2) % 4):
+                m.direction = (m.direction + 2) % 4
+                m.coodinates = move(m.coodinates,m.direction)
             else:
-                self.maze_incomplete = jump()
-                if self.maze_incomplete:
+                m.maze_incomplete = jump()
+                if m.maze_incomplete:
                     continue_path()
             return
-   
         
         # begin tunneling from start
-        m.usable_squares = [(self.coordinates,0)]
-        m.board[self.coordinates[0]][self.coordinates[1]] = True
+        m.usable_squares = [(m.coodinates,0)]
+        m.board[m.coodinates[0]][m.coodinates[1]] = True
         new_path()
         
         # keep adding new squares to maze until no more can be added
-        while self.maze_incomplete:
-            add_square(self.coordinates)
-            m.board[self.coordinates[0]][self.coordinates[1]] = True
-            if self.end_placement_countdown == 0:  
-                m.end = self.coordinates
-            self.end_placement_countdown = self.end_placement_countdown - 1
+        while m.maze_incomplete:
+            add_square(m.coodinates)
+            m.board[m.coodinates[0]][m.coodinates[1]] = True
+            if m.end_placement_countdown == 0:  
+                m.end = m.coodinates
+            m.end_placement_countdown = m.end_placement_countdown - 1
             should_jump = random.random()
             if should_jump < self.p_jump:
-                self.maze_incomplete = jump()
-                if not(self.maze_incomplete):
+                m.maze_incomplete = jump()
+                if not(m.maze_incomplete):
                     break
             continue_path()
-         #   display_object.display(m)
+     #       display_object.display(m)
     
     ''' pythagorean_solve
     Gives a dummy value for runtime, which is equal to the distance between start and end
@@ -257,12 +259,12 @@ class Generator:
 
 
 
-g = Generator([0.5,0.5,0.2,0.5,0.5,0.5,0.9])
-        #self.start_loc_col = params[0]
-        #self.start_loc_row = params[1]
-        #self.p_jump = params[2]
-        #self.p_forward = params[3]
-        #self.p_birds_eye = params[4]
-        #self.return_dist = params[5]
-        #self.end_time = params[6]
+g = Generator([0.4,0.2,0.2,0.0,1.0,0.5,0.9])
+        #self.start_loc_col = params[0] = 0.0 or 1.0
+        #self.start_loc_row = params[1] = 0.0 or 1.0
+        #self.p_jump = params[2] = 0.9
+        #self.p_forward = params[3] = ??
+        #self.p_birds_eye = params[4] = 1.0
+        #self.return_dist = params[5] = 0.0
+        #self.end_time = params[6] = 0.9
 	
