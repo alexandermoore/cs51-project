@@ -37,8 +37,7 @@ class Generator:
     
 	#METHODS
 	
-    ''' 
-    __init__
+    ''' __init__
     Constructor. Initializes the parameters and creates each of mazes, including runtime. It then
     calculates the average runtime. The only input is a list of seven floats between 0 and 1.
     RETURNS: No return value.
@@ -52,7 +51,8 @@ class Generator:
     -params[5] : return_dist = if doing a "birds-eye" jump, return_dist is the ratio of the desired 
     distance from start (in the square jumped to) to the current distance from the start distance 
     from start to desired distance from start in the square jumped to
-    -params[6] : end_time = 
+    -params[6] : end_time = rough approximation of what percentage of maze will be completed when 
+    end is placed
     ''' 
     def __init__(self,params):
         self.start_loc_col = params[0]
@@ -69,8 +69,11 @@ class Generator:
             display_object.display(m)
             self.pythagorean_solve(m)
             self.mazes.append(m)
-        self.calc_avg_runtime
+        self.avg_runtime = self.calc_avg_runtime
 	
+    ''' calc_avg_runtime
+    Takes the average of the runtimes of all mazes in mazes[].
+    '''
     def calc_avg_runtime(self):
         total_time = 0
         for maze in mazes:
@@ -92,7 +95,7 @@ class Generator:
         #variables for generate function
         self.coordinates = m.start
         self.direction = random.randrange (0, 3, 1)
-        self.end_placement_countdown = math.floor((maze_num_cols - 2) * (maze_num_rows - 2) * self.end_time / 2)
+        self.end_placement_countdown = math.floor((maze_num_cols - 1) * (maze_num_rows - 1) * self.end_time / 2)
         self.maze_incomplete = True
         
         # gives coordinates of moving from square in direction dir
