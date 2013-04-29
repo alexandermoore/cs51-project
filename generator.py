@@ -11,7 +11,7 @@ class Generator:
 	
     #parameters
     start_loc_col = None
-    start_loc_row = None
+    start_loc_row = 'hello'
     p_jump = None
     p_forward = None
     p_birds_eye = None
@@ -21,7 +21,7 @@ class Generator:
     # variables for class
     mazes = []
     avg_runtime = None
-    parameter_list = [start_loc_col,start_loc_row,p_jump,p_forward,p_birds_eye,return_dist,end_time,mazes,avg_runtime]
+    parameter_list = []
     
     # enumeration
     North = 0
@@ -62,6 +62,7 @@ class Generator:
         self.p_birds_eye = params[4]
         self.return_dist = params[5]
         self.end_time = params[6]
+        self.parameter_list = [self.start_loc_col,self.start_loc_row,self.p_jump,self.p_forward,self.p_birds_eye,self.return_dist,self.end_time]
         for val in range(num_mazes):
             m = Maze()
             maze_incomplete = True
@@ -69,17 +70,23 @@ class Generator:
             display_object.display(m)
             self.pythagorean_solve(m)
             self.mazes.append(m)
-        self.avg_runtime = self.calc_avg_runtime
+        self.avg_runtime = self.calc_avg_runtime()
 	
     ''' calc_avg_runtime
     Takes the average of the runtimes of all mazes in mazes[].
+    RETURNS: average runtime of the mazes
     '''
     def calc_avg_runtime(self):
         total_time = 0
-        for maze in mazes:
+        for maze in self.mazes:
              total_time = total_time + maze.runtime
-        return total_time/len(mazes)
+        return total_time/len(self.mazes)
     
+    ''' generate
+    Takes a maze object and builds the maze. This includes: adding the maze to the board, adding
+    coordinates to start and end, but not adding a value to runtime. Leaves usable_squares empty.
+    RETURNS: No return value.
+    '''
     def generate(self,m):
         # Convert start parameters into row/column numbers in a fair way, giving each square an equal opportunity to be selected (+1.5 so the (maze_num_rows - 2)th square has a fair chance to be selected)
         start_row = int(self.start_loc_row * (maze_num_rows-3) + 1.5)
@@ -233,6 +240,8 @@ class Generator:
             continue_path()
          #   display_object.display(m)
     
+    ''' pythagorean_solve
+    '''
     def pythagorean_solve(self,m):
         dist = math.sqrt(math.pow(m.end[0] - m.start[0],2) + math.pow(m.end[1] - m.start[1],2))
         m.runtime = dist
