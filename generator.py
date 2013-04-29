@@ -1,7 +1,7 @@
 from maze import *
 import math
 import random
-from solver import *
+#from solver import *
 from display import *
 
 num_mazes = 10
@@ -11,7 +11,7 @@ class Generator:
 	
     #parameters
     start_loc_col = None
-    start_loc_row = None
+    start_loc_row = 'hello'
     p_jump = None
     p_forward = None
     p_birds_eye = None
@@ -21,7 +21,7 @@ class Generator:
     # variables for class
     mazes = []
     avg_runtime = None
-    parameter_list = [start_loc_col,start_loc_row,p_jump,p_forward,p_birds_eye,return_dist,end_time,mazes,avg_runtime]
+    parameter_list = []
     
     # enumeration
     North = 0
@@ -37,8 +37,23 @@ class Generator:
     
 	#METHODS
 	
-	#Constructor takes in params, float list of [start_loc_col,start_loc_row,p_jump,p_forward,p_birds_eye,
-	#return_dist,end_time]
+    ''' __init__
+    Constructor. Initializes the parameters and creates each of mazes, including runtime. It then
+    calculates the average runtime. The only input is a list of seven floats between 0 and 1.
+    RETURNS: No return value.
+    -params[0] : start_loc_col = starting location as ratio of column/maze_num_cols
+    -params[1] : start_loc_row = starting location as ratio of row/maze_num_rows
+    -params[2] : p_jump = probability of jumping somewhere else in the maze when adding next square
+    -params[3] : p_forward = if continuing current path, probability of moving forward (as opposed 
+    to turning)
+    -params[4] : p_birds_eye = if jumping, probability of doing so through a "birds-eye" calculation 
+    as opposed to picking a random square
+    -params[5] : return_dist = if doing a "birds-eye" jump, return_dist is the ratio of the desired 
+    distance from start (in the square jumped to) to the current distance from the start distance 
+    from start to desired distance from start in the square jumped to
+    -params[6] : end_time = rough approximation of what percentage of maze will be completed when 
+    end is placed
+    ''' 
     def __init__(self,params):
         self.start_loc_col = params[0]
         self.start_loc_row = params[1]
@@ -47,6 +62,7 @@ class Generator:
         self.p_birds_eye = params[4]
         self.return_dist = params[5]
         self.end_time = params[6]
+        self.parameter_list = [self.start_loc_col,self.start_loc_row,self.p_jump,self.p_forward,self.p_birds_eye,self.return_dist,self.end_time]
         for val in range(num_mazes):
             m = Maze()
             maze_incomplete = True
@@ -54,18 +70,29 @@ class Generator:
             display_object.display(m)
             self.pythagorean_solve(m)
             self.mazes.append(m)
-        self.calc_avg_runtime
+        self.avg_runtime = self.calc_avg_runtime()
 	
+    ''' calc_avg_runtime
+    Takes the average of the runtimes of all mazes in mazes[].
+    RETURNS: average runtime of the mazes
+    '''
     def calc_avg_runtime(self):
         total_time = 0
-        for maze in mazes:
+        for maze in self.mazes:
              total_time = total_time + maze.runtime
-        return total_time/len(mazes)
+        return total_time/len(self.mazes)
     
+    ''' generate
+    Takes a maze object and builds the maze. This includes: adding the maze to the board, adding
+    coordinates to start and end, but not adding a value to runtime. Leaves usable_squares empty.
+    RETURNS: No return value.
+    - m : a maze with a board consisting of all Falses; no start, end, or runtime values; and an
+    empty usable_squares list.
+    '''
     def generate(self,m):
-        #initialize maze
-        start_row = int(math.floor(self.start_loc_row * (maze_num_rows-3) + 1.5))
-        start_col = int(math.floor(self.start_loc_col * (maze_num_cols-3) + 1.5))
+        # Convert start parameters into row/column numbers in a fair way, giving each square an equal opportunity to be selected (+1.5 so the (maze_num_rows - 2)th square has a fair chance to be selected)
+        start_row = int(self.start_loc_row * (maze_num_rows-3) + 1.5)
+        start_col = int(self.start_loc_col * (maze_num_cols-3) + 1.5)
         m.start = (start_row, start_col)
         
         # enumeration
@@ -77,10 +104,11 @@ class Generator:
         #variables for generate function
         self.coordinates = m.start
         self.direction = random.randrange (0, 3, 1)
-        self.end_placement_countdown = math.floor(maze_num_cols * maze_num_rows * self.end_time / 2)
+        self.end_placement_countdown = math.floor((maze_num_cols - 1) * (maze_num_rows - 1) * self.end_time / 2)
         self.maze_incomplete = True
         
         # gives coordinates of moving from square in direction dir
+        # Invariant: Cannot be called on a square on the border
         def move(square,dir):
             if (dir == North):
                 return(square[0]+1,square[1])
@@ -91,8 +119,8 @@ class Generator:
             elif dir == West:
                 return(square[0],square[1]-1)
             else:
-                print "error: moved not passed a valid self.direction"
-                return
+                print "error: moved not passed a valid direction"
+            return
         
         # checks whether a path can be extended from square in the direction dir
         def check_dir(square,dir):
@@ -212,8 +240,13 @@ class Generator:
                 if not(self.maze_incomplete):
                     break
             continue_path()
-     #       display_object.display(m)
+         #   display_object.display(m)
     
+    ''' pythagorean_solve
+    Gives a dummy value for runtime, which is equal to the distance between start and end
+    RETURNS: No return value.
+    - m : a maze that needs a runtime value
+    '''
     def pythagorean_solve(self,m):
         dist = math.sqrt(math.pow(m.end[0] - m.start[0],2) + math.pow(m.end[1] - m.start[1],2))
         m.runtime = dist
@@ -222,6 +255,12 @@ class Generator:
 
 
 
-g = Generator([0.5,0.5,0.5,0.5,0.5,0.5,0.5])
-
+g = Generator([0.5,0.5,0.2,0.5,0.5,0.5,0.9])
+        #self.start_loc_col = params[0]
+        #self.start_loc_row = params[1]
+        #self.p_jump = params[2]
+        #self.p_forward = params[3]
+        #self.p_birds_eye = params[4]
+        #self.return_dist = params[5]
+        #self.end_time = params[6]
 	
