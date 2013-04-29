@@ -1,6 +1,7 @@
 import sys
 import HTML
-from maze import*
+from generator import *
+from maze import *
 
 
 class HTMLDisplay:
@@ -12,8 +13,8 @@ class HTMLDisplay:
 
         #board from ob
         list =  maze.board
-        n_rows = maze.maze_num_rows
-        n_cols = maze.maze_num_cols
+        n_rows = maze_num_rows
+        n_cols = maze_num_cols
                 
 
         # Define START coordinates
@@ -43,15 +44,15 @@ class HTMLDisplay:
                 
 
                 if (list[i][j]==False):
-                    result += "BACKGROUND-COLOR:#B20000;"
+                    result += "BACKGROUND-COLOR:#99CCFF;"
                 result += "'>"
                     
 
                 # set start and end
                 if i == start_x and j == start_y:
-                    result += "<font color='990000' FACE='SANS-SERIF' ><b>S</b></font>"
+                    result += "<font color='336633' FACE='SANS-SERIF' size=4pt ><b>S</b></font>"
                 if i == end_x and j == end_y:
-                    result += "<font color='990000' FACE='SANS-SERIF' ><b>E</b></font>"
+                    result += "<font color='990000' FACE='SANS-SERIF' size=4pt><b>E</b></font>"
 
                     
 
@@ -66,4 +67,9 @@ class HTMLDisplay:
 
         #return result
         f.write(result)
+
+display_object = HTMLDisplay()
+g = Generator([0.1,0.8,0.2,0.5,0.5,0.5,0.9])
+display_object.display(g.mazes[0])
+        
    
