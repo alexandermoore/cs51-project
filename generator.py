@@ -241,6 +241,7 @@ class Generator:
          #   display_object.display(m)
     
     ''' pythagorean_solve
+    
     '''
     def pythagorean_solve(self,m):
         dist = math.sqrt(math.pow(m.end[0] - m.start[0],2) + math.pow(m.end[1] - m.start[1],2))
