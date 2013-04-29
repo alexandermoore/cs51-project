@@ -15,7 +15,7 @@ class Generator :
 
         new_lst = [test(params[e]) for e in range(0,len(params))]
         self.avg_runtime = sum(new_lst)
-   ''' 
+'''
 
 class Generation :
     
