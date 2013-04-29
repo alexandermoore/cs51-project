@@ -36,8 +36,6 @@ class Maze:
             for val in range(maze_num_cols):
                 row.append(False)
         return board
-    
-mango = Maze()
 
 m = Maze()
 
