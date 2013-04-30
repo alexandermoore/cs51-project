@@ -1,5 +1,6 @@
 import random
 import operator
+from operator import itemgetter
 from math import sqrt
 from maze import *
 
@@ -7,8 +8,9 @@ class SmartSolver:
    
     def smart_solver(self,m):	# maze to m
 
-	# initialize current position coordinates to start
-        rc = [maze.start[0],maze.start[1]]
+	# initialize current position to start
+        #rc = [maze.start[0],maze.start[1]]
+        rc = [0,0]
         m.runtime = 0
         usable = []
 
@@ -31,7 +33,11 @@ class SmartSolver:
                 dir_dict[d_one] = random.uniform(0,0.25)
                 dir_dict[d_two] = random.uniform(0,0.25)
 
-            def more_likely(rc,end,dir_dict):
+            """
+            more_likely
+            
+            """
+            def assign_weight(rc,end,dir_dict):
                 if rc[0] < end[0]:
                     weigh_diff(dir_dict,"S","N")
 		elif rc[0] > end[0]:
@@ -74,63 +80,61 @@ class SmartSolver:
  
 	    def walkable(rc,board,direction_headed,usable):
 	        new = get_next_square(rc,direction_headed)
+                print ["new",new]
 		if (new[0] >= 0 and new[0] < maze_num_rows and new[1] >= 0 and new[1] < maze_num_cols):
 		    if(board[new[0]][new[1]] == True and in_usable(new,usable,0) == False):
-		        return (True,(new_r,new_c))
+		        return (True,(new[0],new[1]))
 		    else:
-		        return False
+		        return (False,(None,None))
 		else:
-		    return False
+		    return (False,(None,None))
 
-	    def move(rc,new,m):
+	    def move(m,rc,new,usable):
 	        rc[0] = new[0]
 		rc[1] = new[1]
 		m.runtime += 1
 		if rc == m.end:
 		    return # AND WE ARE DONE!
 		else:
-		    solve(m)
+		    solve(m,rc,usable)
     
 	    def jump(rc,usable,i): # Find the square in usable that's the closest to the end
 	        if usable[i][2] == True:
 	    	    usable[i][2] = False
 	            new = usable[i][0]
-	            move(rc,new,m) 
+	            move(m,rc,new,usable) 
 	     	else: # usable[i][2] == False:
 	    	    i += 1
+                    print i
 	       	    if i < len(usable):
 	      	        jump(rc,usable,i)
 	      	    else:
 	     		print "No available square in usable."
             
-  	    def step(rc,end,board,visit_order,usable,i):
+  	    def step(m,rc,end,board,visit_order,usable,i):
 	        if i < 4:
-	            if walkable(rc,board,visit_order[i][0],usable) == True:
-	                new = walkable(rc,board,visit_order[i][0])[1]
+	            if walkable(rc,board,visit_order[i][0],usable)[0] == True:
+	                new = walkable(rc,board,visit_order[i][0],usable)[1]
 		        dist = distance(new,end)
 		        usable.append([new,dist,True])
-		        move(rc,new,m)
+		        move(m,rc,new,usable)
 	            else:
-		        step(rc,end,board,visit_order,usable,i+1):
+		        step(m,rc,end,board,visit_order,usable,i+1)
 	        else:
 	            usable.sort(key=operator.itemgetter(1))
-	            jump(usable,0)
+	            jump(rc,usable,0)
 
-	    more_likely(rc,end,dir_dict)    
+            assign_weight(rc,end,dir_dict)    
             # dir_dict = {'S':0.20, 'E':0.33, 'W': 0.19, 'N':0.05}
             visit_order = sorted(dir_dict.iteritems(), key=itemgetter(1), reverse=True)
             # visit_order = [('E',0.33),('S',0.20),('W',0.19),('N',0.05)]
-            step(rc,end,board,visit_order,usable,0)
+            step(m,rc,end,board,visit_order,usable,0)
 
-	solve(maze)
+	solve(m,rc,usable)
 
-maze = maze.m
+maze = m
 smart_solver = SmartSolver()
 smart_solver.smart_solver(maze)	
-
-# d = dict()
-# d["N"] = None
-# d["N"] = 5
 	    
 """
 shell files: batch files

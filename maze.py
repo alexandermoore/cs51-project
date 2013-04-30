@@ -1,5 +1,7 @@
 from settings import *
 
+
+
 class Maze:
     
     '''***************** FIELDS *****************'''
@@ -15,6 +17,7 @@ class Maze:
 
     # Coordinates of the END square
     end = (None,None)
+
 
     r = None
     c = None
@@ -34,8 +37,10 @@ class Maze:
     # A board customized to a specific initial state
     def __init__(self):
         self.board = self.make_board()
+
         if display_maze_generation_in_real_time:
             end = (0,0)
+
 
     def make_board(self):
         board = []

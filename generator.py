@@ -12,7 +12,7 @@ class Generator:
 	
     #parameters
     start_loc_col = None
-    start_loc_row = 'hello'
+    start_loc_row = None
     p_jump = None
     p_forward = None
     p_birds_eye = None
