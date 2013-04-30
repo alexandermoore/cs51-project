@@ -4,7 +4,7 @@ maze_num_cols = 50
 
 class Maze:
     
-    '''************************* FIELDS *************************'''
+    ''''''' FIELDS '''''''
     
     # An maze_num_rows x maze_num_cols array of booleans
     board = []
@@ -28,7 +28,7 @@ class Maze:
     maze_incomplete = True
     runtime = None
     
-    '''************************* METHODS *************************'''
+    ''''''' METHODS '''''''
     
     # A board customized to a specific initial state
     def __init__(self):
