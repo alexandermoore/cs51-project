@@ -8,7 +8,7 @@ num_mazes = 10
 
 class Generator:
     
-    ''''''' FIELDS '''''''
+    '''***************** FIELDS *****************'''
 	
     #parameters
     start_loc_col = None
@@ -30,7 +30,7 @@ class Generator:
     South  = 2
     West = 3
     
-	''''''' METHODS '''''''
+	'''***************** METHODS *****************'''
 	
     ''' __init__
     Constructor. Initializes the parameters and creates each of mazes, including runtime. It then
