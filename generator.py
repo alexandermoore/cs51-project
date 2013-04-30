@@ -163,7 +163,6 @@ class Generator:
             proposal_square = 0
             should_birds = random.random()
             if should_birds < self.p_birds_eye:
-                # find closest square further than min_dist
                 min_dist = math.sqrt(math.pow(m.coodinates[0] - m.start[0],2) + math.pow(m.coodinates[1] - m.start[1],2)) * self.return_dist
                 while m.usable_squares[proposal_square][1] < min_dist:
                     proposal_square = proposal_square + 1
@@ -173,14 +172,15 @@ class Generator:
         
         ''' jump
         Jumps to a new square in usable_squares OR returns False if usable_squares becomes empty. Slowly
-        empties usable_squares as it finds squares that cannot be moved off of. Changes coordinates to 
-        match those of square it jumps to; does not change direction.
+        empties usable_squares as it finds squares that cannot yield a new path until it finds a square
+        that can yield a new path. Changes coordinates to match those of square it jumps to; does not 
+        change direction.
         RETURNS: True if usable_squares is not empty, False otherwise
         '''
         def jump():
             proposal_square = get_proposal_square()
             success = False
-            # search through usable square for one that can branch off new path
+            # search through usable_square for one that can branch off new path
             while not(success):
                 if check_sq(m.usable_squares[proposal_square][0]):
                     success = True
@@ -208,6 +208,12 @@ class Generator:
             return
         
         # adds a given square to m.usable_squares
+        ''' add_square
+        Adds a given square to m.usable_squares. Inserts as a tuple consisting of (coordinates,dist)
+        where dist is the distance of the square from start. Note that coordinates is itself a tuple.
+        RETURNS: No return value.
+        -square : coordinates to be added to usable_squares. Expressed as a tuple
+        '''
         def add_square(square):
             dist = math.sqrt(math.pow(square[0] - m.start[0],2) + math.pow(square[1] - m.start[1],2))
             insert_loc = 0
@@ -217,7 +223,15 @@ class Generator:
                     break
                 insert_loc = insert_loc + 1
             m.usable_squares.insert(insert_loc,(square,dist))
+            return
         
+        ''' continue_path
+        Continues the path currently being created. Probabilistically decides whether to go forward or
+        turn based on p_forward. If it turns, then it chooses evenly between right and left. If it
+        can't go in the desired direction, it tries all other directions, and then jumps if there are 
+        no possible ways to move.
+        RETURNS: No return value.
+        '''
         def continue_path():
             should_forward = random.random()
             should_right = random.random()
