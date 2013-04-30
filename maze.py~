@@ -1,6 +1,6 @@
 #CONSTANTS
-maze_num_rows = 20
-maze_num_cols = 20
+maze_num_rows = 30
+maze_num_cols = 30
 
 class Maze:
         
@@ -13,20 +13,23 @@ class Maze:
     usable_squares = []
 
     # Coordinates of the START square
-    start = (False,False) 
+    start = (None,None) 
 
     # Coordinates of the END square
-    end = (False,False)
+    end = (-1,-1)
+
+    coordinates = (None,None)
+    direction = None
+    end_placement_countdown = None
+    maze_incomplete = True
 
     # Runtime
-    runtime = False
+    runtime = None
 
     # A board customized to a specific initial state
     def __init__(self):
         self.board = self.make_board()
-        self.start = (False,False)
-        self.end = (False,False)
-    
+
     def make_board(self):
         board = []
         for val in range(maze_num_rows):
@@ -35,7 +38,6 @@ class Maze:
             for val in range(maze_num_cols):
                 row.append(False)
         return board
-    
-m = Maze()
 
+m = Maze()
 

@@ -3,76 +3,61 @@ import operator
 from maze import *
 
 class SmartSolver:
+   
+    def smart_solver(self,m):	# maze to m
 
-    def smart_solver(self,maze):
+	# initialize current position coordinates to start
+	m.c = maze.start[0]
+	m.r = maze.start[1]
 
-        compass = "N"
-        counter = 0
+	# plan_path to solve
+    	def solve(m,compass):
 
-        cur_r = maze.start[0]
-        cur_c = maze.start[1]
-
-    	def plan_path(maze,compass,counter,cur_r,cur_c):
-
-            end_r = maze.end[0]
-            end_c = maze.end[1]
-	    board = maze.board
-	    birds_north = ["N",False]
-	    birds_south = ["S",False]
-	    birds_west = ["W",False]
-	    birds_east = ["E",False]
+	    end_r = m.end[0] 
+	    end_c = m.end[1]
+	    board = m.board
+            dir_dict = dict()
+            dir_dict["N"] = None
+            dir_dict["S"] = None
+            dir_dict["W"] = None
+            dir_dict["E"] = None
 	    
-	    def more_likely(cur_r,cur_c,end_r,end_c,birds_north,birds_south,birds_west,birds_east):
+	    def more_likely(cur_r,cur_c,end_r,end_c,dir_dict):
 	        if cur_r < end_r:
-		    birds_south[1] = True
+                    dir_dict["S"] = True
 		elif cur_r > end_r:
-		    birds_north[1] = True
+                    dir_dict["N"] = True
 		else: 
 		    return
 		if cur_c < end_c:
-		    birds_east[1] = True
+                    dir_dict["E"] = True
 		elif cur_c > end_c:
-		    birds_west[1] = True
+		    dir_dict["W"] = True
 		else:
 		    return
 
-	    more_likely(cur_r,cur_c,end_r,end_c,birds_north,birds_south,birds_west,birds_east)
+	    more_likely(m.r,m.c,end_r,end_c,dir_dict)
 
-	    back = None
+            # At this point, the solver has a dir_dict that looks something like
+            # {'S': True, 'E': None, 'N':True, "W': None}
 
-	    def back_is(compass,back):
-  	        if compass == "N":
-    		    back = "S"
-  		elif compass == "S":
-    		    back = "N"
-  		elif compass == "W":
-    		    back = "E"
-  		elif compass == "E":
-    		    back = "W"
-		else:
-		    print "Compass only has four directions!"
+            # The problem is I can't use a for loop to update the dictionary directly.
+            # In my previous implementation, I had a list of lists, where the second value
+            # was True or None. I then changed True/None to random.uniform(conditional range).
+            # So I'm trying to figure out how to go around this problem. 
 
-	    dir_order = [birds_north,birds_south,birds_west,birds_east]
-	    
-	    def assign_weight(dir_order,compass,back):
-	        for x in dir_order:
-		    if x[1] == True:
-      		        x[1] = 2#random.uniform(0,1)
+	    # dlist = some list equivalent of dir_dict
+
+	    def assign_weight(dlist):
+	        for d in dlist:
+		    if d[1] == True:
+      		        d[1] = random.uniform(0,1)
     		    else: 
-      		        x[1] = 1#random.uniform(0,0.5)
-  		dir_order.sort(key=operator.itemgetter(1))
-		back_is(compass,back)
-  		for x in dir_order:
-    		    if x[0] == back:
-     		        dir_order.append(x)
-      		        dir_order.pop(dir_order.index(x))
-    		    else:
-      		        None
+      		        d[1] = random.uniform(0,0.25)
+  		dlist.sort(key=operator.itemgetter(1))
 
-	    assign_weight(dir_order,compass,back)
-	    plan = [dir_order[0][0],dir_order[1][0],dir_order[2][0],dir_order[3][0]]
-            #plan = ["N","E","S","W"]
-            print plan
+	    assign_weight(dlist)
+	    visit_order = [dlist[0][0],dlist[1][0],dlist[2][0],dlist[3][0]]
 
             def get_next_square(cur_r,cur_c,direction_headed):
 	        if direction_headed == "N":
@@ -85,68 +70,92 @@ class SmartSolver:
 		    return cur_r,cur_c+1
 		else:
 		    print "I'm lost!"
-		
-	    def walkable(cur_r,cur_c,board,direction_headed):
-	        new_x,new_y = get_next_square(cur_r,cur_c,direction_headed)
-                print new_x,new_y
-		if (new_x >= 0 and new_x < maze_num_cols and new_y >= 0 and new_y < maze_num_rows):
-		    if(board[new_x][new_y] == True):
-                        #print "On board"
-		        return (True,(new_x,new_y))
-		    else:
-                        #print "Path blocked"
-		        return (False,(new_x,new_y))
-		else:
-                    #print "Off board"
-		    return (False,(new_x,new_y))
 
-	    def move(counter,cur_r,cur_c,new_r,new_c,compass,direction_headed,maze,self):
-	        cur_r = new_r
-		cur_c = new_c
-                print "Move called" 
-                print direction_headed
-		counter +=1
-                maze.runtime += 1
-		compass = direction_headed
-                print compass
-		if (cur_r,cur_c) == maze.end:
+      	    def distance(r,c,end_r,end_c):
+	        distance_from_end = (end_c-c)/(end_r-r)
+		return distance_from_end
+
+	    def in_usable(r,c,usable,i):
+	        if i < len(usable):
+		    if (r,c) == usable[i][0]:
+		        return True
+		    else:
+		        i += 1
+			in_usable(r,c,usable,i)
+		else:
+		    return False
+
+	    def walkable(cur_r,cur_c,board,direction_headed,usable):
+	        new_r,new_c = get_next_square(cur_r,cur_c,direction_headed)
+		if (new_r >= 0 and new_r < maze_num_cols and new_c >= 0 and new_c < maze_num_rows):
+		    if(board[new_r][new_c] == True and in_usable(new_r,new_c,usable,0) == False):
+		        return (True,(new_r,new_c))
+		    else:
+		        return False
+		else:
+		    return False
+
+	    def move(new_r,new_c,m,self):
+	        m.r = new_r
+		m.c = new_c
+		m.runtime += 1
+		if (m.r,m.c) == m.end:
 		    return
 		else:
-                    if counter < 10:
-                        plan_path(maze,compass,counter,cur_r,cur_c)
-                    else:
-                        return
+		    solve(m)
 
-	    if walkable(cur_r,cur_c,board,plan[0])[0] == True:
-	        new_r,new_c = walkable(cur_r,cur_c,board,plan[0])[1]
-                print plan[0],new_r,new_c
-		move(counter,cur_r,cur_c,new_r,new_c,compass,plan[0],maze,self)	
-	
-	    elif walkable(cur_r,cur_c,board,plan[1])[0] == True:
-	        new_r,new_c = walkable(cur_r,cur_c,board,plan[1])[1]
-                print plan[1],new_r,new_c
-  	        move(counter,cur_r,cur_c,new_r,new_c,compass,plan[1],maze,self)
+	    def jump(usable,i):
+	    # Find the square in usable that's the closest to the end
+	        if usable[i][2] == True:
+		    usable[i][2] = False
+	            new_r,new_c = usable[i][0]
+	            move(new_r,new_c,m,self)
+		elif usable[i][2] == False:
+		    i += 1
+		    if i < len(usable):
+		        jump(usable,i)
+		    else:
+			print "Trapped"
+		else:
+		    return
 
-	    elif walkable(cur_r,cur_c,board,plan[2])[0] == True:
-                new_r,new_c = walkable(cur_r,cur_c,board,plan[2])[1]
-                print plan[2],new_r,new_c
-  	        move(counter,cur_r,cur_c,new_r,new_c,compass,plan[2],maze,self)
+# Question: usable is a list that'll never be empty before its index is accessed (at least, that's how it's set up). 
+# Should I still include an if branch that handles the empty case?
+# comment for function : assumes the list is not empty (cleaner)
+# or include the branch to check
 
-	    elif walkable(cur_r,cur_c,board,plan[3])[0] == True:
-	        new_r,new_c = walkable(cur_r,cur_c,board,plan[3])[1]
-                print plan[3],new_r,new_c
-  	        move(counter,cur_r,cur_c,new_r,new_c,compass,plan[3],maze,self) 
+  	   def step(board,visit_order,usable,end_r,end_c,i):
+	       if i < 4:
+	           if walkable(m.r,m.c,board,visit_order[i],usable) == True:
+	               new_r,new_c = walkable(m.r,m.c,board,visit_order[i])[1]
+		       dist = distance(m.r,m.c,end_r,end_c)
+		       usable.append([(m.r,m.c),dist,True])
+		       move(m.r,m.c,new_r,new_c,visit_order[i],m,self)
+	           else:
+		    step(board,visit_order,usable,end_r,end_c,i+1):
+	        else:
+	            usable.sort(key=operator.itemgetter(1))
+	        jump(usable,0)
 
-	    else:
-  	        print "I'm trapped! D:"
+            step(board,visit_order,usable,end_r,end_c,0)
 
-	plan_path(maze,compass,counter,cur_r,cur_c)
-        print maze.runtime
+	solve(maze,compass)
 
-my_maze = m
-smart_solver = SmartSolver()
-smart_solver.smart_solver(my_maze)	
+maze = maze.m
+smart_solver_object = SmartSolver()
+smart_solver_object.smart_solver(maze)	
 
+# d = dict()
+# d["N"] = None
+# d["N"] = 5
 	    
-
-
+"""
+shell files: batch files
+a sheebang
+#!/bin/sh
+python generate.py
+python display.py
+...
+comman you want to execute
+"""
+# group function calls at the end

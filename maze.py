@@ -18,6 +18,9 @@ class Maze:
     # Coordinates of the END square
     end = (None,None)
 
+    r = None
+    c = None
+
     # Current coordinates of maze solver or generator
     coordinates = (None,None)
     
