@@ -1,7 +1,5 @@
 from settings import *
 
-
-
 class Maze:
     
     '''***************** FIELDS *****************'''

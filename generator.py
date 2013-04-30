@@ -1,10 +1,8 @@
 from maze import *
 import math
 import random
-#from solver import *
 from display import *
-
-num_mazes = 10
+from settings import *
 
 class Generator:
     
@@ -262,7 +260,7 @@ class Generator:
                 m.maze_incomplete = jump()
                 if not(m.maze_incomplete):
                     break
-            new_path()
+            continue_path()
             if display_maze_generation_in_real_time:
                 display_object.display(m)
     
