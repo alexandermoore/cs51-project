@@ -62,10 +62,18 @@ class SmartSolver:
                 else: # "E"
                     return rc[0],rc[1]+1
 
+            ''' distance
+            Calculates the distance between a square and the end square.
+            RETURNS: distance between two squares
+            '''
       	    def distance(rc,end):
                 distance_from_end = sqrt((end[0]-rc[0])**2 + (end[1]-rc[1])**2)
                 return distance_from_end
 
+            ''' in_usable
+            Checks whether a square is in the usable list.
+            RETURNS: True or False
+            '''
             # i should always be 0 when first passed in
             # usable should be sorted from smallest to greatest distance from end
             def in_usable(rc,usable,i):
