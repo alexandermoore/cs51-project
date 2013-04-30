@@ -18,6 +18,8 @@ class Maze:
     # Coordinates of the END square
     end = (-1,-1)
 
+    r = None
+    c = None
     coordinates = (None,None)
     direction = None
     end_placement_countdown = None

@@ -68,7 +68,7 @@ class generator:
             return (north or east or south or west)
         
         # gets proposal_square
-        def get_proposal_square()
+        def get_proposal_square():
             should_birds = random.random()
             if should_birds < p_birds_eye:
                 # find closest square further than min_dist
@@ -160,4 +160,4 @@ class generator:
             
 generator_object = generator()
 
-generator_object.generate(mango)
+generator_object.generate(m)
