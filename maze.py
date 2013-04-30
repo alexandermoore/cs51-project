@@ -1,6 +1,4 @@
-#CONSTANTS
-maze_num_rows = 30
-maze_num_cols = 30
+from settings import *
 
 class Maze:
     
@@ -18,12 +16,9 @@ class Maze:
     # Coordinates of the END square
     end = (None,None)
 
-<<<<<<< HEAD
     r = None
     c = None
 
-=======
->>>>>>> 738bc9b3d7d8d33904b649b6582c38ddc79de1ee
     # Current coordinates of maze solver or generator
     coordinates = (None,None)
     

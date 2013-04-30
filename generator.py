@@ -176,7 +176,8 @@ class Generator:
         
         ''' jump
         Jumps to a new square in usable_squares OR returns False if usable_squares becomes empty. Slowly
-        empties usable_squares as it finds squares that cannot be moved off of.
+        empties usable_squares as it finds squares that cannot be moved off of. Changes coordinates to 
+        match those of square it jumps to; does not change direction.
         RETURNS: True if usable_squares is not empty
         '''
         def jump():
@@ -199,6 +200,10 @@ class Generator:
             return success
         
         # begin a new path (for instance, after jumping)
+        ''' new_path
+        Begins a new path
+        
+        '''
         def new_path():
             while not(check_dir(m.coodinates,m.direction)):
                 m.direction = (m.direction + 1) % 4
@@ -257,7 +262,7 @@ class Generator:
                 m.maze_incomplete = jump()
                 if not(m.maze_incomplete):
                     break
-            continue_path()
+            new_path()
             if display_maze_generation_in_real_time:
                 display_object.display(m)
     
