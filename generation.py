@@ -19,9 +19,7 @@ class Generator :
 
 class Generation :
     
-    #############################
-    #   FIELDS
-    ############################# 
+    '''***************** FIELDS *****************'''
     
     # The top "num_fittest" generators will be taken from each generation
     # for breeding.
@@ -39,9 +37,7 @@ class Generation :
     # Number of members from the fittest generators to keep in the population. Implements "elitism" so best genes are allowed to survive.
     num_elites = 0
 
-    #############################
-    #   METHODS
-    ############################# 
+    '''***************** METHODS *****************'''
     
     '''
     __init__

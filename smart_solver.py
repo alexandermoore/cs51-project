@@ -17,7 +17,7 @@ class SmartSolver:
     	def solve(m,rc,usable):
 
             end = [m.end[0],m.end[1]]    # when awake, think about whether end should stay here or go outside solve()
-	    board = m.board
+            board = m.board
 
             dir_dict = dict()
             dir_dict["N"] = None
@@ -40,15 +40,15 @@ class SmartSolver:
             def assign_weight(rc,end,dir_dict):
                 if rc[0] < end[0]:
                     weigh_diff(dir_dict,"S","N")
-		elif rc[0] > end[0]:
+                elif rc[0] > end[0]:
                     weigh_diff(dir_dict,"N","S")
-		else: 
+                else: 
                     weigh_same(dir_dict,"N","S")
-		if rc[1] < end[1]:
+                if rc[1] < end[1]:
                     weigh_diff(dir_dict,"E","W")
-		elif rc[1] > end[1]:
+                elif rc[1] > end[1]:
                     weigh_diff(dir_dict,"W","E")
-		else:
+                else:
                     weigh_same(dir_dict,"W","E")
 
             # expects direction_headed to be one of: "N", "S", "W", "E"
