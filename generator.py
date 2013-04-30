@@ -30,7 +30,7 @@ class Generator:
     South  = 2
     West = 3
     
-	'''***************** METHODS *****************'''
+    '''***************** METHODS *****************'''
 	
     ''' __init__
     Constructor. Initializes the parameters and creates each of mazes, including runtime. It then
@@ -63,7 +63,8 @@ class Generator:
             m = Maze()
             maze_incomplete = True
             self.generate(m)
-            #display_object.display(m)
+            if display_all_outputted_mazes:
+                display_object.display(m)
             self.pythagorean_solve(m)
             self.mazes.append(m)
         self.avg_runtime = self.calc_avg_runtime()
@@ -257,7 +258,8 @@ class Generator:
                 if not(m.maze_incomplete):
                     break
             continue_path()
-     #       display_object.display(m)
+            if display_maze_generation_in_real_time:
+                display_object.display(m)
     
     ''' pythagorean_solve
     Gives a dummy value for runtime, which is equal to the distance between start and end

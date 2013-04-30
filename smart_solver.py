@@ -115,14 +115,12 @@ class SmartSolver:
 	        if i < 4:
 	            if walkable(rc,board,visit_order[i][0],usable)[0] == True:
 	                new = walkable(rc,board,visit_order[i][0],usable)[1]
-                        print ["new",new]
 		        dist = distance(new,end)
 		        usable.append([new,dist,True])
 		        move(m,rc,new,usable)
 	            else:
 		        step(m,rc,end,board,visit_order,usable,i+1)
 	        else:
-                    print [usable,"usable"]
 	            usable.sort(key=operator.itemgetter(1))
 	            jump(rc,usable,0)
 

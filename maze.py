@@ -1,6 +1,6 @@
 #CONSTANTS
-maze_num_rows = 10#50
-maze_num_cols = 20#50
+maze_num_rows = 50
+maze_num_cols = 50
 
 class Maze:
     
@@ -13,10 +13,10 @@ class Maze:
     usable_squares = []
 
     # Coordinates of the START square
-    start = (0,0) #(None,None) 
+    start = (None,None) 
 
     # Coordinates of the END square
-    end = (2,3) #(None,None)
+    end = (None,None)
 
     # Current coordinates of maze solver or generator
     coordinates = (None,None)
@@ -33,13 +33,10 @@ class Maze:
     # A board customized to a specific initial state
     def __init__(self):
         self.board = self.make_board()
-        #delete below
-        self.board[0][0] = True
-        self.board[1][0] = True
-        self.board[1][1] = True
-        self.board[2][1] = True
-        self.board[2][2] = True
-        self.board[2][3] = True
+
+        if display_maze_generation_in_real_time:
+            end = (0,0)
+
 
     def make_board(self):
         board = []
