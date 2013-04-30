@@ -18,12 +18,7 @@ class Maze:
     # Coordinates of the END square
     end = (None,None)
 
-<<<<<<< HEAD
-    r = None
-    c = None
-=======
     # Current coordinates of maze solver or generator
->>>>>>> 20e146352515f767e7290fb469a04847d4e0d614
     coordinates = (None,None)
     
     # Current direction maze generator is facing
