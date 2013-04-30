@@ -1,6 +1,6 @@
 #CONSTANTS
-maze_num_rows = 50
-maze_num_cols = 50
+maze_num_rows = 30
+maze_num_cols = 30
 
 class Maze:
     
@@ -33,6 +33,8 @@ class Maze:
     # A board customized to a specific initial state
     def __init__(self):
         self.board = self.make_board()
+        if display_maze_generation_in_real_time:
+            end = (0,0)
 
     def make_board(self):
         board = []

@@ -1,6 +1,11 @@
 from generation import *
 from display import *
 
+### SETTINGS
+#intentionally long names for global variables to not clutter namespace
+display_maze_generation_in_real_time = False
+display_all_outputted_mazes = True
+
 # Create a new generation
 # 5 fittest breed next generation, population size of 250, 50 of which are random and 2 of which are the fittest from the previous generation.
 # (num_fittest, pop_size, num_random, num_elites)
