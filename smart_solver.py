@@ -11,7 +11,7 @@ class SmartSolver:
 	m.r = maze.start[1]
 
 	# plan_path to solve
-    	def solve(m,compass):
+    	def solve(m):
 
 	    end_r = m.end[0] 
 	    end_c = m.end[1]
@@ -124,7 +124,7 @@ class SmartSolver:
 
             step(board,visit_order,usable,end_r,end_c,0)
 
-	solve(maze,compass)
+	solve(maze)
 
 maze = maze.m
 smart_solver = SmartSolver()
