@@ -125,7 +125,7 @@ class Generator:
         ''' check_dir
         Checks whether or not it is valid to move in direction dir from square. It checks the
         five squares surrounding the square to be moved to
-        RETURNS: True if it is okay to move there
+        RETURNS: True if it is okay to move there, False otherwise
         -square : square from which you must check a possible move
         -dir : direction you wish to check
         '''
@@ -168,7 +168,6 @@ class Generator:
                 while m.usable_squares[proposal_square][1] < min_dist:
                     proposal_square = proposal_square + 1
             else:
-                # choose random square
                 proposal_square = random.randint(0,len(m.usable_squares) - 1)
             return proposal_square
         
@@ -176,12 +175,12 @@ class Generator:
         Jumps to a new square in usable_squares OR returns False if usable_squares becomes empty. Slowly
         empties usable_squares as it finds squares that cannot be moved off of. Changes coordinates to 
         match those of square it jumps to; does not change direction.
-        RETURNS: True if usable_squares is not empty
+        RETURNS: True if usable_squares is not empty, False otherwise
         '''
         def jump():
             proposal_square = get_proposal_square()
-            # try to find proposal square that can branch off a new path
             success = False
+            # search through usable square for one that can branch off new path
             while not(success):
                 if check_sq(m.usable_squares[proposal_square][0]):
                     success = True
@@ -197,15 +196,16 @@ class Generator:
                 m.coodinates = m.usable_squares[proposal_square][0]
             return success
         
-        # begin a new path (for instance, after jumping)
         ''' new_path
-        Begins a new path
-        
+        Begins a new path from a square. Checks all surrounding directions to find a usable one, and then
+        sets self.diraction to that value and changes coordinates to move one square in that direction.
+        RETURNS: No return value.
         '''
         def new_path():
             while not(check_dir(m.coodinates,m.direction)):
                 m.direction = (m.direction + 1) % 4
             coorinates = move(m.coodinates,m.direction)
+            return
         
         # adds a given square to m.usable_squares
         def add_square(square):
@@ -240,7 +240,7 @@ class Generator:
             else:
                 m.maze_incomplete = jump()
                 if m.maze_incomplete:
-                    continue_path()
+                    new_path()
             return
         
         # begin tunneling from start
@@ -258,9 +258,10 @@ class Generator:
             should_jump = random.random()
             if should_jump < self.p_jump:
                 m.maze_incomplete = jump()
-                if not(m.maze_incomplete):
-                    break
-            continue_path()
+                if m.maze_incomplete:
+                    new_path
+            else:
+                continue_path()
             if display_maze_generation_in_real_time:
                 display_object.display(m)
     

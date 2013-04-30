@@ -4,7 +4,7 @@ import main (and hence run the whole program).
 '''
 
 display_maze_generation_in_real_time = False
-display_all_outputted_mazes = True
-maze_num_rows = 30
-maze_num_cols = 30
+display_all_outputted_mazes = False
+maze_num_rows = 50
+maze_num_cols = 50
 num_mazes = 10
