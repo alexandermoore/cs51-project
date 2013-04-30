@@ -1,5 +1,6 @@
 import random
 import operator
+from math import sqrt
 from maze import *
 
 class SmartSolver:
@@ -7,143 +8,125 @@ class SmartSolver:
     def smart_solver(self,m):	# maze to m
 
 	# initialize current position coordinates to start
-	m.c = maze.start[0]
-	m.r = maze.start[1]
+        rc = [maze.start[0],maze.start[1]]
+        m.runtime = 0
+        usable = []
 
-	# plan_path to solve
-    	def solve(m,compass):
+    	def solve(m,rc,usable):
 
-	    end_r = m.end[0] 
-	    end_c = m.end[1]
+            end = [m.end[0],m.end[1]]    # when awake, think about whether end should stay here or go outside solve()
 	    board = m.board
+
             dir_dict = dict()
             dir_dict["N"] = None
             dir_dict["S"] = None
             dir_dict["W"] = None
             dir_dict["E"] = None
 	    
-	    def more_likely(cur_r,cur_c,end_r,end_c,dir_dict):
-	        if cur_r < end_r:
-                    dir_dict["S"] = True
-		elif cur_r > end_r:
-                    dir_dict["N"] = True
+            def weigh_diff(dir_dict,d_more,d_less):
+                dir_dict[d_more] = random.uniform(0,1)
+                dir_dict[d_less] = random.uniform(0,0.25)
+
+            def weigh_same(dir_dict,d_one,d_two):
+                dir_dict[d_one] = random.uniform(0,0.25)
+                dir_dict[d_two] = random.uniform(0,0.25)
+
+            def more_likely(rc,end,dir_dict):
+                if rc[0] < end[0]:
+                    weigh_diff(dir_dict,"S","N")
+		elif rc[0] > end[0]:
+                    weigh_diff(dir_dict,"N","S")
 		else: 
-		    return
-		if cur_c < end_c:
-                    dir_dict["E"] = True
-		elif cur_c > end_c:
-		    dir_dict["W"] = True
+                    weigh_same(dir_dict,"N","S")
+		if rc[1] < end[1]:
+                    weigh_diff(dir_dict,"E","W")
+		elif rc[1] > end[1]:
+                    weigh_diff(dir_dict,"W","E")
 		else:
-		    return
+                    weigh_same(dir_dict,"W","E")
 
-	    more_likely(m.r,m.c,end_r,end_c,dir_dict)
-
-            # At this point, the solver has a dir_dict that looks something like
-            # {'S': True, 'E': None, 'N':True, "W': None}
-
-            # The problem is I can't use a for loop to update the dictionary directly.
-            # In my previous implementation, I had a list of lists, where the second value
-            # was True or None. I then changed True/None to random.uniform(conditional range).
-            # So I'm trying to figure out how to go around this problem. 
-
-	    # dlist = some list equivalent of dir_dict
-
-	    def assign_weight(dlist):
-	        for d in dlist:
-		    if d[1] == True:
-      		        d[1] = random.uniform(0,1)
-    		    else: 
-      		        d[1] = random.uniform(0,0.25)
-  		dlist.sort(key=operator.itemgetter(1))
-
-	    assign_weight(dlist)
-	    visit_order = [dlist[0][0],dlist[1][0],dlist[2][0],dlist[3][0]]
-
-            def get_next_square(cur_r,cur_c,direction_headed):
+            # expects direction_headed to be one of: "N", "S", "W", "E"
+            def get_next_square(rc,direction_headed):
 	        if direction_headed == "N":
-		    return cur_r-1,cur_c
+		    return rc[0]-1,rc[1]
 		elif direction_headed == "S":
-		    return cur_r+1,cur_c
+		    return rc[0]+1,rc[1]
 		elif direction_headed == "W":
-		    return cur_r,cur_c-1
-		elif direction_headed == "E":
-		    return cur_r,cur_c+1
-		else:
-		    print "I'm lost!"
+		    return rc[0],rc[1]-1
+		else: # "E"
+		    return rc[0],rc[1]+1
 
-      	    def distance(r,c,end_r,end_c):
-	        distance_from_end = (end_c-c)/(end_r-r)
+      	    def distance(rc,end):
+	        distance_from_end = sqrt((end[0]-rc[0])**2 + (end[1]-rc[1])**2)
 		return distance_from_end
 
-	    def in_usable(r,c,usable,i):
+            # i should always be 0 when first passed in
+            # usable should be sorted from smallest to greatest distance from end
+	    def in_usable(rc,usable,i):
 	        if i < len(usable):
-		    if (r,c) == usable[i][0]:
-		        return True
-		    else:
-		        i += 1
-			in_usable(r,c,usable,i)
-		else:
+	    	    if rc == usable[i][0]:
+	    	        return True
+	    	    else:
+	    	        i += 1
+	    		in_usable(rc,usable,i)
+	    	else:
 		    return False
-
-	    def walkable(cur_r,cur_c,board,direction_headed,usable):
-	        new_r,new_c = get_next_square(cur_r,cur_c,direction_headed)
-		if (new_r >= 0 and new_r < maze_num_cols and new_c >= 0 and new_c < maze_num_rows):
-		    if(board[new_r][new_c] == True and in_usable(new_r,new_c,usable,0) == False):
+ 
+	    def walkable(rc,board,direction_headed,usable):
+	        new = get_next_square(rc,direction_headed)
+		if (new[0] >= 0 and new[0] < maze_num_rows and new[1] >= 0 and new[1] < maze_num_cols):
+		    if(board[new[0]][new[1]] == True and in_usable(new,usable,0) == False):
 		        return (True,(new_r,new_c))
 		    else:
 		        return False
 		else:
 		    return False
 
-	    def move(new_r,new_c,m,self):
-	        m.r = new_r
-		m.c = new_c
+	    def move(rc,new,m):
+	        rc[0] = new[0]
+		rc[1] = new[1]
 		m.runtime += 1
-		if (m.r,m.c) == m.end:
-		    return
+		if rc == m.end:
+		    return # AND WE ARE DONE!
 		else:
 		    solve(m)
-
-	    def jump(usable,i):
-	    # Find the square in usable that's the closest to the end
+    
+	    def jump(rc,usable,i): # Find the square in usable that's the closest to the end
 	        if usable[i][2] == True:
-		    usable[i][2] = False
-	            new_r,new_c = usable[i][0]
-	            move(new_r,new_c,m,self)
-		elif usable[i][2] == False:
-		    i += 1
-		    if i < len(usable):
-		        jump(usable,i)
-		    else:
-			print "Trapped"
-		else:
-		    return
-
-# Question: usable is a list that'll never be empty before its index is accessed (at least, that's how it's set up). 
-# Should I still include an if branch that handles the empty case?
-# comment for function : assumes the list is not empty (cleaner)
-# or include the branch to check
-
-  	   def step(board,visit_order,usable,end_r,end_c,i):
-	       if i < 4:
-	           if walkable(m.r,m.c,board,visit_order[i],usable) == True:
-	               new_r,new_c = walkable(m.r,m.c,board,visit_order[i])[1]
-		       dist = distance(m.r,m.c,end_r,end_c)
-		       usable.append([(m.r,m.c),dist,True])
-		       move(m.r,m.c,new_r,new_c,visit_order[i],m,self)
-	           else:
-		    step(board,visit_order,usable,end_r,end_c,i+1):
+	    	    usable[i][2] = False
+	            new = usable[i][0]
+	            move(rc,new,m) 
+	     	else: # usable[i][2] == False:
+	    	    i += 1
+	       	    if i < len(usable):
+	      	        jump(rc,usable,i)
+	      	    else:
+	     		print "No available square in usable."
+            
+  	    def step(rc,end,board,visit_order,usable,i):
+	        if i < 4:
+	            if walkable(rc,board,visit_order[i][0],usable) == True:
+	                new = walkable(rc,board,visit_order[i][0])[1]
+		        dist = distance(new,end)
+		        usable.append([new,dist,True])
+		        move(rc,new,m)
+	            else:
+		        step(rc,end,board,visit_order,usable,i+1):
 	        else:
 	            usable.sort(key=operator.itemgetter(1))
-	        jump(usable,0)
+	            jump(usable,0)
 
-            step(board,visit_order,usable,end_r,end_c,0)
+	    more_likely(rc,end,dir_dict)    
+            # dir_dict = {'S':0.20, 'E':0.33, 'W': 0.19, 'N':0.05}
+            visit_order = sorted(dir_dict.iteritems(), key=itemgetter(1), reverse=True)
+            # visit_order = [('E',0.33),('S',0.20),('W',0.19),('N',0.05)]
+            step(rc,end,board,visit_order,usable,0)
 
-	solve(maze,compass)
+	solve(maze)
 
 maze = maze.m
-smart_solver_object = SmartSolver()
-smart_solver_object.smart_solver(maze)	
+smart_solver = SmartSolver()
+smart_solver.smart_solver(maze)	
 
 # d = dict()
 # d["N"] = None
@@ -159,3 +142,8 @@ python display.py
 comman you want to execute
 """
 # group function calls at the end
+
+# Question: usable is a list that'll never be empty before its index is accessed (at least, that's how it's set up). 
+# Should I still include an if branch that handles the empty case?
+# comment for function : assumes the list is not empty (cleaner)
+# or include the branch to check
