@@ -8,7 +8,7 @@ num_mazes = 10
 
 class Generator:
     
-    #FIELDS
+    '''***************** FIELDS *****************'''
 	
     #parameters
     start_loc_col = None
@@ -30,7 +30,7 @@ class Generator:
     South  = 2
     West = 3
     
-	#METHODS
+	'''***************** METHODS *****************'''
 	
     ''' __init__
     Constructor. Initializes the parameters and creates each of mazes, including runtime. It then
@@ -40,7 +40,7 @@ class Generator:
     -params[1] : start_loc_row = starting location as ratio of row/maze_num_rows
     -params[2] : p_jump = probability of jumping somewhere else in the maze when adding next square
     -params[3] : p_forward = if continuing current path, probability of moving forward (as opposed 
-    to turning)
+    to turning) 
     -params[4] : p_birds_eye = if jumping, probability of doing so through a "birds-eye" calculation 
     as opposed to picking a random square
     -params[5] : return_dist = if doing a "birds-eye" jump, return_dist is the ratio of the desired 
