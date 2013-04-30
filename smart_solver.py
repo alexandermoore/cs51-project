@@ -22,42 +22,32 @@ class SmartSolver:
             dir_dict["W"] = None
             dir_dict["E"] = None
 	    
+            def weigh_diff(dir_dict,d_more,d_less):
+                dir_dict[d_more] = random.uniform(0,1)
+                dir_dict[d_less] = random.uniform(0,0.25)
+
+            def weigh_same(dir_dict,d_one,d_two):
+                dir_dict[d_one] = random.uniform(0,0.25)
+                dir_dict[d_two] = random.uniform(0,0.25)
+
 	    def more_likely(cur_r,cur_c,end_r,end_c,dir_dict):
 	        if cur_r < end_r:
-                    dir_dict["S"] = True
+                    weigh_diff(dir_dict,"S","N")
 		elif cur_r > end_r:
-                    dir_dict["N"] = True
+                    weigh_diff(dir_dict,"N","S")
 		else: 
-		    return
+                    weigh_same(dir_dict,"N","S")
+
 		if cur_c < end_c:
-                    dir_dict["E"] = True
+                    weigh_diff(dir_dict,"E","W")
 		elif cur_c > end_c:
-		    dir_dict["W"] = True
+                    weigh_diff(dir_dict,"W","E")
 		else:
-		    return
+                    weigh_same(dir_dict,"W","E")
 
-	    more_likely(m.r,m.c,end_r,end_c,dir_dict)
-
-            # At this point, the solver has a dir_dict that looks something like
-            # {'S': True, 'E': None, 'N':True, "W': None}
-
-            # The problem is I can't use a for loop to update the dictionary directly.
-            # In my previous implementation, I had a list of lists, where the second value
-            # was True or None. I then changed True/None to random.uniform(conditional range).
-            # So I'm trying to figure out how to go around this problem. 
-
-	    # dlist = some list equivalent of dir_dict
-
-	    def assign_weight(dlist):
-	        for d in dlist:
-		    if d[1] == True:
-      		        d[1] = random.uniform(0,1)
-    		    else: 
-      		        d[1] = random.uniform(0,0.25)
-  		dlist.sort(key=operator.itemgetter(1))
-
-	    assign_weight(dlist)
-	    visit_order = [dlist[0][0],dlist[1][0],dlist[2][0],dlist[3][0]]
+	    more_likely(m.r,m.c,end_r,end_c,dir_dict)    # dir_dict = {'S':0.20, 'E':0.33, 'W': 0.19, 'N':0.05}
+            visit_order = sorted(dir_dict.iteritems(), key=itemgetter(1), reverse=True)
+            # visit_order = [('E',0.33),('S',0.20),('W',0.19),('N',0.05)]
 
             def get_next_square(cur_r,cur_c,direction_headed):
 	        if direction_headed == "N":
@@ -117,20 +107,15 @@ class SmartSolver:
 		    else:
 			print "Trapped"
 		else:
-		    return
-
-# Question: usable is a list that'll never be empty before its index is accessed (at least, that's how it's set up). 
-# Should I still include an if branch that handles the empty case?
-# comment for function : assumes the list is not empty (cleaner)
-# or include the branch to check
+		    return ...
 
   	   def step(board,visit_order,usable,end_r,end_c,i):
 	       if i < 4:
-	           if walkable(m.r,m.c,board,visit_order[i],usable) == True:
-	               new_r,new_c = walkable(m.r,m.c,board,visit_order[i])[1]
+	           if walkable(m.r,m.c,board,visit_order[i][0],usable) == True:
+	               new_r,new_c = walkable(m.r,m.c,board,visit_order[i][0])[1]
 		       dist = distance(m.r,m.c,end_r,end_c)
 		       usable.append([(m.r,m.c),dist,True])
-		       move(m.r,m.c,new_r,new_c,visit_order[i],m,self)
+		       move(m.r,m.c,new_r,new_c,visit_order[i][0],m,self)
 	           else:
 		    step(board,visit_order,usable,end_r,end_c,i+1):
 	        else:
@@ -142,8 +127,8 @@ class SmartSolver:
 	solve(maze,compass)
 
 maze = maze.m
-smart_solver_object = SmartSolver()
-smart_solver_object.smart_solver(maze)	
+smart_solver = SmartSolver()
+smart_solver.smart_solver(maze)	
 
 # d = dict()
 # d["N"] = None
@@ -159,3 +144,8 @@ python display.py
 comman you want to execute
 """
 # group function calls at the end
+
+# Question: usable is a list that'll never be empty before its index is accessed (at least, that's how it's set up). 
+# Should I still include an if branch that handles the empty case?
+# comment for function : assumes the list is not empty (cleaner)
+# or include the branch to check
