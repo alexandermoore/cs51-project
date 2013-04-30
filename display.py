@@ -52,5 +52,4 @@ class MazeDisplay:
 
 # Uncomment to test the display function 
 display_object = MazeDisplay()
-display_object.display(m)
 
