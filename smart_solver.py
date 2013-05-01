@@ -65,6 +65,11 @@ class SmartSolver:
                 else: # "E"
                     return m.r,m.c+1
 
+
+            ''' distance
+            Calculates the distance between a square and the end square.
+            RETURNS: distance between the two squares
+            '''
       	    def distance(m):  
                 distance_from_end = round(sqrt((m.end[0]-m.r)**2 + (m.end[1]-m.c)**2),4)
                 return distance_from_end
