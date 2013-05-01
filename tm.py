@@ -1,5 +1,5 @@
-maze_num_rows = 10
-maze_num_cols = 10
+maze_num_rows = 20
+maze_num_cols = 20
 
 class Tm:
     
