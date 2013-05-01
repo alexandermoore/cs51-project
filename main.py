@@ -1,14 +1,27 @@
 from generation import *
 from display import *
 from htmldisp import *
+
+# DEBUGGING IS OFF
+debug_on = False
+
+'''
+debug_print
+RETURNS: No return value
+-txt : The item to print
+-ignore_debug (boolean) : Whether or not this print statement should occur regardless of whether or not you're debugging
+'''
+def debug_print(txt,ignore_debug) :
+    if (debug_on or ignore_debug):
+        print txt
+
 # Create a new generation
-# 5 fittest breed next generation, population size of 250, 50 of which are random and 2 of which are the fittest from the previous generation.
+# 5 fittest breed next generation, population size of 10, 2 of which are random and 2 of which are the fittest from the previous generation.
 # (num_fittest, pop_size, num_random, num_elites)
 current_gen = Generation(5,10,2,2)
 current_gen.spawn_random_generation()
 
-# Set the definition of "no more progress"-- evolution
-# after this)
+# Set the definition of "no more progress"
 negligible = 0.01
 
 # Make sure new_fitness - best_fitness cannot be < negligible 
@@ -24,20 +37,20 @@ best_generator = None
 
 while(True) :
     gen_num = gen_num + 1
-    print "\nGENERATION #"+str(gen_num)
+    debug_print("\nGENERATION #"+str(gen_num)+" COMPLETE",True)
     
     # run this generation and get its fitness
     new_fitness = current_gen.run()
     
     # Print some information about this generation
-    print "BEST FROM THIS GENERATION:"
-    print new_fitness
-    print "CURENT BEST:"
-    print best_fitness
+    debug_print("BEST FROM THIS GENERATION:", False)
+    debug_print(new_fitness, False)
+    debug_print("CURENT BEST:", False)
+    debug_print(best_fitness, False)
     if (best_generator != None) :
-        print best_generator.parameter_list
-    print "DIFFERENCE FROM BEST GENERATOR:"
-    print new_fitness-best_fitness
+        debug_print(best_generator.parameter_list, False)
+    debug_print("DIFFERENCE FROM BEST GENERATOR:", False)
+    debug_print(new_fitness-best_fitness, False)
     
     # If the change is non-negligible, record the fittest generator in the generation as the best.
     if (new_fitness - best_fitness > negligible) :
@@ -47,22 +60,22 @@ while(True) :
     # Otherwise, say this is a bad generation and move on.
     else :
         bad_gen_count = bad_gen_count + 1
-        print "BAD GENERATION "+str(bad_gen_count)+"\n"
+        debug_print("BAD GENERATION "+str(bad_gen_count)+" / "+str(bad_gen_termination)+"\n", False)
         if (bad_gen_count == bad_gen_termination) :
             break
     # Spawn the next generation from the previous generation (even if it was bad!)
     current_gen = current_gen.spawn_next_generation()
 
 
-print "\n\nBEST GENERATOR: "
-print best_generator.parameter_list
-print best_generator.avg_runtime
+debug_print("\n\nBEST GENERATOR: ", True)
+debug_print(best_generator.parameter_list, True)
+debug_print(best_generator.avg_runtime, True)
 
 # Display the fittest mazes
 display_obj = MazeDisplay()
 htmldisplay_obj = HTMLDisplay()
 for m in best_generator.mazes :
     display_object.display(m)
-print "DISPLAYING FIRST ONE"
+debug_print("DISPLAYING FIRST ONE", False)
 display_obj.display(best_generator.mazes[0])
 htmldisplay_obj.display(best_generator.mazes[0])

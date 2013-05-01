@@ -7,6 +7,7 @@ from display import *
 num_mazes = 10
 
 class Generator:
+    
     #FIELDS
 	
     #parameters
@@ -62,11 +63,10 @@ class Generator:
             m = Maze()
             maze_incomplete = True
             self.generate(m)
-            #display_object.display(m)
+            display_object.display(m)
             self.pythagorean_solve(m)
             self.mazes.append(m)
         self.avg_runtime = self.calc_avg_runtime()
-        #print len(self.mazes)
 	
     ''' calc_avg_runtime
     Takes the average of the runtimes of all mazes in mazes[].
@@ -123,10 +123,12 @@ class Generator:
                 print "error: moved not passed a valid direction"
             return
         
-        # checks whether a path can be extended from square in the direction dir
         ''' check_dir
         Checks whether or not it is valid to move in direction dir from square. It checks the
-        five surrounding squares.
+        five squares surrounding the square to be moved to
+        RETURNS: True if it is okay to move there
+        -square : square from which you must check a possible move
+        -dir : direction you wish to check
         '''
         def check_dir(square,dir):
             shift_sq = move(square,dir)
@@ -142,7 +144,11 @@ class Generator:
             far_right = m.board[move(shift_sq_2,(dir+1) % 4)[0]][move(shift_sq_2,(dir+1) % 4)[1]]
             return (not(mid or far or left or right or far_left or far_right))
         
-        # checks whether a new path can branch off from this square
+        ''' check_sq
+        Checks whether a new path can branch off from this square in any direction.
+        RETURNS: True if a new path could branch off of this square.
+        -square : square to be checked
+        '''
         def check_sq(square):
             north = check_dir(square,North)
             east = check_dir(square,East)
@@ -150,7 +156,10 @@ class Generator:
             west = check_dir(square,West)
             return (north or east or south or west)
         
-        # gets proposal_square up to len[m.usable_squares]-1
+        ''' get_proposal_square
+        Used in jump function to get a proposal square within usable_squares.
+        RETURNS: the index of a proposal square. Index must be less than the length of usable_squares
+        '''
         def get_proposal_square():
             proposal_square = 0
             should_birds = random.random()
@@ -164,7 +173,11 @@ class Generator:
                 proposal_square = random.randint(0,len(m.usable_squares) - 1)
             return proposal_square
         
-        # jumps to some square in usable_squares or returns False if unsuccessful
+        ''' jump
+        Jumps to a new square in usable_squares OR returns False if usable_squares becomes empty. Slowly
+        empties usable_squares as it finds squares that cannot be moved off of.
+        RETURNS: True if usable_squares is not empty
+        '''
         def jump():
             proposal_square = get_proposal_square()
             # try to find proposal square that can branch off a new path
@@ -244,7 +257,7 @@ class Generator:
                 if not(m.maze_incomplete):
                     break
             continue_path()
-     #       display_object.display(m)
+            display_object.display(m)
     
     ''' pythagorean_solve
     Gives a dummy value for runtime, which is equal to the distance between start and end
@@ -259,7 +272,7 @@ class Generator:
 
 
 
-g = Generator([0.4,0.2,0.2,0.0,1.0,0.5,0.9])
+g = Generator([0.1,0.1,0.99,0.1,0.5,0.5,0.9])
         #self.start_loc_col = params[0] = 0.0 or 1.0
         #self.start_loc_row = params[1] = 0.0 or 1.0
         #self.p_jump = params[2] = 0.9
