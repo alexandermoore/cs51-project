@@ -23,7 +23,7 @@ class SmartSolver:
         -usable: a list that keeps track of squares visited
         '''
         def solve(m,usable):
-
+            print "solve"
             dir_dict = dict()
             dir_dict["N"] = None
             dir_dict["S"] = None
@@ -31,14 +31,17 @@ class SmartSolver:
             dir_dict["E"] = None
 
             def weigh_diff(dir_dict,d_more,d_less):
+                print 'weigh_diff'
                 dir_dict[d_more] = round(random.uniform(0,1),4)
                 dir_dict[d_less] = round(random.uniform(0,0.25),4)
 
             def weigh_same(dir_dict,d_one,d_two):
+                print 'weigh same'
                 dir_dict[d_one] = round(random.uniform(0,0.25),4)
                 dir_dict[d_two] = round(random.uniform(0,0.25),4)
 
             def assign_weight(m,dir_dict):
+                print 'assign_weight'
                 if m.r < m.end[0]:
                     weigh_diff(dir_dict,"S","N")
                 elif m.r > m.end[0]:
@@ -56,6 +59,7 @@ class SmartSolver:
             RETURNS: a tuple of next square's position
             '''
             def get_next_square(m,direction_headed):
+                print 'get_next_square'
                 if direction_headed == "N":
                     return m.r-1,m.c
                 elif direction_headed == "S":
@@ -71,6 +75,7 @@ class SmartSolver:
             RETURNS: distance between the two squares
             '''
       	    def distance(m):  
+                print 'distance'
                 distance_from_end = round(sqrt((m.end[0]-m.r)**2 + (m.end[1]-m.c)**2),4)
                 return distance_from_end
             
@@ -81,6 +86,7 @@ class SmartSolver:
             -usable: sorted from least to greatest distance from end
             '''   
             def in_usable(rc,usable):
+                print 'in_usable'
                 for sq in usable:
                     if rc == sq[0]:
                         return True
@@ -94,6 +100,7 @@ class SmartSolver:
             -usable:             
             '''                        
             def walkable(m,direction_headed,usable):
+                print 'walkable'
                 new = get_next_square(m,direction_headed)
                 if (new[0] >= 0 and new[0] < maze_num_rows and new[1] >= 0 and new[1] < maze_num_cols):
                     if(m.board[new[0]][new[1]] == True and in_usable(new,usable) == False):
@@ -111,6 +118,7 @@ class SmartSolver:
             -usable: 
             '''
             def walk(m,new,usable):
+                print 'walk'
                 m.r = new[0]
                 m.c = new[1]
                 m.runtime += 1
@@ -129,12 +137,13 @@ class SmartSolver:
             -
             '''
             def jump(m,usable,i): 
+                print 'jump'
                 if usable[i][2] == True:
                     usable[i][2] = False
                     new = usable[i][0]
                     walk(m,new,usable)                
                 else:
-                    if i < len(usable):
+                    if i < len(usable) - 1:
                         jump(m,usable,i+1)
                     else:
                         print "No available square in usable."
@@ -148,6 +157,7 @@ class SmartSolver:
             -i: first passed in 0
             '''
             def move(m,visit_order,usable,i): #OR def move(m,visit_order[i][0],usable):
+                print 'move'
                 if i < 4:
                     if walkable(m,visit_order[i][0],usable)[0] == True:
                         new = walkable(m,visit_order[i][0],usable)[1]
