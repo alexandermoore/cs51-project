@@ -85,14 +85,14 @@ class SmartSolver:
                     if rc == sq[0]:
                         return True
                 return False
- 
+
             ''' walkable
             Checks whether a new square is 1. on board; 2. unobstructed; 3. not in usable
             RETURNS: either (True,(new_r,new_c)) or (False,None)
             -m: 
             -direction_headed:
             -usable:             
-            '''                        
+            '''              
             def walkable(m,direction_headed,usable):
                 new = get_next_square(m,direction_headed)
                 if (new[0] >= 0 and new[0] < maze_num_rows and new[1] >= 0 and new[1] < maze_num_cols):
@@ -134,7 +134,7 @@ class SmartSolver:
                     new = usable[i][0]
                     walk(m,new,usable)                
                 else:
-                    if i < len(usable):
+                    if i < len(usable) - 1:
                         jump(m,usable,i+1)
                     else:
                         print "No available square in usable."
