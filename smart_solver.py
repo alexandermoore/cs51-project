@@ -64,7 +64,7 @@ class SmartSolver:
 
             ''' distance
             Calculates the distance between a square and the end square.
-            RETURNS: distance between two squares
+            RETURNS: distance between the two squares
             '''
       	    def distance(rc,end):
                 distance_from_end = sqrt((end[0]-rc[0])**2 + (end[1]-rc[1])**2)
