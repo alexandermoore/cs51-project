@@ -133,7 +133,7 @@ class SmartSolver:
             Assumes usable is non-empty at this point
             RETURNS: Nothing (unless an error occurs).
             -
-            '''
+            
             def jump(m,usable,i): 
                 print ["jump","r,c:",m.r,m.c]
                 if i < len(usable):
@@ -146,7 +146,13 @@ class SmartSolver:
                         jump(m,usable,i+1)
                 else:
                     print "No available square in usable."
-
+            '''
+            def jump(m,usable):
+                for i in usable:
+                    if usable[i][2] == True:
+                        new = usable[i][0]
+                        walk(m,new,usable)
+                        break
             ''' move
             Tries to walk to an adjacent square; if that fails, goes to another square
             RETURNS: Nothing.
