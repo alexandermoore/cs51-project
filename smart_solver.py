@@ -7,7 +7,7 @@ from tm import *
 
 class SmartSolver:
    
-    def smart_solver(self,m):	# maze to m
+    def smart_solver(self,m):	
 
         # initialize current position to start
         m.r = m.start[0]
@@ -23,12 +23,6 @@ class SmartSolver:
         -usable: a list that keeps track of squares visited
         '''
         def solve(m,usable):
-
-            dir_dict = dict()
-            dir_dict["N"] = None
-            dir_dict["S"] = None
-            dir_dict["W"] = None
-            dir_dict["E"] = None
 
             def weigh_diff(dir_dict,d_more,d_less):
                 dir_dict[d_more] = round(random.uniform(0,1),4)
@@ -53,7 +47,7 @@ class SmartSolver:
                     weigh_same(dir_dict,"W","E")
 
             ''' get_next_square
-            RETURNS: a tuple of next square's position
+            RETURNS: next square's position; a tuple
             '''
             def get_next_square(m,direction_headed):
                 if direction_headed == "N":
@@ -68,6 +62,7 @@ class SmartSolver:
             ''' distance
             Calculates the distance between a square and the end square.
             RETURNS: distance between the two squares
+            -m: maze object; (m.r: current row; m.c: current column; m.end: tuple)
             '''
       	    def distance(m):  
                 distance_from_end = round(sqrt((m.end[0]-m.r)**2 + (m.end[1]-m.c)**2),4)
@@ -94,14 +89,10 @@ class SmartSolver:
             '''                        
             def walkable(m,direction_headed,usable):
                 new = get_next_square(m,direction_headed)
-#                print ["walkable",direction_headed,new]
                 if (new[0] >= 0 and new[0] < maze_num_rows and new[1] >= 0 and new[1] < maze_num_cols):
-#                    print ["walkable: on board"]
                     if(m.board[new[0]][new[1]] == True and in_usable(new,usable) == False):
-#                        print ["walkable: unobstrcuted/not in_usable",in_usable(new,usable)]
                         return (True,new)
                     else:
-#                        print ["walkable: obstructed/in_usable",in_usable(new,usable)]
                         return (False,None)
                 else:
                     return (False,None)
@@ -109,95 +100,66 @@ class SmartSolver:
             ''' walk
             Updates current position and runtime
             RETURNS: Nothing.
-            -m: 
-            -new: 
+            -m: maze object
+            -new: position of new square; tuple
             -usable: 
             '''
             def walk(m,new,usable):
                 m.r = new[0]
                 m.c = new[1]
                 m.runtime += 1
-                print ["walk runtime:",m.runtime]
                 if in_usable((m.r,m.c),usable) == False:
                     dist = distance(m)
                     usable.append([new,dist,True])
-                    print ["walk,in_usable = False,usable:",usable]
-                if (m.r,m.c) == m.end:
-                    print ["walk","end",m.r,m.c]
-                    return # AND WE ARE DONE!
-                else:
-                    solve(m,usable)
 
             ''' jump
             Goes to a square in usable that's 1. not False; 2. closest to the end
             Assumes usable is non-empty at this point
-            RETURNS: Nothing (unless an error occurs).
-            -
-            
-            def jump(m,usable,i): 
-                print ["jump","r,c:",m.r,m.c]
-                if i < len(usable):
-                    if usable[i][2] == True:
-                        new = usable[i][0]
-                        print ["jump","usable=T","new:",usable]
-                        walk(m,new,usable)                
-                    else:
-                        print ["jump","usable=F","cont",usable]
-                        jump(m,usable,i+1)
-                else:
-                    print "No available square in usable."
+            RETURNS: Nothing.
+            -m: maze object
+            -usable: 
             '''
             def jump(m,usable):
                 for i in usable:
-                    if usable[i][2] == True:
-                        new = usable[i][0]
+                    if i[2] == True:
+                        new = i[0]
                         walk(m,new,usable)
                         break
+
             ''' move
-            Tries to walk to an adjacent square; if that fails, goes to another square
+            Tries to walk to an adjacent square; failing, goes to another square
             RETURNS: Nothing.
             -m
-            -visit_order: list of directions to vist, in order
             -usable:
-            -i: first passed in 0
             '''
-            def move(m,visit_order,usable,i): #OR def move(m,visit_order[i][0],usable):
-                print ["move","i:",i]
-                if i < 4:
-                    if walkable(m,visit_order[i][0],usable)[0] == True:
-                        new = walkable(m,visit_order[i][0],usable)[1]
-                        print ["move","walkable","new:",new]
-                        walk(m,new,usable)
-                    else:
-                        move(m,visit_order,usable,i+1)
-                else:
-                    print ["move","jump"]
-                    # update current position in usable to False
-                    d = distance(m)
-                    ind = usable.index([(m.r,m.c),d,True])
-                    usable[ind][2] = False
-                    '''
-                    j = 0
-                    while j < len(usable):
-                        if usable[i][0] == (m.r,m.c):
-                            usable[i][2] = False
-                        else:
-                            j += 1
-                    '''
-                    print ["move","jump",(m.r,m.c),"usable"]                    
-                    usable.sort(key=operator.itemgetter(1))
-                    jump(m,usable,0)
+            def move(m,usable): 
+                dir_dict = dict()
 
-            assign_weight(m,dir_dict)
-            visit_order = sorted(dir_dict.iteritems(), key=itemgetter(1), reverse=True)
-            print ["visit_order",visit_order]
-            move(m,visit_order,usable,0)
+                while ((m.r,m.c) != (m.end)):
+                    dir_dict["N"] = None
+                    dir_dict["S"] = None
+                    dir_dict["W"] = None
+                    dir_dict["E"] = None
+                    assign_weight(m,dir_dict)
+                    visit_order = sorted(dir_dict.iteritems(), key=itemgetter(1), reverse=True)
+                    success = False
+                    for i in range(0,4):
+                        if walkable(m,visit_order[i][0],usable)[0] == True:
+                            new = walkable(m,visit_order[i][0],usable)[1]
+                            success = True
+                            walk(m,new,usable)
+                            break                                          
+                    if success == False:
+                        d = distance(m)
+                        ind = usable.index([(m.r,m.c),d,True])
+                        usable[ind][2] = False                 
+                        usable.sort(key=operator.itemgetter(1))
+                        jump(m,usable)
+                print m.runtime
 
-            # dir_dict = {'S':0.20, 'E':0.33, 'W': 0.19, 'N':0.05}
-            # visit_order = [('E',0.33),('S',0.20),('W',0.19),('N',0.05)]
+            move(m,usable)
 
         solve(m,usable)
-        print m.runtime
 
 maze = m
 smart_solver = SmartSolver()
@@ -220,3 +182,5 @@ commands you want to execute
 # comment for function : assumes the list is not empty (cleaner)
 # or include the branch to check
 
+# dir_dict = {'S':0.20, 'E':0.33, 'W': 0.19, 'N':0.05}
+# visit_order = [('E',0.33),('S',0.20),('W',0.19),('N',0.05)]
