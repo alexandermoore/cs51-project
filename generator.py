@@ -3,6 +3,7 @@ import math
 import random
 from display import *
 from settings import *
+from smart_solver import *
 
 class Generator:
     
@@ -64,6 +65,7 @@ class Generator:
             if display_all_outputted_mazes:
                 display_object.display(m)
             self.pythagorean_solve(m)
+            smart_solver.smart_solver(m)
             self.mazes.append(m)
         self.avg_runtime = self.calc_avg_runtime()
 	

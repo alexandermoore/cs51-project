@@ -94,14 +94,14 @@ class SmartSolver:
             '''                        
             def walkable(m,direction_headed,usable):
                 new = get_next_square(m,direction_headed)
-#                print ["walkable",direction_headed,new]
+#                #print ["walkable",direction_headed,new]
                 if (new[0] >= 0 and new[0] < maze_num_rows and new[1] >= 0 and new[1] < maze_num_cols):
-#                    print ["walkable: on board"]
+#                    #print ["walkable: on board"]
                     if(m.board[new[0]][new[1]] == True and in_usable(new,usable) == False):
-#                        print ["walkable: unobstrcuted/not in_usable",in_usable(new,usable)]
+#                        #print ["walkable: unobstrcuted/not in_usable",in_usable(new,usable)]
                         return (True,new)
                     else:
-#                        print ["walkable: obstructed/in_usable",in_usable(new,usable)]
+#                        #print ["walkable: obstructed/in_usable",in_usable(new,usable)]
                         return (False,None)
                 else:
                     return (False,None)
@@ -117,13 +117,13 @@ class SmartSolver:
                 m.r = new[0]
                 m.c = new[1]
                 m.runtime += 1
-                print ["walk runtime:",m.runtime]
+                #print ["walk runtime:",m.runtime]
                 if in_usable((m.r,m.c),usable) == False:
                     dist = distance(m)
                     usable.append([new,dist,True])
-                    print ["walk,in_usable = False,usable:",usable]
+                    #print ["walk,in_usable = False,usable:",usable]
                 if (m.r,m.c) == m.end:
-                    print ["walk","end",m.r,m.c]
+                    #print ["walk","end",m.r,m.c]
                     return # AND WE ARE DONE!
                 else:
                     solve(m,usable)
@@ -135,14 +135,14 @@ class SmartSolver:
             -
             '''
             def jump(m,usable,i): 
-                print ["jump","r,c:",m.r,m.c]
+                #print ["jump","r,c:",m.r,m.c]
                 if i < len(usable):
                     if usable[i][2] == True:
                         new = usable[i][0]
-                        print ["jump","usable=T","new:",usable]
+                        #print ["jump","usable=T","new:",usable]
                         walk(m,new,usable)                
                     else:
-                        print ["jump","usable=F","cont",usable]
+                        #print ["jump","usable=F","cont",usable]
                         jump(m,usable,i+1)
                 else:
                     print "No available square in usable."
@@ -156,16 +156,16 @@ class SmartSolver:
             -i: first passed in 0
             '''
             def move(m,visit_order,usable,i): #OR def move(m,visit_order[i][0],usable):
-                print ["move","i:",i]
+                #print ["move","i:",i]
                 if i < 4:
                     if walkable(m,visit_order[i][0],usable)[0] == True:
                         new = walkable(m,visit_order[i][0],usable)[1]
-                        print ["move","walkable","new:",new]
+                        #print ["move","walkable","new:",new]
                         walk(m,new,usable)
                     else:
                         move(m,visit_order,usable,i+1)
                 else:
-                    print ["move","jump"]
+                    #print ["move","jump"]
                     # update current position in usable to False
                     d = distance(m)
                     ind = usable.index([(m.r,m.c),d,True])
@@ -178,24 +178,25 @@ class SmartSolver:
                         else:
                             j += 1
                     '''
-                    print ["move","jump",(m.r,m.c),"usable"]                    
+                    #print ["move","jump",(m.r,m.c),"usable"]                    
                     usable.sort(key=operator.itemgetter(1))
                     jump(m,usable,0)
 
             assign_weight(m,dir_dict)
             visit_order = sorted(dir_dict.iteritems(), key=itemgetter(1), reverse=True)
-            print ["visit_order",visit_order]
+            #print ["visit_order",visit_order]
             move(m,visit_order,usable,0)
 
             # dir_dict = {'S':0.20, 'E':0.33, 'W': 0.19, 'N':0.05}
             # visit_order = [('E',0.33),('S',0.20),('W',0.19),('N',0.05)]
 
         solve(m,usable)
+        print "I'm done now!!!!"
         print m.runtime
 
 maze = m
 smart_solver = SmartSolver()
-smart_solver.smart_solver(maze)	
+#smart_solver.smart_solver(maze)	
 
 
 	    
