@@ -1,34 +1,40 @@
-#CONSTANTS
-maze_num_rows = 30
-maze_num_cols = 30
+from settings import *
 
 class Maze:
-        
-    # An n x m list of booleans.
+    
+    '''***************** FIELDS *****************'''
+    
+    # An maze_num_rows x maze_num_cols array of booleans
     board = []
 
-    # A list of tuples. Each tuple is a coordinate and 
-    # a square's distance from the start.
-    # The list must be ordered from closest to start to furthest
+    # A list of squares; has different uses in generator and solver
     usable_squares = []
 
     # Coordinates of the START square
     start = (None,None) 
 
     # Coordinates of the END square
-    end = (-1,-1)
+    end = (None,None)
 
+    # Current coordinates of maze solver or generator
     coordinates = (None,None)
+    
+    # Current direction maze generator is facing
     direction = None
+    
     end_placement_countdown = None
     maze_incomplete = True
-
-    # Runtime
     runtime = None
-
+    
+    '''***************** METHODS *****************'''
+    
     # A board customized to a specific initial state
     def __init__(self):
         self.board = self.make_board()
+
+        if display_maze_generation_in_real_time:
+            end = (0,0)
+
 
     def make_board(self):
         board = []

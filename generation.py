@@ -19,11 +19,7 @@ class Generator :
 
 class Generation :
     
-    #############################
-    #   FIELDS
-    ############################# 
-    # # of parameters in Generator class
-    generator_param_count = 6
+    '''***************** FIELDS *****************'''
     
     # The top "num_fittest" generators will be taken from each generation
     # for breeding.
@@ -41,9 +37,8 @@ class Generation :
     # Number of members from the fittest generators to keep in the population. Implements "elitism" so best genes are allowed to survive.
     num_elites = 0
 
-    #############################
-    #   METHODS
-    ############################# 
+    '''***************** METHODS *****************'''
+    
     '''
     __init__
     Constructor. Initializes num_fittest, pop_size, num_random and num_elites.

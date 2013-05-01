@@ -1,18 +1,16 @@
 from maze import *
 import math
 import random
-#from solver import *
 from display import *
-
-num_mazes = 10
+from settings import *
 
 class Generator:
     
-    #FIELDS
+    '''***************** FIELDS *****************'''
 	
     #parameters
     start_loc_col = None
-    start_loc_row = 'hello'
+    start_loc_row = None
     p_jump = None
     p_forward = None
     p_birds_eye = None
@@ -30,7 +28,7 @@ class Generator:
     South  = 2
     West = 3
     
-	#METHODS
+    '''***************** METHODS *****************'''
 	
     ''' __init__
     Constructor. Initializes the parameters and creates each of mazes, including runtime. It then
@@ -40,7 +38,7 @@ class Generator:
     -params[1] : start_loc_row = starting location as ratio of row/maze_num_rows
     -params[2] : p_jump = probability of jumping somewhere else in the maze when adding next square
     -params[3] : p_forward = if continuing current path, probability of moving forward (as opposed 
-    to turning)
+    to turning) 
     -params[4] : p_birds_eye = if jumping, probability of doing so through a "birds-eye" calculation 
     as opposed to picking a random square
     -params[5] : return_dist = if doing a "birds-eye" jump, return_dist is the ratio of the desired 
@@ -63,7 +61,8 @@ class Generator:
             m = Maze()
             maze_incomplete = True
             self.generate(m)
-            display_object.display(m)
+            if display_all_outputted_mazes:
+                display_object.display(m)
             self.pythagorean_solve(m)
             self.mazes.append(m)
         self.avg_runtime = self.calc_avg_runtime()
@@ -126,7 +125,7 @@ class Generator:
         ''' check_dir
         Checks whether or not it is valid to move in direction dir from square. It checks the
         five squares surrounding the square to be moved to
-        RETURNS: True if it is okay to move there
+        RETURNS: True if it is okay to move there, False otherwise
         -square : square from which you must check a possible move
         -dir : direction you wish to check
         '''
@@ -164,24 +163,24 @@ class Generator:
             proposal_square = 0
             should_birds = random.random()
             if should_birds < self.p_birds_eye:
-                # find closest square further than min_dist
                 min_dist = math.sqrt(math.pow(m.coodinates[0] - m.start[0],2) + math.pow(m.coodinates[1] - m.start[1],2)) * self.return_dist
                 while m.usable_squares[proposal_square][1] < min_dist:
                     proposal_square = proposal_square + 1
             else:
-                # choose random square
                 proposal_square = random.randint(0,len(m.usable_squares) - 1)
             return proposal_square
         
         ''' jump
         Jumps to a new square in usable_squares OR returns False if usable_squares becomes empty. Slowly
-        empties usable_squares as it finds squares that cannot be moved off of.
-        RETURNS: True if usable_squares is not empty
+        empties usable_squares as it finds squares that cannot yield a new path until it finds a square
+        that can yield a new path. Changes coordinates to match those of square it jumps to; does not 
+        change direction.
+        RETURNS: True if usable_squares is not empty, False otherwise
         '''
         def jump():
             proposal_square = get_proposal_square()
-            # try to find proposal square that can branch off a new path
             success = False
+            # search through usable_square for one that can branch off new path
             while not(success):
                 if check_sq(m.usable_squares[proposal_square][0]):
                     success = True
@@ -197,13 +196,24 @@ class Generator:
                 m.coodinates = m.usable_squares[proposal_square][0]
             return success
         
-        # begin a new path (for instance, after jumping)
+        ''' new_path
+        Begins a new path from a square. Checks all surrounding directions to find a usable one, and then
+        sets self.diraction to that value and changes coordinates to move one square in that direction.
+        RETURNS: No return value.
+        '''
         def new_path():
             while not(check_dir(m.coodinates,m.direction)):
                 m.direction = (m.direction + 1) % 4
             coorinates = move(m.coodinates,m.direction)
+            return
         
         # adds a given square to m.usable_squares
+        ''' add_square
+        Adds a given square to m.usable_squares. Inserts as a tuple consisting of (coordinates,dist)
+        where dist is the distance of the square from start. Note that coordinates is itself a tuple.
+        RETURNS: No return value.
+        -square : coordinates to be added to usable_squares. Expressed as a tuple
+        '''
         def add_square(square):
             dist = math.sqrt(math.pow(square[0] - m.start[0],2) + math.pow(square[1] - m.start[1],2))
             insert_loc = 0
@@ -213,7 +223,15 @@ class Generator:
                     break
                 insert_loc = insert_loc + 1
             m.usable_squares.insert(insert_loc,(square,dist))
+            return
         
+        ''' continue_path
+        Continues the path currently being created. Probabilistically decides whether to go forward or
+        turn based on p_forward. If it turns, then it chooses evenly between right and left. If it
+        can't go in the desired direction, it tries all other directions, and then jumps if there are 
+        no possible ways to move.
+        RETURNS: No return value.
+        '''
         def continue_path():
             should_forward = random.random()
             should_right = random.random()
@@ -236,7 +254,7 @@ class Generator:
             else:
                 m.maze_incomplete = jump()
                 if m.maze_incomplete:
-                    continue_path()
+                    new_path()
             return
         
         # begin tunneling from start
@@ -254,10 +272,12 @@ class Generator:
             should_jump = random.random()
             if should_jump < self.p_jump:
                 m.maze_incomplete = jump()
-                if not(m.maze_incomplete):
-                    break
-            continue_path()
-            display_object.display(m)
+                if m.maze_incomplete:
+                    new_path
+            else:
+                continue_path()
+            if display_maze_generation_in_real_time:
+                display_object.display(m)
     
     ''' pythagorean_solve
     Gives a dummy value for runtime, which is equal to the distance between start and end
@@ -272,7 +292,7 @@ class Generator:
 
 
 
-g = Generator([0.1,0.1,0.99,0.1,0.5,0.5,0.9])
+g = Generator([0.4,0.2,0.2,0.9,0.5,0.5,0.9])
         #self.start_loc_col = params[0] = 0.0 or 1.0
         #self.start_loc_row = params[1] = 0.0 or 1.0
         #self.p_jump = params[2] = 0.9
@@ -280,4 +300,5 @@ g = Generator([0.1,0.1,0.99,0.1,0.5,0.5,0.9])
         #self.p_birds_eye = params[4] = 1.0
         #self.return_dist = params[5] = 0.0
         #self.end_time = params[6] = 0.9
-	
+
+    
