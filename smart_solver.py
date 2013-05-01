@@ -72,9 +72,8 @@ class SmartSolver:
             ''' in_usable
             Checks whether a square is in the usable list.
             RETURNS: boolean
-            -rc: current position
-            -usable: <...> ; sorted from least to greatest distance from end
-            -i: a local counter; expects to be passed in a 0 when first called
+            -rc: position of a square
+            -usable: sorted from least to greatest distance from end
             '''   
             def in_usable(rc,usable):
                 for sq in usable:
@@ -106,14 +105,13 @@ class SmartSolver:
             -new: 
             -usable: 
             '''
-            def walk(m,new,usable,jumping):
+            def walk(m,new,usable):
                 m.r = new[0]
                 m.c = new[1]
                 m.runtime += 1
-                if jumping == False:
+                if in_usable((m.r,m.c),usable) == False:
                     dist = distance(m)
                     usable.append([new,dist,True])
-
                 if (m.r,m.c) == m.end:
                     return # AND WE ARE DONE!
                 else:
@@ -129,7 +127,7 @@ class SmartSolver:
                 if usable[i][2] == True:
                     usable[i][2] = False
                     new = usable[i][0]
-                    walk(m,new,usable,True)                
+                    walk(m,new,usable)                
                 else:
                     if i < len(usable):
                         jump(m,usable,i+1)
@@ -148,7 +146,7 @@ class SmartSolver:
                 if i < 4:
                     if walkable(m,visit_order[i][0],usable)[0] == True:
                         new = walkable(m,visit_order[i][0],usable)[1]
-                        walk(m,new,usable,False)
+                        walk(m,new,usable)
                     else:
                         move(m,visit_order,usable,i+1)
                 else:
