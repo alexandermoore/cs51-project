@@ -1,152 +1,189 @@
 import random
 import operator
-from maze import *
+from operator import itemgetter
+from math import sqrt
+from maze import * #uncomment when ready to test using generate
+#from tm import *
 
 class SmartSolver:
+   
+    def smart_solver(self,m):	
 
-    def smart_solver(self,maze):
+        # initialize current position to start
+        m.r = m.start[0]
+        m.c = m.start[1]
+        m.runtime = 0
 
-        compass = "N"
-        counter = 0
+        ''' solve
+        Goes through a maze
+        RETURNS: runtime
+        -m: maze object
+        -usable: a list that keeps track of squares visited
+        '''
+        def solve(m):
 
-        cur_r = maze.start[0]
-        cur_c = maze.start[1]
+            def weigh_diff(dir_dict,d_more,d_less):
+                dir_dict[d_more] = round(random.uniform(0,1),4)
+                dir_dict[d_less] = round(random.uniform(0,0.25),4)
 
-    	def plan_path(maze,compass,counter,cur_r,cur_c):
+            def weigh_same(dir_dict,d_one,d_two):
+                dir_dict[d_one] = round(random.uniform(0,0.25),4)
+                dir_dict[d_two] = round(random.uniform(0,0.25),4)
 
-            end_r = maze.end[0]
-            end_c = maze.end[1]
-	    board = maze.board
-	    birds_north = ["N",False]
-	    birds_south = ["S",False]
-	    birds_west = ["W",False]
-	    birds_east = ["E",False]
-	    
-	    def more_likely(cur_r,cur_c,end_r,end_c,birds_north,birds_south,birds_west,birds_east):
-	        if cur_r < end_r:
-		    birds_south[1] = True
-		elif cur_r > end_r:
-		    birds_north[1] = True
-		else: 
-		    return
-		if cur_c < end_c:
-		    birds_east[1] = True
-		elif cur_c > end_c:
-		    birds_west[1] = True
-		else:
-		    return
+            def assign_weight(m,dir_dict):
+                if m.r < m.end[0]:
+                    weigh_diff(dir_dict,"S","N")
+                elif m.r > m.end[0]:
+                    weigh_diff(dir_dict,"N","S")
+                else: 
+                    weigh_same(dir_dict,"N","S")
+                if m.c < m.end[1]:
+                    weigh_diff(dir_dict,"E","W")
+                elif m.c > m.end[1]:
+                    weigh_diff(dir_dict,"W","E")
+                else:
+                    weigh_same(dir_dict,"W","E")
 
-	    more_likely(cur_r,cur_c,end_r,end_c,birds_north,birds_south,birds_west,birds_east)
+            ''' get_next_square
+            RETURNS: next square's position; a tuple
+            '''
+            def get_next_square(m,direction_headed):
+                if direction_headed == "N":
+                    return m.r-1,m.c
+                elif direction_headed == "S":
+                    return m.r+1,m.c 
+                elif direction_headed == "W":
+                    return m.r,m.c-1 
+                else: # "E"
+                    return m.r,m.c+1
 
-	    back = None
-
-	    def back_is(compass,back):
-  	        if compass == "N":
-    		    back = "S"
-  		elif compass == "S":
-    		    back = "N"
-  		elif compass == "W":
-    		    back = "E"
-  		elif compass == "E":
-    		    back = "W"
-		else:
-		    print "Compass only has four directions!"
-
-	    dir_order = [birds_north,birds_south,birds_west,birds_east]
-	    
-	    def assign_weight(dir_order,compass,back):
-	        for x in dir_order:
-		    if x[1] == True:
-      		        x[1] = 2#random.uniform(0,1)
-    		    else: 
-      		        x[1] = 1#random.uniform(0,0.5)
-  		dir_order.sort(key=operator.itemgetter(1))
-		back_is(compass,back)
-  		for x in dir_order:
-    		    if x[0] == back:
-     		        dir_order.append(x)
-      		        dir_order.pop(dir_order.index(x))
-    		    else:
-      		        None
-
-	    assign_weight(dir_order,compass,back)
-	    plan = [dir_order[0][0],dir_order[1][0],dir_order[2][0],dir_order[3][0]]
-            #plan = ["N","E","S","W"]
-            print plan
-
-            def get_next_square(cur_r,cur_c,direction_headed):
-	        if direction_headed == "N":
-		    return cur_r-1,cur_c
-		elif direction_headed == "S":
-		    return cur_r+1,cur_c
-		elif direction_headed == "W":
-		    return cur_r,cur_c-1
-		elif direction_headed == "E":
-		    return cur_r,cur_c+1
-		else:
-		    print "I'm lost!"
-		
-	    def walkable(cur_r,cur_c,board,direction_headed):
-	        new_x,new_y = get_next_square(cur_r,cur_c,direction_headed)
-                print new_x,new_y
-		if (new_x >= 0 and new_x < maze_num_cols and new_y >= 0 and new_y < maze_num_rows):
-		    if(board[new_x][new_y] == True):
-                        #print "On board"
-		        return (True,(new_x,new_y))
-		    else:
-                        #print "Path blocked"
-		        return (False,(new_x,new_y))
-		else:
-                    #print "Off board"
-		    return (False,(new_x,new_y))
-
-	    def move(counter,cur_r,cur_c,new_r,new_c,compass,direction_headed,maze,self):
-	        cur_r = new_r
-		cur_c = new_c
-                print "Move called" 
-                print direction_headed
-		counter +=1
-                maze.runtime += 1
-		compass = direction_headed
-                print compass
-		if (cur_r,cur_c) == maze.end:
-		    return
-		else:
-                    if counter < 10:
-                        plan_path(maze,compass,counter,cur_r,cur_c)
+            ''' distance
+            Calculates the distance between a square and the end square.
+            RETURNS: distance between the two squares
+            -m: maze object; (m.r: current row; m.c: current column; m.end: tuple)
+            '''
+      	    def distance(m):  
+                distance_from_end = round(sqrt((m.end[0]-m.r)**2 + (m.end[1]-m.c)**2),4)
+                return distance_from_end
+            
+            ''' in_usable
+            Checks whether a square is in the usable list.
+            RETURNS: boolean
+            -rc: position of a square
+            -usable: sorted from least to greatest distance from end
+            '''   
+            def in_usable(m,rc):
+                for sq in m.usable:
+                    if rc == sq[0]:
+                        return True
+                        break
+                return False
+ 
+            ''' walkable
+            Checks whether a new square is 1. on board; 2. unobstructed; 3. not in usable
+            RETURNS: either (True,(new_r,new_c)) or (False,None)
+            -m: 
+            -direction_headed:
+            -usable:             
+            '''                        
+            def walkable(m,direction_headed):
+                new = get_next_square(m,direction_headed)
+                if (new[0] >= 0 and new[0] < maze_num_rows and new[1] >= 0 and new[1] < maze_num_cols):
+                    if(m.board[new[0]][new[1]] == True and in_usable(m,new) == False):
+                        return (True,new)
                     else:
-                        return
+                        return (False,None)
+                else:
+                    return (False,None)
 
-	    if walkable(cur_r,cur_c,board,plan[0])[0] == True:
-	        new_r,new_c = walkable(cur_r,cur_c,board,plan[0])[1]
-                print plan[0],new_r,new_c
-		move(counter,cur_r,cur_c,new_r,new_c,compass,plan[0],maze,self)	
-	
-	    elif walkable(cur_r,cur_c,board,plan[1])[0] == True:
-	        new_r,new_c = walkable(cur_r,cur_c,board,plan[1])[1]
-                print plan[1],new_r,new_c
-  	        move(counter,cur_r,cur_c,new_r,new_c,compass,plan[1],maze,self)
+            ''' walk
+            Updates current position and runtime
+            RETURNS: Nothing.
+            -m: maze object
+            -new: position of new square; tuple
+            -usable: 
+            '''
+            def walk(m,new):
+                m.r = new[0]
+                m.c = new[1]
+                m.runtime += 1
+                if in_usable(m,(m.r,m.c)) == False:
+                    dist = distance(m)
+                    m.usable.append([new,dist,True])
+                return
+ 
+            ''' jump
+            Goes to a square in usable that's 1. not False; 2. closest to the end
+            Assumes usable is non-empty at this point
+            RETURNS: Nothing.
+            -m: maze object
+            -usable: 
+            '''
+            def jump(m):
+                for i in m.usable:
+                    if i[2] == True:
+                        new = i[0]
+                        walk(m,new)
+                        break
+                return
 
-	    elif walkable(cur_r,cur_c,board,plan[2])[0] == True:
-                new_r,new_c = walkable(cur_r,cur_c,board,plan[2])[1]
-                print plan[2],new_r,new_c
-  	        move(counter,cur_r,cur_c,new_r,new_c,compass,plan[2],maze,self)
+            ''' move
+            Tries to walk to an adjacent square; failing, goes to another square
+            RETURNS: Nothing.
+            -m
+            -usable:
+            '''
+            def move(m): 
+                dir_dict = dict()
+                start_end_dist = round(sqrt((m.end[0]-m.r)**2 + (m.end[1]-m.c)**2),4)
+                m.usable = [[(m.r,m.c),start_end_dist,True]]
+                while ((m.r,m.c) != (m.end)):
+                    dir_dict["N"] = None
+                    dir_dict["S"] = None
+                    dir_dict["W"] = None
+                    dir_dict["E"] = None
+                    assign_weight(m,dir_dict)
+                    visit_order = sorted(dir_dict.iteritems(), key=itemgetter(1), reverse=True)
+                    success = False
+                    for i in range(0,4):
+                        if walkable(m,visit_order[i][0])[0] == True:
+                            new = walkable(m,visit_order[i][0])[1]
+                            success = True
+                            walk(m,new)
+                            break                                          
+                    if success == False:
+                        d = distance(m)
+                        ind = m.usable.index([(m.r,m.c),d,True])
+                        m.usable[ind][2] = False              
+                        m.usable.sort(key=operator.itemgetter(1))
+                        jump(m)
+                return
 
-	    elif walkable(cur_r,cur_c,board,plan[3])[0] == True:
-	        new_r,new_c = walkable(cur_r,cur_c,board,plan[3])[1]
-                print plan[3],new_r,new_c
-  	        move(counter,cur_r,cur_c,new_r,new_c,compass,plan[3],maze,self) 
+            move(m)
 
-	    else:
-  	        print "I'm trapped! D:"
+        solve(m)
+        print m.runtime
 
-	plan_path(maze,compass,counter,cur_r,cur_c)
-        print maze.runtime
-
-my_maze = m
+#maze = m
 smart_solver = SmartSolver()
-smart_solver.smart_solver(my_maze)	
+#smart_solver.smart_solver(maze)	
+
 
 	    
+"""
+shell files: batch files
+a sheebang
+#!/bin/sh
+python generate.py
+python display.py
+...
+commands you want to execute
+"""
+# group function calls at the end
+# Question: usable is a list that'll never be empty before its index is accessed (at least, that's how it's set up). 
+# Should I still include an if branch that handles the empty case?
+# comment for function : assumes the list is not empty (cleaner)
+# or include the branch to check
 
-
+# dir_dict = {'S':0.20, 'E':0.33, 'W': 0.19, 'N':0.05}
+# visit_order = [('E',0.33),('S',0.20),('W',0.19),('N',0.05)]

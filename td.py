@@ -1,5 +1,5 @@
 import sys
-from maze import*
+from tm import*
 
 class MazeDisplay:
 
@@ -8,11 +8,9 @@ class MazeDisplay:
         # Choose shape to represent a non-walkable square
         square = "X" #unicode(u"\u25A9") #big square diagonal crosshatch
 
-        # Copy board from object maze
-        lst = []
-        for e in maze.board:
-            lst.append(list(e))
-        
+        # Get board from object maze
+        list = maze.board
+
         # Define START coordinates
         start_x = maze.start[0]
         start_y = maze.start[1]
@@ -22,12 +20,12 @@ class MazeDisplay:
         end_y = maze.end[1]
 
         # Update board (change booleans to "start" and "end")
-        lst[start_x][start_y] = "start"
-        lst[end_x][end_y] = "end"
+        list[start_x][start_y] = "start"
+        list[end_x][end_y] = "end"
 
         # Set border to number of columns 
         border_length = 0
-        for i in lst:
+        for i in list:
             border_length = len(i)
 
         # Create upper border
@@ -37,7 +35,7 @@ class MazeDisplay:
         print "+\r"
 
         # Print board
-        for i in lst:
+        for i in list:
             sys.stdout.write("|")
             for j in i:
                 if j == False : sys.stdout.write(square + ' ')
@@ -54,4 +52,5 @@ class MazeDisplay:
 
 # Uncomment to test the display function 
 display_object = MazeDisplay()
+display_object.display(m)
 

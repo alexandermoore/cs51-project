@@ -1,5 +1,5 @@
 import random
-import maze
+from maze import *
 
 # first implement sth that takes in a bunch of parameters
 # and then move onto dictionaries -> get help from Randy
@@ -18,7 +18,8 @@ class Solver:
         board = maze.board
 	runtime = maze.runtime
 
-        """ walkable
+        """ 
+        walkable
         Returns True or False.
         -new_x : row the square of interest is in
         -new_y : column the square of interest is in
