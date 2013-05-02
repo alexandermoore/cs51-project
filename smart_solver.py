@@ -113,7 +113,7 @@ class SmartSolver:
                     dist = distance(m)
                     usable.append([new,dist,True])
                 return
-
+ 
             ''' jump
             Goes to a square in usable that's 1. not False; 2. closest to the end
             Assumes usable is non-empty at this point
@@ -124,11 +124,10 @@ class SmartSolver:
             def jump(m,usable):
                 for i in usable:
                     if i[2] == True:
-#                        print [i[0],usable]
                         new = i[0]
                         walk(m,new,usable)
-#                        print ["new:",new,usable]
                         break
+                print ["jump",(m.r,m.c)]
                 return
 
             ''' move
@@ -139,7 +138,7 @@ class SmartSolver:
             '''
             def move(m,usable): 
                 dir_dict = dict()
-
+                j = 0
                 while ((m.r,m.c) != (m.end)):
                     dir_dict["N"] = None
                     dir_dict["S"] = None
@@ -160,6 +159,9 @@ class SmartSolver:
                         usable[ind][2] = False              
                         usable.sort(key=operator.itemgetter(1))
                         jump(m,usable)
+                        print ["move",(m.r,m.c),usable]
+                        break
+                        
                 return
 
             move(m,usable)
