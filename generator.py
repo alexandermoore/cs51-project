@@ -269,7 +269,10 @@ class Generator:
             add_square(m.coodinates)
             m.board[m.coodinates[0]][m.coodinates[1]] = True
             if m.end_placement_countdown == 0:  
-                m.end = m.coodinates
+                if m.coordinates == m.start:
+                    m.end_placement_countdown = m.end_placement_countdown + 1
+                else:
+                    m.end = m.coodinates
             m.end_placement_countdown = m.end_placement_countdown - 1
             should_jump = random.random()
             if should_jump < self.p_jump:
@@ -280,7 +283,7 @@ class Generator:
                 continue_path()
             if display_maze_generation_in_real_time:
                 display_object.display(m)
-    
+        
     ''' pythagorean_solve
     Gives a dummy value for runtime, which is equal to the distance between start and end
     RETURNS: No return value.

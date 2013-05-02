@@ -78,7 +78,6 @@ class SmartSolver:
                 for sq in usable:
                     if rc == sq[0]:
                         return True
-                        break
                 return False
  
             ''' walkable
