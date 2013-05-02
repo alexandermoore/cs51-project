@@ -149,8 +149,8 @@ class SmartSolver:
             '''
             def jump(m,usable):
                 for i in usable:
-                    if usable[i][2] == True:
-                        new = usable[i][0]
+                    if i[2] == True:
+                        new = i[0]
                         walk(m,new,usable)
                         break
             ''' move
@@ -186,7 +186,7 @@ class SmartSolver:
                     '''
                     #print ["move","jump",(m.r,m.c),"usable"]                    
                     usable.sort(key=operator.itemgetter(1))
-                    jump(m,usable,0)
+                    jump(m,usable)
 
             assign_weight(m,dir_dict)
             visit_order = sorted(dir_dict.iteritems(), key=itemgetter(1), reverse=True)
