@@ -10,6 +10,9 @@ class Maze:
     # A list of squares; has different uses in generator and solver
     usable_squares = []
 
+    # A list of squares for smart_solver; keeps track of squares visited
+    usable = []
+
     # Coordinates of the START square
     start = (None,None) 
 
