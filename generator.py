@@ -209,7 +209,6 @@ class Generator:
             coorinates = move(m.coodinates,m.direction)
             return
         
-        # adds a given square to m.usable_squares
         ''' add_square
         Adds a given square to m.usable_squares. Inserts as a tuple consisting of (coordinates,dist)
         where dist is the distance of the square from start. Note that coordinates is itself a tuple.

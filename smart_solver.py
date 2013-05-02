@@ -13,8 +13,6 @@ class SmartSolver:
         m.r = m.start[0]
         m.c = m.start[1]
         m.runtime = 0
-        start_end_dist = round(sqrt((m.end[0]-m.r)**2 + (m.end[1]-m.c)**2),4)
-        usable = [[(m.r,m.c),start_end_dist,True]]
 
         ''' solve
         Goes through a maze
@@ -22,7 +20,7 @@ class SmartSolver:
         -m: maze object
         -usable: a list that keeps track of squares visited
         '''
-        def solve(m,usable):
+        def solve(m):
 
             def weigh_diff(dir_dict,d_more,d_less):
                 dir_dict[d_more] = round(random.uniform(0,1),4)
@@ -74,8 +72,8 @@ class SmartSolver:
             -rc: position of a square
             -usable: sorted from least to greatest distance from end
             '''   
-            def in_usable(rc,usable):
-                for sq in usable:
+            def in_usable(m,rc):
+                for sq in m.usable:
                     if rc == sq[0]:
                         return True
                 return False
@@ -87,10 +85,10 @@ class SmartSolver:
             -direction_headed:
             -usable:             
             '''                        
-            def walkable(m,direction_headed,usable):
+            def walkable(m,direction_headed):
                 new = get_next_square(m,direction_headed)
                 if (new[0] >= 0 and new[0] < maze_num_rows and new[1] >= 0 and new[1] < maze_num_cols):
-                    if(m.board[new[0]][new[1]] == True and in_usable(new,usable) == False):
+                    if(m.board[new[0]][new[1]] == True and in_usable(m,new) == False):
                         return (True,new)
                     else:
                         return (False,None)
@@ -104,13 +102,13 @@ class SmartSolver:
             -new: position of new square; tuple
             -usable: 
             '''
-            def walk(m,new,usable):
+            def walk(m,new):
                 m.r = new[0]
                 m.c = new[1]
                 m.runtime += 1
-                if in_usable((m.r,m.c),usable) == False:
+                if in_usable(m,(m.r,m.c)) == False:
                     dist = distance(m)
-                    usable.append([new,dist,True])
+                    m.usable.append([new,dist,True])
                 return
  
             ''' jump
@@ -120,13 +118,12 @@ class SmartSolver:
             -m: maze object
             -usable: 
             '''
-            def jump(m,usable):
-                for i in usable:
+            def jump(m):
+                for i in m.usable:
                     if i[2] == True:
                         new = i[0]
-                        walk(m,new,usable)
+                        walk(m,new)
                         break
-                print ["jump",(m.r,m.c)]
                 return
 
             ''' move
@@ -135,9 +132,10 @@ class SmartSolver:
             -m
             -usable:
             '''
-            def move(m,usable): 
+            def move(m): 
                 dir_dict = dict()
-                j = 0
+                start_end_dist = round(sqrt((m.end[0]-m.r)**2 + (m.end[1]-m.c)**2),4)
+                m.usable = [[(m.r,m.c),start_end_dist,True]]
                 while ((m.r,m.c) != (m.end)):
                     dir_dict["N"] = None
                     dir_dict["S"] = None
@@ -147,25 +145,22 @@ class SmartSolver:
                     visit_order = sorted(dir_dict.iteritems(), key=itemgetter(1), reverse=True)
                     success = False
                     for i in range(0,4):
-                        if walkable(m,visit_order[i][0],usable)[0] == True:
-                            new = walkable(m,visit_order[i][0],usable)[1]
+                        if walkable(m,visit_order[i][0])[0] == True:
+                            new = walkable(m,visit_order[i][0])[1]
                             success = True
-                            walk(m,new,usable)
+                            walk(m,new)
                             break                                          
                     if success == False:
                         d = distance(m)
-                        ind = usable.index([(m.r,m.c),d,True])
-                        usable[ind][2] = False              
-                        usable.sort(key=operator.itemgetter(1))
-                        jump(m,usable)
-                        print ["move",(m.r,m.c),usable]
-                        break
-                        
+                        ind = m.usable.index([(m.r,m.c),d,True])
+                        m.usable[ind][2] = False              
+                        m.usable.sort(key=operator.itemgetter(1))
+                        jump(m)
                 return
 
-            move(m,usable)
+            move(m)
 
-        solve(m,usable)
+        solve(m)
         print m.runtime
 
 #maze = m
