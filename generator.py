@@ -294,7 +294,7 @@ class Generator:
 
 
 
-g = Generator([0.4,0.2,0.2,0.9,0.5,0.5,0.9])
+#g = Generator([0.4,0.2,0.2,0.9,0.5,0.5,0.9])
         #self.start_loc_col = params[0] = 0.0 or 1.0
         #self.start_loc_row = params[1] = 0.0 or 1.0
         #self.p_jump = params[2] = 0.9

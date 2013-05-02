@@ -47,7 +47,7 @@ class Generation :
     -num_rnd (int) : Assigned to self.num_random
     -elites (int) : Assigned to self.num_elites
     '''    
-    def __init__(self,num_fit,pop_sz,num_rnd,elites) :
+    def __init__(self,pop_sz,num_fit,num_rnd,elites) :
         self.num_fittest = num_fit
         self.pop_size = pop_sz
         self.num_random = num_rnd

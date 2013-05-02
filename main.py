@@ -1,6 +1,7 @@
 from generation import *
 from display import *
 from htmldisp import *
+import sys
 
 # DEBUGGING IS OFF
 debug_on = False
@@ -15,15 +16,58 @@ def debug_print(txt,ignore_debug) :
     if (debug_on or ignore_debug):
         print txt
 
+# Parse commandline arguments:
+def txt_is_true(txt) :
+    return (txt.lower() == 'true') or (txt.lower() == 'yes') or (txt.lower() == 'y') or (txt.lower() == '1')
+
+def check(acc,num) :
+    if acc - num < 0 :
+        throw_error("num_fittest + num_random _ num_elites must be less than population_size.")
+        return None
+    else:
+        return acc - num
+    
+def throw_error(err) :
+    print err
+    sys.exit()
+    
+if len(sys.argv) == 7 :
+    pop_size = int(sys.argv[1])
+    acc = pop_size
+    num_fittest = int(sys.argv[2])
+    acc = check(acc,num_fittest)
+    
+    num_random = int(sys.argv[2])
+    acc = check(acc,num_random)
+    
+    num_elites = int(sys.argv[3])
+    acc = check(acc,num_elites)
+    
+    if txt_is_true(sys.argv[4]) :
+        display_maze_generation_in_real_time = True
+    else :
+        display_maze_generation_in_real_time = False
+  
+    if txt_is_true(sys.argv[5]) :
+        display_all_outputted_mazes = True
+    else :
+        display_all_outputted_maze = False
+
+    
+else:
+    throw_error('Useage:\npython main.py [population_size] [num_fittest] [num_random] [num_elites] [display maze generation in realtime] [display all outputted mazes]')
+    
+
 ### SETTINGS
-#intentionally long names for global variables to not clutter namespace
+# Intentionally long names for global variables to not clutter namespace
+# These variables are used in Generator
 display_maze_generation_in_real_time = False
 display_all_outputted_mazes = True
 
 # Create a new generation
 # 5 fittest breed next generation, population size of 10, 2 of which are random and 2 of which are the fittest from the previous generation.
 # (num_fittest, pop_size, num_random, num_elites)
-current_gen = Generation(5,10,2,2)
+current_gen = Generation(num_fittest,pop_size,num_random,num_elites)
 current_gen.spawn_random_generation()
 
 # Set the definition of "no more progress"
