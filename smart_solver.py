@@ -2,8 +2,8 @@ import random
 import operator
 from operator import itemgetter
 from math import sqrt
-#from maze import * #uncomment when ready to test using generate
-from tm import *
+from maze import * #uncomment when ready to test using generate
+#from tm import *
 
 class SmartSolver:
    
@@ -78,6 +78,7 @@ class SmartSolver:
                 for sq in usable:
                     if rc == sq[0]:
                         return True
+                        break
                 return False
  
             ''' walkable
@@ -111,7 +112,8 @@ class SmartSolver:
                 if in_usable((m.r,m.c),usable) == False:
                     dist = distance(m)
                     usable.append([new,dist,True])
-
+                return
+ 
             ''' jump
             Goes to a square in usable that's 1. not False; 2. closest to the end
             Assumes usable is non-empty at this point
@@ -125,6 +127,8 @@ class SmartSolver:
                         new = i[0]
                         walk(m,new,usable)
                         break
+                print ["jump",(m.r,m.c)]
+                return
 
             ''' move
             Tries to walk to an adjacent square; failing, goes to another square
@@ -134,7 +138,7 @@ class SmartSolver:
             '''
             def move(m,usable): 
                 dir_dict = dict()
-
+                j = 0
                 while ((m.r,m.c) != (m.end)):
                     dir_dict["N"] = None
                     dir_dict["S"] = None
@@ -152,18 +156,22 @@ class SmartSolver:
                     if success == False:
                         d = distance(m)
                         ind = usable.index([(m.r,m.c),d,True])
-                        usable[ind][2] = False                 
+                        usable[ind][2] = False              
                         usable.sort(key=operator.itemgetter(1))
                         jump(m,usable)
-                print m.runtime
+                        print ["move",(m.r,m.c),usable]
+                        break
+                        
+                return
 
             move(m,usable)
 
         solve(m,usable)
+        print m.runtime
 
-maze = m
+#maze = m
 smart_solver = SmartSolver()
-smart_solver.smart_solver(maze)	
+#smart_solver.smart_solver(maze)	
 
 
 	    
