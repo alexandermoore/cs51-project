@@ -311,5 +311,6 @@ g = Generator([0.4,0.2,0.2,0.9,0.5,0.5,0.99])
 p_jump = 1: fanning out maze
 p_turn = 0.99; p_jump = 0.1: diagonal maze (good for displaying maze in real time cuz thick lines
 all 0.5: normal
+'''
 
     
