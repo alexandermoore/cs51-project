@@ -45,14 +45,19 @@ class HTMLDisplay:
 
                 if (list[i][j]==False):
                     result += "BACKGROUND-COLOR:#99CCFF;"
+
+                if i == start_x and j == start_y:
+                    result += "BACKGROUND-COLOR:#336633;"
+                if i == end_x and j == end_y:
+                    result += "BACKGROUND-COLOR:#990000;"
                 result += "'>"
                     
 
                 # set start and end
                 if i == start_x and j == start_y:
-                    result += "<font color='336633' FACE='SANS-SERIF' size=4pt ><b>S</b></font>"
+                    result += "<font color='FFFFFF' FACE='SANS-SERIF' size=4pt ><b>S</b></font>"
                 if i == end_x and j == end_y:
-                    result += "<font color='990000' FACE='SANS-SERIF' size=4pt><b>E</b></font>"
+                    result += "<font color='FFFFFF' FACE='SANS-SERIF' size=4pt><b>E</b></font>"
 
                     
 
