@@ -1,4 +1,6 @@
 import time
+import generator
+
 try:
     import GUI
 except SystemExit as e:
@@ -13,7 +15,7 @@ else:
     birds = GUI.check_val.birds
     rd = GUI.check_val.rd
     end = GUI.check_val.end
-    
-    print('Welcome to IRS Tax Database, %s!' % user)
+
+    maze = generator.Generator([startx,starty,jump,forward,birds,rd,end])
     time.sleep(4)
     print('Just kidding!')

@@ -5,7 +5,6 @@ except ImportError:
 # from http://effbot.org/tkinterbook/entry.htm
 import string
 
-passwords = [('DaniWeb', 'best1'), ('newbie', 'help!help!'), (2,3)]
 def make_entry(parent, caption, width=None, **options):
     tk.Label(parent, text=caption).pack(side=tk.TOP)
     entry = tk.Entry(parent, **options)
@@ -23,12 +22,20 @@ def within_range(num):
         return False
     
 def check_val():
+    # set default value
+    rows_entered = 20
+    cols_entered = 20
+    if rows.get() != "":
+        rows_entered = rows.get()
+    if columns.get() != "":
+        cols_entered = columns.get()
+        
     # print('Parameters Entered:',rows.get(),columns.get(), startx.get(), starty.get())
-    if int (rows.get()) > 0 and int (columns.get()) >0:
+    if int (rows_entered) > 0 and int (cols_entered) >0:
         if within_range([startx.get(), starty.get(), jump.get(),forward.get(),
                          birds.get(),returndist.get(),end.get()]):
-            check_val.rows = int (rows.get())
-            check_val.cols = int (columns.get())
+            check_val.rows = rows_entered
+            check_val.cols = cols_entered
             check_val.startx = float (startx.get())
             check_val.starty = float (starty.get())
             check_val.jump = float (jump.get())
@@ -43,6 +50,7 @@ def check_val():
             raise SystemExit('Probabilities should be floats between 0 & 1')                 
     else:
         raise SystemExit('Rows and columns should be positive ints')
+    
 root = tk.Tk()
 root.minsize(300,530)
 root.geometry("500x530")
