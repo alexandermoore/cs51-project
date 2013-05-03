@@ -15,20 +15,58 @@ def make_entry(parent, caption, width=None, **options):
 def enter(event):
     check_val() 
 
+def not_empty(string):
+    return len (string) > 0
+
 def within_range(num):
-    if all((float(param) >= 0 and float(param) <= 1) for param in num):
+    filled = filter(not_empty,num)
+    if all(((float(param) >= 0 and float(param) <= 1)) for param in filled):
         return True
     else:
         return False
     
 def check_val():
-    # set default value
-    rows_entered = 20
-    cols_entered = 20
+    # set default values
+    rows_default = 20
+    cols_default = 20
+    startx_default = 0.4
+    starty_default = 0.2
+    jump_default = 0.8
+    forward_default = 0.7
+    birds_default = 0.8
+    rd_default = 0.7
+    end_default = 0.8
+
+    # initialize entered to defaults
+    rows_entered = rows_default
+    cols_entered = cols_default
+    startx_entered = startx_default
+    starty_entered = starty_default
+    jump_entered = jump_default
+    forward_entered = forward_default
+    birds_entered = birds_default
+    rd_entered = rd_default
+    end_entered = end_default
+
+    # set entered to value if given
     if rows.get() != "":
         rows_entered = int (rows.get())
     if columns.get() != "":
         cols_entered = int (columns.get())
+    if startx.get() != "":
+        startx_entered = float (startx.get())
+    if starty.get() != "":
+        starty_entered = float (starty.get())
+    if jump.get() != "":
+        jump_entered = float (jump.get())
+    if forward.get() != "":
+        forward_entered = float (forward.get())
+    if birds.get() != "":
+        birds_entered = float (birds.get())
+    if returndist.get() != "":
+        rd_entered = float (returndist.get())
+    if end.get() != "":
+        end_entered = float (end.get())
         
     # print('Parameters Entered:',rows.get(),columns.get(), startx.get(), starty.get())
     if int (rows_entered) > 0 and int (cols_entered) >0:
@@ -36,20 +74,20 @@ def check_val():
                          birds.get(),returndist.get(),end.get()]):
             check_val.rows = rows_entered
             check_val.cols = cols_entered
-            check_val.startx = float (startx.get())
-            check_val.starty = float (starty.get())
-            check_val.jump = float (jump.get())
-            check_val.forward = float (forward.get())
-            check_val.birds = float (birds.get())
-            check_val.rd = float (returndist.get())
-            check_val.end = float (end.get())
+            check_val.startx = startx_entered
+            check_val.starty = starty_entered
+            check_val.jump = jump_entered
+            check_val.forward = forward_entered
+            check_val.birds = birds_entered
+            check_val.rd = rd_entered
+            check_val.end = end_entered
             root.destroy()
             print('Maze Parameters Accepted')
             return
         else:
-            raise SystemExit('Probabilities should be floats between 0 & 1')                 
+            print('Wrong!: Probabilities should be floats between 0 & 1')                 
     else:
-        raise SystemExit('Rows and columns should be positive ints')
+        print('Wrong!: Rows and columns should be positive ints')
     
 root = tk.Tk()
 root.minsize(300,530)
@@ -60,7 +98,7 @@ root.title('Enter Maze Parameters')
 parent = tk.Frame(root, padx=10, pady=10)
 parent.pack(fill=tk.BOTH, expand=True)
                  
-#entrys in window
+#entries in window
 rows = make_entry(parent, "Rows:", 16)
 columns = make_entry(parent, "Columns:", 16)
 startx = make_entry(parent, "\n Start Location Row:", 16)
