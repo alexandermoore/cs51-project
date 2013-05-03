@@ -1,5 +1,8 @@
 import time
 import generator
+from htmldisp import *
+import webbrowser
+import os
 
 try:
     import GUI
@@ -16,6 +19,19 @@ else:
     rd = GUI.check_val.rd
     end = GUI.check_val.end
 
-    maze = generator.Generator([startx,starty,jump,forward,birds,rd,end])
     time.sleep(4)
-    print('Just kidding!')
+
+    display_object = HTMLDisplay()
+    g = generator.Generator([startx,starty,jump,forward,birds,rd,end])
+    display_object.display(g.mazes[0])
+
+    # webbrowser.open('Maze_ouput.html')
+    webbrowser.get("macosx").open('Maze_output.html')
+    # for windows
+    # os.startfile('Maze-output.html')
+    #open("Maze_output.html")
+    #os.startfile('Maze_output.html')
+    # execfile("MazeOutput.html")
+    # open Maze_output
+    #print('Just kidding!')
+    

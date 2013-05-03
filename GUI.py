@@ -26,9 +26,9 @@ def check_val():
     rows_entered = 20
     cols_entered = 20
     if rows.get() != "":
-        rows_entered = rows.get()
+        rows_entered = int (rows.get())
     if columns.get() != "":
-        cols_entered = columns.get()
+        cols_entered = int (columns.get())
         
     # print('Parameters Entered:',rows.get(),columns.get(), startx.get(), starty.get())
     if int (rows_entered) > 0 and int (cols_entered) >0:
