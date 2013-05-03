@@ -29,13 +29,13 @@ def check_val():
     # set default values
     rows_default = 20
     cols_default = 20
-    startx_default = 0.4
-    starty_default = 0.2
-    jump_default = 0.8
+    startx_default = 0.0
+    starty_default = 0.0
+    jump_default = 0.3
     forward_default = 0.7
     birds_default = 0.8
     rd_default = 0.7
-    end_default = 0.8
+    end_default = 1.0
 
     # initialize entered to defaults
     rows_entered = rows_default
@@ -90,8 +90,8 @@ def check_val():
         print('Wrong!: Rows and columns should be positive ints')
     
 root = tk.Tk()
-root.minsize(300,530)
-root.geometry("500x530")
+root.minsize(300,550)
+root.geometry("500x550")
 root.title('Enter Maze Parameters')
                  
 #frame for window margin
@@ -99,15 +99,15 @@ parent = tk.Frame(root, padx=10, pady=10)
 parent.pack(fill=tk.BOTH, expand=True)
                  
 #entries in window
-rows = make_entry(parent, "Rows:", 16)
-columns = make_entry(parent, "Columns:", 16)
-startx = make_entry(parent, "\n Start Location Row:", 16)
+rows = make_entry(parent, "Number of Rows:", 16)
+columns = make_entry(parent, "Number of Columns:", 16)
+startx = make_entry(parent, "\n The following should be floats between 0.0 & 1.0\n\n Start Location Row:", 16)
 starty = make_entry(parent, "Start Location Column:", 16)
 jump = make_entry(parent, "Jump Probability:", 16)
 forward = make_entry(parent, "Forward Probability:", 16)
 birds = make_entry(parent, "Birds-Eye Probability:", 16)
-returndist = make_entry(parent, "Return Distance:", 16)
-end = make_entry(parent, "End Time:", 16) 
+returndist = make_entry(parent, "Return Distance RAtio:", 16)
+end = make_entry(parent, "End Time Ratio:", 16) 
     
 #button to enter
 b = tk.Button(parent, borderwidth=4, text="Enter", width=10, pady=8, command=check_val)
