@@ -76,7 +76,6 @@ class SmartSolver:
                 for sq in m.usable:
                     if rc == sq[0]:
                         return True
-                        break
                 return False
  
             ''' walkable
@@ -135,8 +134,8 @@ class SmartSolver:
             '''
             def move(m): 
                 dir_dict = dict()
-                start_end_dist = round(sqrt((m.end[0]-m.r)**2 + (m.end[1]-m.c)**2),4)
-                m.usable = [[(m.r,m.c),start_end_dist,True]]
+                end_dist = round(sqrt((m.end[0]-m.r)**2 + (m.end[1]-m.c)**2),4)
+                m.usable = [[(m.r,m.c),end_dist,True]]
                 while ((m.r,m.c) != (m.end)):
                     dir_dict["N"] = None
                     dir_dict["S"] = None

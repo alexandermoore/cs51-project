@@ -3,7 +3,8 @@ import math
 import random
 from display import *
 from settings import *
-from smart_solver import *  # changed 67 and 68
+from smart_solver import *
+from path_finder import *
 
 class Generator:
     
@@ -66,6 +67,7 @@ class Generator:
                 display_object.display(m)
             #self.pythagorean_solve(m)
             smart_solver.smart_solver(m)
+            #pf.find_path(m)
             self.mazes.append(m)
         self.avg_runtime = self.calc_avg_runtime()
 	
@@ -209,7 +211,6 @@ class Generator:
             coorinates = move(m.coodinates,m.direction)
             return
         
-        # adds a given square to m.usable_squares
         ''' add_square
         Adds a given square to m.usable_squares. Inserts as a tuple consisting of (coordinates,dist)
         where dist is the distance of the square from start. Note that coordinates is itself a tuple.
@@ -269,7 +270,10 @@ class Generator:
             add_square(m.coodinates)
             m.board[m.coodinates[0]][m.coodinates[1]] = True
             if m.end_placement_countdown == 0:  
-                m.end = m.coodinates
+                if m.coordinates == m.start:
+                    m.end_placement_countdown = m.end_placement_countdown + 1
+                else:
+                    m.end = m.coodinates
             m.end_placement_countdown = m.end_placement_countdown - 1
             should_jump = random.random()
             if should_jump < self.p_jump:
@@ -280,7 +284,7 @@ class Generator:
                 continue_path()
             if display_maze_generation_in_real_time:
                 display_object.display(m)
-    
+        
     ''' pythagorean_solve
     Gives a dummy value for runtime, which is equal to the distance between start and end
     RETURNS: No return value.
@@ -293,8 +297,16 @@ class Generator:
 
 
 
-
-#g = Generator([0.4,0.2,0.2,0.9,0.5,0.5,0.9])
+# If commandline arguments are provided, use them.
+import sys
+if len(sys.argv) == 8 :
+    sys.argv.pop(0)
+    cmdparams = []
+    for e in sys.argv :
+        cmdparams.append(min(1.0, max(0.0, float(e))))
+    
+    g = Generator(cmdparams)
+#g = Generator([0.4,0.2,0.2,0.9,0.5,0.5,0.99])
         #self.start_loc_col = params[0] = 0.0 or 1.0
         #self.start_loc_row = params[1] = 0.0 or 1.0
         #self.p_jump = params[2] = 0.9
@@ -303,4 +315,9 @@ class Generator:
         #self.return_dist = params[5] = 0.0
         #self.end_time = params[6] = 0.9
 
+'''
+p_jump = 1: fanning out maze
+p_turn = 0.99; p_jump = 0.1: diagonal maze (good for displaying maze in real time cuz thick lines
+all 0.5: normal
+'''
     

@@ -176,6 +176,8 @@ class Generation :
     -g2 (Generator) : The second parent of the child.
     '''
     def __breed(self,g1, g2) :
+    
+    
         # THIS IS A WEIGHTED UNIFORM CROSSOVER.
         # http://en.wikipedia.org/wiki/Crossover_(genetic_algorithm)#Uniform_Crossover_and_Half_Uniform_Crossover
         # More fit = more likely to pass on genes.
@@ -183,6 +185,16 @@ class Generation :
         g1r = float(g1.avg_runtime)
         g2r = float(g2.avg_runtime)
         weight = g1r / (g1r + g2r)
+
+        # THIS IS A WEIGHTED AVERAGE CROSSOVER. Child is the weighted average of its parents.
+        '''
+        params1 = g1.parameter_list
+        params2 = g2.parameter_list
+        newparams = []
+        for i in range(0,self.generator_param_count) :
+            gene = weight * params1[i] + (1.0 - weight) * params2[i]
+            newparams = newparams + [self.__mutate(gene)]
+        '''
         
         # Cross over parameters randomly
         params1 = g1.parameter_list
