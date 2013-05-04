@@ -1,29 +1,81 @@
+# Genetic Algorithm-Related Things:
 from generation import *
 from display import *
 from htmldisp import *
+import sys
+
 
 # DEBUGGING IS OFF
 debug_on = False
 
-'''
-debug_print
+''' debug_print
+Prints the text if debugging or ignoring is enabled.
 RETURNS: No return value
--txt : The item to print
+-txt (stirng) : The item to print
 -ignore_debug (boolean) : Whether or not this print statement should occur regardless of whether or not you're debugging
 '''
 def debug_print(txt,ignore_debug) :
     if (debug_on or ignore_debug):
         print txt
 
-### SETTINGS
-#intentionally long names for global variables to not clutter namespace
-display_maze_generation_in_real_time = False
-display_all_outputted_mazes = True
+''' txt_is_true
+RETURNS: Whether or not the text is indicative of the idea "true"
+-txt (string): The text to evaluate
+'''
+def txt_is_true(txt) :
+    return (txt.lower() == 'true') or (txt.lower() == 'yes') or (txt.lower() == 'y') or (txt.lower() == '1')
 
+''' check
+Helps ensure that num_fittest + num_random + num_elites < population_size
+RETURNS: The result of the subtraction
+-acc (int) : How much "population" is left.
+-num (int) : How much to subtract.
+'''
+def check(acc,num) :
+    if acc - num < 0 :
+        throw_error("ERROR:\nnum_fittest + num_random + num_elites must be less than population_size.")
+        return None
+    else:
+        return acc - num
+        
+''' throw_error
+Throws an error and exits.
+RETURNS: No return value
+-err (string) : The error to print
+'''    
+def throw_error(err) :
+    print err
+    sys.exit()
+
+# Get commandline arguments
+if len(sys.argv) == 5 :
+    pop_size = int(sys.argv[1])
+    acc = pop_size
+    
+    num_fittest = int(sys.argv[2])
+    acc = check(acc,num_fittest)
+    
+    num_random = int(sys.argv[3])
+    acc = check(acc,num_random)
+    
+    num_elites = int(sys.argv[4])
+    acc = check(acc,num_elites)
+    '''
+    if txt_is_true(sys.argv[5]) :
+        display_maze_generation_in_real_time = True
+  
+    if txt_is_true(sys.argv[6]) :
+        display_all_outputted_mazes = True
+    '''
+else:
+    throw_error('Useage:\npython main.py [population_size] [num_fittest] [num_random] [num_elites]')
+    #[display maze generation in realtime] [display all outputted mazes]')
+    
+    
 # Create a new generation
 # 5 fittest breed next generation, population size of 10, 2 of which are random and 2 of which are the fittest from the previous generation.
 # (num_fittest, pop_size, num_random, num_elites)
-current_gen = Generation(5,10,2,2)
+current_gen = Generation(num_fittest,pop_size,num_random,num_elites)
 current_gen.spawn_random_generation()
 
 # Set the definition of "no more progress"

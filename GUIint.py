@@ -25,6 +25,6 @@ else:
     # for mac
     os.system("open "+'Maze_output.html');
     # for windows
-    # os.system("start "+'Maze_output.html');
+    os.system('Maze_output.html');
   
     
