@@ -17,10 +17,7 @@ class Maze:
     start = (None,None) 
 
     # Coordinates of the END square
-    if not display_maze_generation_in_real_time :
-        end = (None,None)
-    else :
-        end = (0,0)
+    end = (None,None)
 
     # Current coordinates of maze solver or generator
     coordinates = (None,None)
@@ -37,7 +34,6 @@ class Maze:
     # A board customized to a specific initial state
     def __init__(self):
         self.board = self.make_board()
-
         if display_maze_generation_in_real_time:
             end = (0,0)
 
