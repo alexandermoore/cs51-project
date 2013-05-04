@@ -67,7 +67,7 @@ class Generator:
                 display_object.display(m)
             #self.pythagorean_solve(m)
             smart_solver.smart_solver(m)
-            #pf.find_path(m)
+            pf.path_finder_solve(m)
             self.mazes.append(m)
         self.avg_runtime = self.calc_avg_runtime()
 	
@@ -297,16 +297,8 @@ class Generator:
 
 
 
-# If commandline arguments are provided, use them.
-import sys
-if len(sys.argv) == 8 :
-    sys.argv.pop(0)
-    cmdparams = []
-    for e in sys.argv :
-        cmdparams.append(min(1.0, max(0.0, float(e))))
-    
-    g = Generator(cmdparams)
-#g = Generator([0.4,0.2,0.2,0.9,0.5,0.5,0.99])
+
+g = Generator([0.4,0.2,0.2,0.9,0.5,0.5,0.99])
         #self.start_loc_col = params[0] = 0.0 or 1.0
         #self.start_loc_row = params[1] = 0.0 or 1.0
         #self.p_jump = params[2] = 0.9
@@ -315,9 +307,4 @@ if len(sys.argv) == 8 :
         #self.return_dist = params[5] = 0.0
         #self.end_time = params[6] = 0.9
 
-'''
-p_jump = 1: fanning out maze
-p_turn = 0.99; p_jump = 0.1: diagonal maze (good for displaying maze in real time cuz thick lines
-all 0.5: normal
-'''
     
