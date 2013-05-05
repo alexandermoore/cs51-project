@@ -32,7 +32,9 @@ class SmartSolver:
                 dir_dict[d_two] = round(random.uniform(0,0.25),4)
 
             ''' assign_weight
-            Gives a direction towards the end a higher chance of being chosen first
+            Assigns a higher value to the direction(s) that take the solver towards the end
+            RETURNS: nothing
+            -dir_dict: a dict with direction as 'key' and float as 'value.' 
             '''
             def assign_weight(m,dir_dict):
                 if m.coord[0] < m.end[0]:
@@ -49,7 +51,7 @@ class SmartSolver:
                     weigh_same(dir_dict,"W","E")
 
             ''' get_next_square
-            RETURNS: next square's position; a tuple
+            RETURNS: next square's position (tuple)
             '''
             def get_next_square(m,direction_headed):
                 if direction_headed == "N":
@@ -62,9 +64,15 @@ class SmartSolver:
                     return m.coord[0],m.coord[1]+1
 
             ''' distance
+<<<<<<< HEAD
             Calculates the distance between a square and the end square.
             RETURNS: distance between the two squares
             -m: maze object; (m.coord[0]: current row; m.coord[1]: current column; m.end: tuple)
+=======
+            Calculates the distance between the current square and the end square.
+            RETURNS: distance between the two squares (float)
+            -m: maze object -> m.r: current row; m.c: current column; m.end: tuple
+>>>>>>> 0b9346fef7f86f9001f79ea8cee6f8e7248aafbc
             '''
       	    def distance(m):  
                 distance_from_end = round(sqrt((m.end[0]-m.coord[0])**2 + (m.end[1]-m.coord[1])**2),4)
@@ -74,7 +82,6 @@ class SmartSolver:
             Checks whether a square is in the usable list.
             RETURNS: boolean
             -rc: position of a square
-            -usable: sorted from least to greatest distance from end
             '''   
             def in_usable(m,rc):
                 for sq in m.usable:
@@ -84,10 +91,8 @@ class SmartSolver:
  
             ''' walkable
             Checks whether a new square is 1. on board; 2. unobstructed; 3. not in usable
-            RETURNS: either (True,(new_r,new_c)) or (False,None)
-            -m: 
-            -direction_headed:
-            -usable:             
+            RETURNS: either a tuple of boolean and tuple or None (True,(new_r,new_c)) or (False,None)
+            -direction_headed: a char indicating direction ('N', 'S', 'W', or 'E')             
             '''                        
             def walkable(m,direction_headed):
                 new = get_next_square(m,direction_headed)
@@ -101,10 +106,8 @@ class SmartSolver:
 
             ''' walk
             Updates current position and runtime
-            RETURNS: Nothing.
-            -m: maze object
+            RETURNS: nothing
             -new: position of new square; tuple
-            -usable: 
             '''
             def walk(m,new):
                 m.coord[0] = new[0]
@@ -118,9 +121,8 @@ class SmartSolver:
             ''' jump
             Goes to a square in usable that's 1. not False; 2. closest to the end
             Assumes usable is non-empty at this point
-            RETURNS: Nothing.
-            -m: maze object
-            -usable: 
+            RETURNS: nothing
+            -m: maze object 
             '''
             def jump(m):
                 for i in m.usable:
@@ -132,9 +134,8 @@ class SmartSolver:
 
             ''' move
             Tries to walk to an adjacent square; failing, goes to another square
-            RETURNS: Nothing.
-            -m
-            -usable:
+            RETURNS: nothing
+            -m: maze object
             '''
             def move(m): 
                 dir_dict = dict()
@@ -146,6 +147,8 @@ class SmartSolver:
                     dir_dict["W"] = None
                     dir_dict["E"] = None
                     assign_weight(m,dir_dict)
+
+                    # visit_order is a list of directions in dir_dict sorted by value
                     visit_order = sorted(dir_dict.iteritems(), key=itemgetter(1), reverse=True)
                     success = False
                     for i in range(0,4):
@@ -173,21 +176,3 @@ smart_solver = SmartSolver()
 
 
 
-	    
-"""
-shell files: batch files
-a sheebang
-#!/bin/sh
-python generate.py
-python display.py
-...
-commands you want to execute
-"""
-# group function calls at the end
-# Question: usable is a list that'll never be empty before its index is accessed (at least, that's how it's set up). 
-# Should I still include an if branch that handles the empty case?
-# comment for function : assumes the list is not empty (cleaner)
-# or include the branch to check
-
-# dir_dict = {'S':0.20, 'E':0.33, 'W': 0.19, 'N':0.05}
-# visit_order = [('E',0.33),('S',0.20),('W',0.19),('N',0.05)]
