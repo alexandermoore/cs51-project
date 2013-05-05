@@ -26,6 +26,10 @@ def check_radio():
     radio = act.get()
     if (radio == 1 or radio == 2):
         return True
+        if radio == 1:
+            check_radio.run_genetic = True
+        else:
+            check_radio.run_genetic = False                            
     else:
         print('Please pick an activity!')
         return False

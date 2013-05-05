@@ -24,7 +24,7 @@ def enter(event):
     check_all()
     
 def check_option():
-    solver = solver_chosen.get()
+    check_option.solver = solver_chosen.get()
     
 def not_empty(string):
     return len (string) > 0
