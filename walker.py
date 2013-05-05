@@ -12,8 +12,7 @@ class Walker:
     def walker(self,m):	
 
         # initialize current position to start square
-        m.coord[0] = m.start[0]
-        m.coord[1] = m.start[1]
+        m.coord = m.start
         self.walker_runtime = 0
 
         ''' solve
@@ -104,8 +103,7 @@ class Walker:
             -new: position of new square; tuple
             '''
             def walk(m,new):
-                m.coord[0] = new[0]
-                m.coord[1] = new[1]
+                m.coord = new
                 self.walker_runtime += 1
                 if in_usable(m,(m.coord[0],m.coord[1])) == False:
                     dist = distance(m)

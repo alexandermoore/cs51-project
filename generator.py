@@ -3,7 +3,7 @@ import math
 import random
 from display import *
 from settings import *
-from smart_solver import *
+from walker import *
 from path_finder import *
 from sys import exit
 
