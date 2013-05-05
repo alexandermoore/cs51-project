@@ -32,8 +32,7 @@ class Maze:
     '''***************** METHODS *****************'''
     
     ''' __init__
-    Constructor. Initializes the parameters and creates each of mazes, including runtime. It then
-    calculates the average runtime. The only input is a list of seven floats between 0 and 1.
+    Constructor. Sets runtime to 0. If maze is displayed in real time, set end to (0,0) to allow display to work before runtime set. Also calls make_board.
     RETURNS: No return value.
     ''' 
     def __init__(self):
