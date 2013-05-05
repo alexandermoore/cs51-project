@@ -46,7 +46,10 @@ class Maze:
         if display_maze_generation_in_real_time:
             end = (0,0)
 
-    
+    ''' make_board
+    Makes the board of appropriate size based on maze_num_rows and maze_num_cols. Initializes all squares to False.
+    RETURNS: The board for the maze
+    '''
     def make_board(self):
         board = []
         for val in range(maze_num_rows):
