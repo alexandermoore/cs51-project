@@ -70,12 +70,12 @@ def check_val():
         cols_entered = int (columns.get())
         
     # print('Parameters Entered:',rows.get(),columns.get(), startx.get(), starty.get())
-    if int (rows_entered) > 0 and int (cols_entered) >0:
+    if int (rows_entered) >= 4 and int (cols_entered) >=4:
             check_val.rows = rows_entered
             check_val.cols = cols_entered
             return True
     else:
-        print('Wrong!: Rows and columns should be positive ints')
+        print('Wrong!: Rows and columns should be positive ints >= 4')
         return False
 
 ''' check_all
