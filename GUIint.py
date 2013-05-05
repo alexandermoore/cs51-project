@@ -12,12 +12,12 @@ cols = activity_gui.check_val.cols
 # Run Genetic Algorithm
 if activity_gui.check_radio.run_genetic==True:
     from genetic_gui import *
-    from main import *
+    from genetic_alg import *
     size = check_val.size
     fittest = check_val.fittest
     random = check_val.random
     elites = check_val.elites
-    main(size,fittest,random,elites)
+    genetic_alg(size,fittest,random,elites)
     
 
 # Build Custom Maze
