@@ -32,9 +32,8 @@ class SmartSolver:
                 dir_dict[d_two] = round(random.uniform(0,0.25),4)
 
             ''' assign_weight
-            '''
             Gives a direction towards the end a higher chance of being chosen first
-
+            '''
             def assign_weight(m,dir_dict):
                 if m.r < m.end[0]:
                     weigh_diff(dir_dict,"S","N")
