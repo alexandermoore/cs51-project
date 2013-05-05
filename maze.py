@@ -17,7 +17,7 @@ class Maze:
     start = (None,None) 
 
     # Coordinates of the END square
-    end = (None,None)
+    end = (0,0)
 
     # Current coordinates of maze solver or generator
     coordinates = (None,None)

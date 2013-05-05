@@ -9,9 +9,9 @@ class Generator :
         self.parameter_list = [e for e in params]
         def test(p) :
             if abs(p - 0.5) <= 0.2 :
-                return p
+                return -p
             else :
-                return 0.0
+                return -0.0001
 
         new_lst = [test(params[e]) for e in range(0,len(params))]
         self.avg_runtime = sum(new_lst)
@@ -90,7 +90,7 @@ class Generation :
         prob_list = []
         upper_bound = 0
         for g in gens :
-            upper_bound = upper_bound + g.avg_runtime
+            upper_bound = upper_bound + abs(g.avg_runtime)
             prob_list.append((g, upper_bound))
         return prob_list
     
@@ -181,7 +181,6 @@ class Generation :
         # THIS IS A WEIGHTED UNIFORM CROSSOVER.
         # http://en.wikipedia.org/wiki/Crossover_(genetic_algorithm)#Uniform_Crossover_and_Half_Uniform_Crossover
         # More fit = more likely to pass on genes.
-
         g1r = float(g1.avg_runtime)
         g2r = float(g2.avg_runtime)
         weight = g1r / (g1r + g2r)
