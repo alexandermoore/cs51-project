@@ -72,7 +72,8 @@ class Generator:
             elif maze_solver == "pythagorean":
                 self.pythagorean_solve(m)
             elif maze_solver == "inverse":
-                ########################################################################## add inverse solver
+                print "cow"
+            ######################################################################### add inverse solver
             else:
                 print "ERROR: invalid solver"
             smart_solver.smart_solver(m)
