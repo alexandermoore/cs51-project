@@ -11,16 +11,15 @@ class SmartSolver:
     
     def smart_solver(self,m):	
 
-        # initialize current position to start
+        # initialize current position to start square
         m.r = m.start[0]
         m.c = m.start[1]
         self.smart_solver_runtime = 0
 
         ''' solve
-        Goes through a maze
-        RETURNS: runtime
+        Goes through a maze from start to end
+        RETURNS: runtime (int)
         -m: maze object
-        -usable: a list that keeps track of squares visited
         '''
         def solve(m):
 
@@ -32,6 +31,9 @@ class SmartSolver:
                 dir_dict[d_one] = round(random.uniform(0,0.25),4)
                 dir_dict[d_two] = round(random.uniform(0,0.25),4)
 
+            ''' assign_weight
+            Gives a direction towards the end a higher chance of being chosen first
+            '''
             def assign_weight(m,dir_dict):
                 if m.r < m.end[0]:
                     weigh_diff(dir_dict,"S","N")
@@ -165,11 +167,10 @@ class SmartSolver:
 
         solve(m)
         m.runtime = math.sqrt(self.smart_solver_runtime)
-        print self.smart_solver_runtime
 
-#maze = m
+
 smart_solver = SmartSolver()
-#smart_solver.smart_solver(maze)	
+
 
 
 	    
