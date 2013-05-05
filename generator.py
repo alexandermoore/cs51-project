@@ -68,15 +68,16 @@ class Generator:
                 display_object.display(m)
             if maze_solver == "smart":
                 smart_solver.smart_solver(m)
+                print m.runtime
                 pf.path_finder_solve(m)
+                print m.runtime
             elif maze_solver == "pythagorean":
                 self.pythagorean_solve(m)
             elif maze_solver == "inverse":
                 ########################################################################## add inverse solver
+                print "I haven't added inverse solver yet"
             else:
                 print "ERROR: invalid solver"
-            smart_solver.smart_solver(m)
-            pf.path_finder_solve(m)
             self.mazes.append(m)
         self.mazes.sort(key = lambda x: x.runtime)
         self.mazes.reverse()
@@ -310,13 +311,7 @@ class Generator:
 
 
 
-g = Generator([0.4,0.2,0.2,0.9,0.5,0.5,0.99])
-        #self.start_loc_col = params[0] = 0.0 or 1.0
-        #self.start_loc_row = params[1] = 0.0 or 1.0
-        #self.p_jump = params[2] = 0.9
-        #self.p_forward = params[3] = ??
-        #self.p_birds_eye = params[4] = 1.0
-        #self.return_dist = params[5] = 0.0
-        #self.end_time = params[6] = 0.9
+g = Generator([0.4,0.2,0.2,0.9,0.5,0.5,1.0])
+
 
     
