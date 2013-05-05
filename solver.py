@@ -41,7 +41,7 @@ class Solver:
         def walk(cur_x,cur_y,compass,maze):
             if compass == "N":
                 # try to go left
-                if walkable(cur_x,cur_y-1,board) == True:
+                if walkable(cur_x,cur_y-1,maze.board) == True:
                     cur_y = cur_y-1
 		    maze.runtime += 1
 		    compass = "W"		   
@@ -52,7 +52,7 @@ class Solver:
 
                 # try to go forward	    	    
 	        else:
-                    if walkable(cur_x-1,cur_y,board) == True:
+                    if walkable(cur_x-1,cur_y,maze.board) == True:
                         cur_x = cur_x-1
 		        maze.runtime += 1
 		        if (cur_x,cur_y) == maze.end:
@@ -224,5 +224,5 @@ class Solver:
 	print maze.runtime
            
 maze = m
-simple_solver = Solver()
-simple_solver.solve(maze)
+solver = Solver()
+solver.solve(maze)

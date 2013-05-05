@@ -74,7 +74,6 @@ class HTMLDisplay:
         f.write(result)
 
 display_object = HTMLDisplay()
-g = Generator([0.1,0.8,0.01,0.5,0.5,0.5,0.999])
-display_object.display(g.mazes[0])
+
         
    

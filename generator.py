@@ -3,7 +3,7 @@ import math
 import random
 from display import *
 from settings import *
-from smart_solver import *
+from walker import *
 from path_finder import *
 from sys import exit
 
@@ -67,14 +67,16 @@ class Generator:
             if display_all_outputted_mazes:
                 display_object.display(m)
             if maze_solver == "smart":
-                smart_solver.smart_solver(m)
+                walker.walker(m)
                 pf.path_finder_solve(m)
             elif maze_solver == "pythagorean":
                 self.pythagorean_solve(m)
             elif maze_solver == "inverse":
-                smart_solver.smart_solver(m)
+                walker.walker(m)
                 pf.path_finder_solve(m)
                 m.runtime = (-1)*m.runtime
+            elif maze_solver == "display":
+                pf.path_finder_solve(m)
             else:
                 print "ERROR: invalid solver"
                 exit()
@@ -219,7 +221,7 @@ class Generator:
         def new_path():
             while not(check_dir(m.coord,m.direction)):
                 m.direction = (m.direction + 1) % 4
-            coorinates = move(m.coord,m.direction)
+            m.coord = move(m.coord,m.direction)
             return
         
         ''' add_square

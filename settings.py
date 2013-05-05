@@ -1,10 +1,10 @@
 # Make global variables in scope
-display_maze_generation_in_real_time = False
-display_maze_solution = False
-run_genetic_algorithm = False
+display_maze_generation_in_real_time = None
+display_maze_solution = None
+run_genetic_algorithm = None
 maze_num_rows = None
 maze_num_cols = None
-maze_solver = "pythagorean"
+maze_solver = None
 
 
 import activity_gui
@@ -15,7 +15,9 @@ maze_num_cols = activity_gui.check_val.cols
 
 if run_genetic_algorithm:
     import genetic_gui
-    # solver options: "inverse", "pythagorean", or "smart"
+    display_maze_generation_in_real_time = False
+    display_maze_solution = False
+    # solver options: "inverse", "pythagorean", "smart", or "display"
     maze_solver = genetic_gui.check_option.solver
     num_mazes = 10
     display_all_outputted_mazes = False
@@ -27,7 +29,7 @@ else:
     display_maze_solution = custom_gui.check_box.disp_sol
     num_mazes = 1
     display_all_outputted_mazes = True
-    maze_solver = "pythagorean"
+    maze_solver = "display"
 
 
 
