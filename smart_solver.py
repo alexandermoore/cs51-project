@@ -12,8 +12,7 @@ class SmartSolver:
     def smart_solver(self,m):	
 
         # initialize current position to start square
-        m.coord[0] = m.start[0]
-        m.coord[1] = m.start[1]
+        m.coord = m.start
         self.smart_solver_runtime = 0
 
         ''' solve
@@ -64,15 +63,9 @@ class SmartSolver:
                     return m.coord[0],m.coord[1]+1
 
             ''' distance
-<<<<<<< HEAD
             Calculates the distance between a square and the end square.
             RETURNS: distance between the two squares
             -m: maze object; (m.coord[0]: current row; m.coord[1]: current column; m.end: tuple)
-=======
-            Calculates the distance between the current square and the end square.
-            RETURNS: distance between the two squares (float)
-            -m: maze object -> m.r: current row; m.c: current column; m.end: tuple
->>>>>>> 0b9346fef7f86f9001f79ea8cee6f8e7248aafbc
             '''
       	    def distance(m):  
                 distance_from_end = round(sqrt((m.end[0]-m.coord[0])**2 + (m.end[1]-m.coord[1])**2),4)
@@ -110,8 +103,7 @@ class SmartSolver:
             -new: position of new square; tuple
             '''
             def walk(m,new):
-                m.coord[0] = new[0]
-                m.coord[1] = new[1]
+                m.coord = new
                 self.smart_solver_runtime += 1
                 if in_usable(m,(m.coord[0],m.coord[1])) == False:
                     dist = distance(m)
