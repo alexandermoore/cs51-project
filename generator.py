@@ -72,13 +72,13 @@ class Generator:
             elif maze_solver == "pythagorean":
                 self.pythagorean_solve(m)
             elif maze_solver == "inverse":
-                ########################################################################## add inverse solver
-                print "I haven't added inverse solver yet"
+                smart_solver.smart_solver(m)
+                pf.path_finder_solve(m)
+                m.runtime = (-1)*m.runtime
             else:
                 print "ERROR: invalid solver"
             self.mazes.append(m)
         self.mazes.sort(key = lambda x: x.runtime)
-        self.mazes.reverse()
         self.avg_runtime = self.calc_avg_runtime()
 	
     ''' calc_avg_runtime

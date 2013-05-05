@@ -72,11 +72,10 @@ def main(pop_size, num_fittest, num_random, num_elites) :
     current_gen.spawn_random_generation()
 
     # Set the definition of "no more progress"
-    negligible = 0.01
+    negligible = 0.0
 
-    # Make sure new_fitness - best_fitness cannot be < negligible 
-    # on first run
-    best_fitness = -negligible - 1
+    best_fitness = None
+    just_started = True
 
     # Actual loop
     gen_num = 0
@@ -91,6 +90,8 @@ def main(pop_size, num_fittest, num_random, num_elites) :
         
         # run this generation and get its fitness
         new_fitness = current_gen.run()
+        if just_started :
+            best_fitness = new_fitness
         
         # Print some information about this generation
         debug_print("BEST FROM THIS GENERATION:", False)
@@ -101,35 +102,43 @@ def main(pop_size, num_fittest, num_random, num_elites) :
             debug_print(best_generator.parameter_list, False)
         debug_print("DIFFERENCE FROM BEST GENERATOR:", False)
         debug_print(new_fitness-best_fitness, False)
-        
+
         # If the change is non-negligible, record the fittest generator in the generation as the best.
         if (new_fitness - best_fitness > negligible) :
             bad_gen_count = 0
             best_generator = current_gen.fittest[0]
             best_fitness = new_fitness
         # Otherwise, say this is a bad generation and move on.
-        else :
+        elif not just_started :
             bad_gen_count = bad_gen_count + 1
             debug_print("NO PROGRESS GENERATION #"+str(bad_gen_count)+" / "+str(bad_gen_termination)+"\n", True)
             if (bad_gen_count == bad_gen_termination) :
                 break
+        else :
+            just_started = False
         # Spawn the next generation from the previous generation (even if it was bad!)
         current_gen = current_gen.spawn_next_generation()
 
-
+    
+    # Print info about generator
+    # This is specfic to our project, which uses 7 parameters.
+    annotations = ["Start Location Row","Start Location Column","Jump Probability","Forward Probability","Birds-Eye Probability","Return Distance Ratio","End Time Ratio"]
+    
     debug_print("\n\nBEST GENERATOR: ", True)
-    debug_print(best_generator.parameter_list, True)
-    debug_print(best_generator.avg_runtime, True)
-    debug_print("ALL MAZES:", True)
+    for i in range(0, 7) :
+        debug_print(annotations[i] + ": " + str(best_generator.parameter_list[i]), True)
+    debug_print("\nAVG RUNTIME: " + str(best_generator.avg_runtime), True)
 
-    # Display the fittest mazes
+    # Display mazes
+    debug_print("\nALL MAZES:", True)
     display_obj = MazeDisplay()
     htmldisplay_obj = HTMLDisplay()
-    for m in best_generator.mazes :
-        display_obj.display(m)
-    debug_print("\nVERY BEST MAZE:\n", True)
-    display_obj.display(best_generator.mazes[0])
-    htmldisplay_obj.display(best_generator.mazes[0])
+    num_of_mazes = len(best_generator.mazes)
+    for m in range(0, num_of_mazes) :
+        if m == num_of_mazes - 1 :
+            debug_print("\nVERY BEST MAZE:\n", True)
+        display_obj.display(best_generator.mazes[m])
+    htmldisplay_obj.display(best_generator.mazes[num_of_mazes - 1])
 
 # Actually run the code with the correct parameters.
 main(pop_size, num_fittest, num_fittest, num_elites)
