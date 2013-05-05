@@ -126,7 +126,7 @@ class Walker:
 
             ''' move
             Tries to walk to an adjacent square; failing, goes to another square
-            RETURNS: nothing
+            RETURNS: No return value.
             -m: maze object
             '''
             def move(m): 
@@ -161,7 +161,7 @@ class Walker:
             move(m)
 
         solve(m)
-        m.runtime = math.sqrt(self.walker_runtime)
+        m.runtime += math.sqrt(self.walker_runtime)
 
 
 walker = Walker()
