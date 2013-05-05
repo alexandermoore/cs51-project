@@ -27,5 +27,5 @@ if run_genetic_algorithm:
 else:
     num_mazes = 1
     display_all_outputted_mazes = True
-    smart_solver = "pythagorean"
+    maze_solver = "pythagorean"
     
