@@ -47,11 +47,14 @@ class Generation :
     -num_rnd (int) : Assigned to self.num_random
     -elites (int) : Assigned to self.num_elites
     '''    
-    def __init__(self,num_fit,pop_sz,num_rnd,elites) :
-        self.num_fittest = num_fit
+    def __init__(self,pop_sz,num_fit,num_rnd,elites) :
         self.pop_size = pop_sz
+        self.num_fittest = num_fit
         self.num_random = num_rnd
         self.num_elites = elites
+        print ["POP_SIZE: ",self.pop_size]
+        print ["NUM_FITTEST: ",self.num_fittest]
+        print ["NUM_ELITES: ",self.num_elites]
     
     ''' update_fittest
     Updates self.fittest with the most fit Generators in self.generators (the population).
@@ -128,7 +131,7 @@ class Generation :
         for i in range(0, self.pop_size - self.num_random - self.num_elites) :
             children.append(self.__spawn_child(prob_fittest))
             
-        new_gen = Generation(self.num_fittest,self.pop_size,self.num_random,self.num_elites)
+        new_gen = Generation(self.pop_size,self.num_fittest,self.num_random,self.num_elites)
         new_gen.generators = children + self.__make_random_generators(self.num_random) + self.fittest[:self.num_elites]
         return new_gen
     
@@ -176,6 +179,8 @@ class Generation :
     -g2 (Generator) : The second parent of the child.
     '''
     def __breed(self,g1, g2) :
+    
+    
         # THIS IS A WEIGHTED UNIFORM CROSSOVER.
         # http://en.wikipedia.org/wiki/Crossover_(genetic_algorithm)#Uniform_Crossover_and_Half_Uniform_Crossover
         # More fit = more likely to pass on genes.
@@ -183,6 +188,16 @@ class Generation :
         g1r = float(g1.avg_runtime)
         g2r = float(g2.avg_runtime)
         weight = g1r / (g1r + g2r)
+
+        # THIS IS A WEIGHTED AVERAGE CROSSOVER. Child is the weighted average of its parents.
+        '''
+        params1 = g1.parameter_list
+        params2 = g2.parameter_list
+        newparams = []
+        for i in range(0,self.generator_param_count) :
+            gene = weight * params1[i] + (1.0 - weight) * params2[i]
+            newparams = newparams + [self.__mutate(gene)]
+        '''
         
         # Cross over parameters randomly
         params1 = g1.parameter_list

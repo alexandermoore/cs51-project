@@ -1,18 +1,20 @@
 import random
 import operator
+import math
 from operator import itemgetter
 from math import sqrt
-from maze import * #uncomment when ready to test using generate
-#from tm import *
+from maze import *
 
 class SmartSolver:
-   
+    
+    smart_solver_runtime = 0
+    
     def smart_solver(self,m):	
 
         # initialize current position to start square
         m.r = m.start[0]
         m.c = m.start[1]
-        m.runtime = 0
+        self.smart_solver_runtime = 0
 
         ''' solve
         Goes through a maze from start to end
@@ -79,7 +81,6 @@ class SmartSolver:
                 for sq in m.usable:
                     if rc == sq[0]:
                         return True
-                        break
                 return False
  
             ''' walkable
@@ -109,7 +110,7 @@ class SmartSolver:
             def walk(m,new):
                 m.r = new[0]
                 m.c = new[1]
-                m.runtime += 1
+                self.smart_solver_runtime += 1
                 if in_usable(m,(m.r,m.c)) == False:
                     dist = distance(m)
                     m.usable.append([new,dist,True])
@@ -138,8 +139,8 @@ class SmartSolver:
             '''
             def move(m): 
                 dir_dict = dict()
-                start_end_dist = round(sqrt((m.end[0]-m.r)**2 + (m.end[1]-m.c)**2),4)
-                m.usable = [[(m.r,m.c),start_end_dist,True]]
+                end_dist = round(sqrt((m.end[0]-m.r)**2 + (m.end[1]-m.c)**2),4)
+                m.usable = [[(m.r,m.c),end_dist,True]]
                 while ((m.r,m.c) != (m.end)):
                     dir_dict["N"] = None
                     dir_dict["S"] = None
@@ -156,6 +157,7 @@ class SmartSolver:
                             break                                          
                     if success == False:
                         d = distance(m)
+                        m.usable.sort(key = lambda x: x[1])
                         ind = m.usable.index([(m.r,m.c),d,True])
                         m.usable[ind][2] = False              
                         m.usable.sort(key=operator.itemgetter(1))
@@ -165,7 +167,8 @@ class SmartSolver:
             move(m)
 
         solve(m)
-        print m.runtime
+        m.runtime = math.sqrt(self.smart_solver_runtime)
+        print self.smart_solver_runtime
 
 #maze = m
 smart_solver = SmartSolver()
