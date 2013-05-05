@@ -167,7 +167,6 @@ class SmartSolver:
 
         solve(m)
         m.runtime = math.sqrt(self.smart_solver_runtime)
-        print self.smart_solver_runtime
 
 
 smart_solver = SmartSolver()

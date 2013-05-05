@@ -14,11 +14,11 @@ except SystemExit as e:
 else:
     display_maze_generation_in_real_time = False
     display_maze_solution = False
-    run_genetic_algorithm = False
+    run_genetic_algorithm = True
     maze_num_rows = check_val.rows
     maze_num_cols = check_val.cols
     # solver options: "inverse", "pythagorean", or "smart"
-    maze_solver = "smart"
+    maze_solver = "pythagorean"
 
 if run_genetic_algorithm:
     num_mazes = 10
