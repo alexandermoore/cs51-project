@@ -132,7 +132,7 @@ debug_print(best_generator.avg_runtime, True)
 display_obj = MazeDisplay()
 htmldisplay_obj = HTMLDisplay()
 for m in best_generator.mazes :
-    display_object.display(m)
+    display_obj.display(m)
 debug_print("DISPLAYING FIRST ONE", False)
 display_obj.display(best_generator.mazes[0])
 htmldisplay_obj.display(best_generator.mazes[0])

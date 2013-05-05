@@ -154,6 +154,7 @@ class SmartSolver:
                             break                                          
                     if success == False:
                         d = distance(m)
+                        m.usable.sort(key = lambda x: x[1])
                         ind = m.usable.index([(m.r,m.c),d,True])
                         m.usable[ind][2] = False              
                         m.usable.sort(key=operator.itemgetter(1))
