@@ -50,7 +50,7 @@ class PathFinder:
             maze_for_display.board = maze
             maze_for_display.start = m.start
             maze_for_display.end = m.end
-            display_object.display(maze_for_display)
+            #display_object.display(maze_for_display)
             return
         
         def evaluate_path():

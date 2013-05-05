@@ -5,7 +5,7 @@ from htmldisp import *
 import sys
 
 # DEBUGGING IS OFF
-debug_on = True
+debug_on = False
 
 ''' debug_print
 Prints the text if debugging or ignoring is enabled.
@@ -81,7 +81,7 @@ def main(pop_size, num_fittest, num_random, num_elites) :
     # Actual loop
     gen_num = 0
     bad_gen_count = 0
-    # Terminate after 10 successive negligible generations.
+    # Terminate after 3 successive negligible generations.
     bad_gen_termination = 3
     best_generator = None
 
@@ -110,7 +110,7 @@ def main(pop_size, num_fittest, num_random, num_elites) :
         # Otherwise, say this is a bad generation and move on.
         else :
             bad_gen_count = bad_gen_count + 1
-            debug_print("BAD GENERATION "+str(bad_gen_count)+" / "+str(bad_gen_termination)+"\n", False)
+            debug_print("NO PROGRESS GENERATION #"+str(bad_gen_count)+" / "+str(bad_gen_termination)+"\n", True)
             if (bad_gen_count == bad_gen_termination) :
                 break
         # Spawn the next generation from the previous generation (even if it was bad!)
@@ -120,13 +120,14 @@ def main(pop_size, num_fittest, num_random, num_elites) :
     debug_print("\n\nBEST GENERATOR: ", True)
     debug_print(best_generator.parameter_list, True)
     debug_print(best_generator.avg_runtime, True)
+    debug_print("ALL MAZES:", True)
 
     # Display the fittest mazes
     display_obj = MazeDisplay()
     htmldisplay_obj = HTMLDisplay()
     for m in best_generator.mazes :
         display_obj.display(m)
-    debug_print("DISPLAYING FIRST ONE", False)
+    debug_print("\nVERY BEST MAZE:\n", True)
     display_obj.display(best_generator.mazes[0])
     htmldisplay_obj.display(best_generator.mazes[0])
 
