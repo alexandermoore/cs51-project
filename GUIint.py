@@ -17,7 +17,6 @@ if activity_gui.check_radio.run_genetic==True:
     fittest = check_val.fittest
     random = check_val.random
     elites = check_val.elites
-    print "about to run main"
     main(size,fittest,random,elites)
     
 
