@@ -13,20 +13,23 @@ def make_entry(parent, caption, width=None, **options):
     entry.pack(side=tk.TOP, padx=10, fill=tk.BOTH)
     return entry
 
-def make_option(parent,OPTIONS, *values):
-    variable = tk.StringVar(parent)
-    variable.set("Choose Activity")
-    w = apply(tk.OptionMenu, (parent,variable) + tuple(OPTIONS))
-    w.pack()
-
 def make_radio(parent, text1, text2):
     v = tk.IntVar()
-    tk.Radiobutton(parent, text=text1, variable=v, value=1).pack(anchor=tk.W)
-    tk.Radiobutton(parent, text=text2, variable=v, value=2).pack(anchor=tk.W)
-    
-def enter(event):
-    check_val() 
+    R1 = tk.Radiobutton(parent, text=text1, variable=v, value=1, command = check_radio).pack(anchor=tk.W)
+    R2 = tk.Radiobutton(parent, text=text2, variable=v, value=2, command = check_radio).pack(anchor=tk.W)
+    return v
 
+def enter(event):
+    check_all()
+
+def check_radio():
+    radio = act.get()
+    if (radio == 1 or radio == 2):
+        return True
+    else:
+        print('Please pick an activity!')
+        return False
+        
     
 def check_val():
     # set default values
@@ -47,12 +50,17 @@ def check_val():
     if int (rows_entered) > 0 and int (cols_entered) >0:
             check_val.rows = rows_entered
             check_val.cols = cols_entered
-            root.destroy()
-            print('Maze Parameters Accepted')
-            return
+            return True
     else:
         print('Wrong!: Rows and columns should be positive ints')
+        return False
 
+# main function to check
+def check_all():
+    if check_val() and check_radio():
+        root.destroy()
+        print('Parameters Accepted')
+    
 # set root and window sizes    
 root = tk.Tk()
 root.minsize(300,200)
@@ -71,7 +79,7 @@ columns = make_entry(parent, "Number of Columns:", 16)
 
     
 #button to enter
-b = tk.Button(parent, borderwidth=5, text="Enter", width=10, pady=10, command=check_val)
+b = tk.Button(parent, borderwidth=5, text="Enter", width=10, pady=10, command=check_all)
 b.pack(side=tk.BOTTOM)
 rows.bind('<Return>', enter)
 columns.focus_set()
