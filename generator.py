@@ -5,6 +5,7 @@ from display import *
 from settings import *
 from smart_solver import *
 from path_finder import *
+from sys import exit
 
 class Generator:
     
@@ -65,7 +66,15 @@ class Generator:
             self.generate(m)
             if display_all_outputted_mazes:
                 display_object.display(m)
-            #self.pythagorean_solve(m)
+            if maze_solver == "smart":
+                smart_solver.smart_solver(m)
+                pf.path_finder_solve(m)
+            elif maze_solver == "pythagorean":
+                self.pythagorean_solve(m)
+            elif maze_solver == "inverse":
+                ########################################################################## add inverse solver
+            else:
+                print "ERROR: invalid solver"
             smart_solver.smart_solver(m)
             pf.path_finder_solve(m)
             self.mazes.append(m)

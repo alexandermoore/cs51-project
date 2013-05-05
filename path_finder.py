@@ -77,7 +77,8 @@ class PathFinder:
                         deletions = deletions + 1
             if deletions == 0:
                 break
-        display()
+        if display_maze_solution:
+            display()
         evaluate_path()
                     
 
