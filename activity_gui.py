@@ -14,11 +14,15 @@ def make_entry(parent, caption, width=None, **options):
     return entry
 
 def make_option(parent,OPTIONS, *values):
-    # master = tk.Tk()
     variable = tk.StringVar(parent)
     variable.set("Choose Activity")
     w = apply(tk.OptionMenu, (parent,variable) + tuple(OPTIONS))
     w.pack()
+
+def make_radio(parent, text1, text2):
+    v = tk.IntVar()
+    tk.Radiobutton(parent, text=text1, variable=v, value=1).pack(anchor=tk.W)
+    tk.Radiobutton(parent, text=text2, variable=v, value=2).pack(anchor=tk.W)
     
 def enter(event):
     check_val() 
@@ -51,7 +55,7 @@ def check_val():
 
 # set root and window sizes    
 root = tk.Tk()
-root.minsize(200,200)
+root.minsize(300,200)
 #root.geometry("500x550")
 root.title('BAAC Maze Generation')
                  
@@ -60,10 +64,8 @@ parent = tk.Frame(root, padx=10, pady=10)
 parent.pack(fill=tk.BOTH, expand=True)
                  
 #entries in window
-opt = make_option(parent,["Genetic Algorithm with Pythagorean Solver",
-           "Genetic Algorithm with Smart Solver",
-           "Genetic Algoithm with Inverse Solver",
-           "Create Custom Maze"],16)
+mlabel= tk.Label(parent,text='Choose Activity:').pack()
+act = make_radio(parent, "Genetic Algorithm", "Custom Maze")
 rows = make_entry(parent, "\nNumber of Rows:", 16)
 columns = make_entry(parent, "Number of Columns:", 16)
 
