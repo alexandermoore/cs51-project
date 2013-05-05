@@ -47,7 +47,7 @@ def throw_error(err) :
     print err
     sys.exit()
 
- 
+''' 
 # Get commandline arguments (if running main directly)
 if len(sys.argv) == 5 :
     pop_size = int(sys.argv[1])
@@ -63,8 +63,8 @@ if len(sys.argv) == 5 :
     acc = check(acc,num_elites)
 else:
     throw_error('Useage:\npython main.py [population_size] [num_fittest] [num_random] [num_elites]')
-    #[display maze generation in realtime] [display all outputted mazes]')
-
+    [display maze generation in realtime] [display all outputted mazes]')
+'''
 
 def main(pop_size, num_fittest, num_random, num_elites) :
     # Create a new generation
@@ -141,4 +141,4 @@ def main(pop_size, num_fittest, num_random, num_elites) :
     htmldisplay_obj.display(best_generator.mazes[num_of_mazes - 1])
 
 # Actually run the code with the correct parameters.
-main(pop_size, num_fittest, num_fittest, num_elites)
+#main(pop_size, num_fittest, num_fittest, num_elites)

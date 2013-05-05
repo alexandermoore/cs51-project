@@ -1,7 +1,7 @@
 # Make global variables in scope
-display_maze_generation_in_real_time = None
-display_maze_solution = None
-run_genetic_algorithm = None
+display_maze_generation_in_real_time = False
+display_maze_solution = False
+run_genetic_algorithm = False
 maze_num_rows = None
 maze_num_cols = None
 maze_solver = None
