@@ -1,11 +1,10 @@
-# Genetic Algorithm-Related Things:
 from generation import *
 from display import *
 from htmldisp import *
 import sys
 
 # DEBUGGING IS OFF
-debug_on = False
+debug_on = True
 
 ''' debug_print
 Prints the text if debugging or ignoring is enabled.
@@ -47,7 +46,7 @@ def throw_error(err) :
     print err
     sys.exit()
 
-''' 
+'''
 # Get commandline arguments (if running main directly)
 if len(sys.argv) == 5 :
     pop_size = int(sys.argv[1])
@@ -63,7 +62,7 @@ if len(sys.argv) == 5 :
     acc = check(acc,num_elites)
 else:
     throw_error('Useage:\npython main.py [population_size] [num_fittest] [num_random] [num_elites]')
-    [display maze generation in realtime] [display all outputted mazes]')
+    #[display maze generation in realtime] [display all outputted mazes]')
 '''
 
 def main(pop_size, num_fittest, num_random, num_elites) :
@@ -116,6 +115,8 @@ def main(pop_size, num_fittest, num_random, num_elites) :
                 break
         else :
             just_started = False
+            # Make sure not to return None if best generator appears first by chance
+            best_generator = current_gen.fittest[0]
         # Spawn the next generation from the previous generation (even if it was bad!)
         current_gen = current_gen.spawn_next_generation()
 
