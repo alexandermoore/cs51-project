@@ -1,12 +1,10 @@
 import random
 from maze import *
+from tm import *
+from td import *
 
 # first implement sth that takes in a bunch of parameters
 # and then move onto dictionaries -> get help from Randy
-
-# trying to merge
-# Here's the latest code in progress:
-from maze import *
 
 class Solver:
 
@@ -16,7 +14,7 @@ class Solver:
         cur_y = maze.start[1]
         compass = "N"		
         board = maze.board
-	runtime = maze.runtime
+	maze.runtime = 0
 
         """ 
         walkable
@@ -46,8 +44,7 @@ class Solver:
                 if walkable(cur_x,cur_y-1,board) == True:
                     cur_y = cur_y-1
 		    maze.runtime += 1
-		    compass = "W"	
-		    print cur_x,cur_y,compass	   
+		    compass = "W"		   
 		    if (cur_x,cur_y) == maze.end:
 		        return	
 	            else:
@@ -57,9 +54,7 @@ class Solver:
 	        else:
                     if walkable(cur_x-1,cur_y,board) == True:
                         cur_x = cur_x-1
-		    	print cur_x,cur_y,compass
 		        maze.runtime += 1
-                        print maze.runtime
 		        if (cur_x,cur_y) == maze.end:
 			    return
 		        else:
@@ -70,9 +65,7 @@ class Solver:
                         if walkable(cur_x,cur_y+1,board) == True:
                             cur_y = cur_y+1
 			    maze.runtime += 1
-			    print maze.runtime
 			    compass = "E"
-		            print cur_x,cur_y,compass
 			    if (cur_x,cur_y) == maze.end:
 			        return
 			    else:
@@ -83,11 +76,8 @@ class Solver:
                             if walkable(cur_x+1,cur_y,board) == True:
                                 cur_x = cur_x + 1	
 			        maze.runtime += 1
-                                print maze.runtime 
 			        compass = "S"
-		                print cur_x,cur_y,compass
 			        if (cur_x,cur_y) == maze.end:
-                                    print maze.runtime
 				    return
 			        else:
                                     walk(cur_x,cur_y,compass,maze)
@@ -99,9 +89,7 @@ class Solver:
                 if walkable(cur_x,cur_y+1,board) == True:
                     cur_y = cur_y + 1
 		    maze.runtime += 1
-                    print maze.runtime
 		    compass = "E"
-		    print cur_x,cur_y,compass
 		    if (cur_x,cur_y) == maze.end:
 	                return
 		    else:
@@ -111,9 +99,7 @@ class Solver:
                 else:
                     if walkable(cur_x+1,cur_y,board) == True:
                         cur_x = cur_x + 1 
-    		        print cur_x,cur_y,compass
                         maze.runtime += 1
-			print maze.runtime
                         if(cur_x,cur_y) == maze.end:
                             return
                         else:
@@ -123,11 +109,8 @@ class Solver:
                     else: 
                         if walkable(cur_x,cur_y-1,board) == True:
                             cur_y = cur_y - 1
-
                             maze.runtime += 1
-			    print maze.runtime
                             compass = "W"
-		            print cur_x,cur_y,compass
                             if (cur_x,cur_y) == maze.end:
                                 return
                             else:
@@ -137,11 +120,8 @@ class Solver:
                         else:
                             if walkable(cur_x-1,cur_y,board) == True:
                                 cur_x = cur_x - 1
-	
                                 maze.runtime += 1
-				print maze.runtime
                                 compass = "N"
-		                print cur_x,cur_y,compass
                                 if (cur_x,cur_y) == maze.end:
                                     return
                                 else:
@@ -153,10 +133,8 @@ class Solver:
                 # try to go left
                 if walkable(cur_x+1,cur_y,board) == True:
                     cur_x = cur_x + 1
-
 	            maze.runtime += 1
 	            compass = "S"
-		    print cur_x,cur_y,compass
 		    if (cur_x,cur_y) == maze.end:
 	                return
 	            else:
@@ -166,10 +144,7 @@ class Solver:
                 else:
                     if walkable(cur_x,cur_y-1,board) == True:
                         cur_y = cur_y - 1 
-
                         maze.runtime += 1
-			print maze.runtime
-		        print cur_x,cur_y,compass
                         if(cur_x,cur_y) == maze.end:
                             return
                         else:
@@ -179,11 +154,8 @@ class Solver:
                     else: 
                         if walkable(cur_x-1,cur_y,board) == True:
                             cur_x = cur_x - 1
-
                             maze.runtime += 1
-			    print maze.runtime
                             compass = "N"
-		            print cur_x,cur_y,compass
                             if (cur_x,cur_y) == maze.end:
                                 return
                             else:
@@ -193,10 +165,8 @@ class Solver:
                         else:
                             if walkable(cur_x,cur_y+1,board) == True:
                                 cur_y = cur_y + 1
-	
                                 maze.runtime += 1
                                 compass = "E"
-		                print cur_x,cur_y,compass
                                 if (cur_x,cur_y) == maze.end:
                                     return
                                 else:
@@ -208,10 +178,8 @@ class Solver:
                 # try to go left
                 if walkable(cur_x-1,cur_y,board) == True:
                     cur_x = cur_x - 1
-
 	            maze.runtime += 1
 	            compass = "N"
-		    print cur_x,cur_y,compass
 	            if (cur_x,cur_y) == maze.end:
 	                return
 	            else:
@@ -221,9 +189,7 @@ class Solver:
                 else:
                     if walkable(cur_x,cur_y+1,board) == True:
                         cur_y = cur_y + 1 
-			print cur_x,cur_y,compass
                         maze.runtime += 1
-		               
                         if(cur_x,cur_y) == maze.end:
                             return
                         else:
@@ -233,10 +199,8 @@ class Solver:
                     else: 
                         if walkable(cur_x+1,cur_y,board) == True:
                             cur_x = cur_x + 1
-
                             maze.runtime += 1
                             compass = "S"
-		            print cur_x,cur_y,compass
                             if (cur_x,cur_y) == maze.end:
                                 return
                             else:
@@ -246,10 +210,8 @@ class Solver:
                         else:
                             if walkable(cur_x,cur_y-1,board) == True:
                                 cur_y = cur_y - 1
-
                                 maze.runtime += 1
                                 compass = "W"
-		                print cur_x,cur_y,compass
                                 if (cur_x,cur_y) == maze.end:
                                     return
                                 else:
@@ -258,8 +220,9 @@ class Solver:
                                 return
 
         walk(cur_x,cur_y,compass,maze)
+        display_object.display(maze)
 	print maze.runtime
            
-maze = maze.m
+maze = m
 simple_solver = Solver()
 simple_solver.solve(maze)
