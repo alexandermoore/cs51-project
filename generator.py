@@ -68,9 +68,7 @@ class Generator:
                 display_object.display(m)
             if maze_solver == "smart":
                 smart_solver.smart_solver(m)
-                print m.runtime
                 pf.path_finder_solve(m)
-                print m.runtime
             elif maze_solver == "pythagorean":
                 self.pythagorean_solve(m)
             elif maze_solver == "inverse":
