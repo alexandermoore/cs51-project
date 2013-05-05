@@ -32,7 +32,7 @@ else:
     end = check_val.end
 
     display_object = HTMLDisplay()
-    g = generator.Generator([startx,starty,jump,forward,birds,rd,end])
+    g = generator.Generator([starty,startx,jump,forward,birds,rd,end])
     display_object.display(g.mazes[0])
 
 run_system_command('start Maze_output.html', 'open Maze_output.html')
