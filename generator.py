@@ -75,6 +75,8 @@ class Generator:
                 smart_solver.smart_solver(m)
                 pf.path_finder_solve(m)
                 m.runtime = (-1)*m.runtime
+            elif maze_solver == "display":
+                pf.path_finder_solve(m)
             else:
                 print "ERROR: invalid solver"
                 exit()
