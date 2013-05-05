@@ -19,6 +19,12 @@ def make_option(parent, OPTIONS,*values):
     variable.set(OPTIONS[0]) # default value
     w = apply(tk.OptionMenu, (parent,variable) + tuple(OPTIONS))
     w.pack()
+
+def make_check(parent, texting):
+    var = tk.IntVar()
+    c = tk.Checkbutton(parent, text=texting, variable=var)
+    c.pack()
+    # By default, the variable is set to 1 if the button is selected, and 0 otherwise.
     
 def enter(event):
     check_val() 
@@ -35,8 +41,6 @@ def within_range(num):
     
 def check_val():
     # set default values
-    rows_default = 20
-    cols_default = 20
     startx_default = 0.0
     starty_default = 0.0
     jump_default = 0.3
@@ -46,8 +50,6 @@ def check_val():
     end_default = 1.0
 
     # initialize entered to defaults
-    rows_entered = rows_default
-    cols_entered = cols_default
     startx_entered = startx_default
     starty_entered = starty_default
     jump_entered = jump_default
@@ -57,10 +59,6 @@ def check_val():
     end_entered = end_default
 
     # set "entered" to inputted value if given
-    if rows.get() != "":
-        rows_entered = int (rows.get())
-    if columns.get() != "":
-        cols_entered = int (columns.get())
     if startx.get() != "":
         startx_entered = float (startx.get())
     if starty.get() != "":
@@ -77,29 +75,24 @@ def check_val():
         end_entered = float (end.get())
         
     # print('Parameters Entered:',rows.get(),columns.get(), startx.get(), starty.get())
-    if int (rows_entered) > 0 and int (cols_entered) >0:
-        if within_range([startx.get(), starty.get(), jump.get(),forward.get(),
+    if within_range([startx.get(), starty.get(), jump.get(),forward.get(),
                          birds.get(),returndist.get(),end.get()]):
-            check_val.rows = rows_entered
-            check_val.cols = cols_entered
-            check_val.startx = startx_entered
-            check_val.starty = starty_entered
-            check_val.jump = jump_entered
-            check_val.forward = forward_entered
-            check_val.birds = birds_entered
-            check_val.rd = rd_entered
-            check_val.end = end_entered
-            root.destroy()
-            print('Maze Parameters Accepted')
-            return
-        else:
-            print('Wrong!: Probabilities should be floats between 0 & 1')                 
+        check_val.startx = startx_entered
+        check_val.starty = starty_entered
+        check_val.jump = jump_entered
+        check_val.forward = forward_entered
+        check_val.birds = birds_entered
+        check_val.rd = rd_entered
+        check_val.end = end_entered
+        root.destroy()
+        print('Maze Parameters Accepted')
+        return                
     else:
-        print('Wrong!: Rows and columns should be positive ints')
+        print('Wrong!: Probabilities should be floats between 0 & 1')
 
 # set root and window sizes    
 root = tk.Tk()
-root.minsize(300,580)
+root.minsize(300,540)
 #root.geometry("500x570")
 root.title('Enter Maze Parameters')
                  
@@ -108,8 +101,6 @@ parent = tk.Frame(root, padx=10, pady=10)
 parent.pack(fill=tk.BOTH, expand=True)
                  
 #entries in window
-rows = make_entry(parent, "Number of Rows:", 16)
-columns = make_entry(parent, "Number of Columns:", 16)
 startx = make_entry(parent, "\n The following should be floats between 0.0 & 1.0\n\n Start Location Row:", 16)
 starty = make_entry(parent, "Start Location Column:", 16)
 jump = make_entry(parent, "Jump Probability:", 16)
@@ -117,12 +108,13 @@ forward = make_entry(parent, "Forward Probability:", 16)
 birds = make_entry(parent, "Birds-Eye Probability:", 16)
 returndist = make_entry(parent, "Return Distance RAtio:", 16)
 end = make_entry(parent, "End Time Ratio:", 16)
-mlabel= tk.Label(parent,text='\n Display Maze Creation Steps?').pack()
-display = make_option(parent, ["Yes","No"], 16)
+mlabel= tk.Label(parent,text='\n').pack()
+display = make_check(parent,"Display Maze Creation Steps")
+# display = make_option(parent, ["Yes","No"], 16)
     
 #button to enter
 b = tk.Button(parent, borderwidth=5, text="Enter", width=10, pady=10, command=check_val)
 b.pack(side=tk.BOTTOM)
-rows.bind('<Return>', enter)
-columns.focus_set()
+startx.bind('<Return>', enter)
+starty.focus_set()
 parent.mainloop()
