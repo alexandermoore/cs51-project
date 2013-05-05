@@ -5,6 +5,10 @@ except ImportError:
 # from http://effbot.org/tkinterbook/entry.htm
 import string
 
+''' make_entry
+    Makes a text-fill box
+    RETURNS: the entry
+'''
 def make_entry(parent, caption, width=None, **options):
     tk.Label(parent, text=caption).pack(side=tk.TOP)
     entry = tk.Entry(parent, **options)
@@ -13,15 +17,27 @@ def make_entry(parent, caption, width=None, **options):
     entry.pack(side=tk.TOP, padx=10, fill=tk.BOTH)
     return entry
 
+''' make_radio
+    Makes a radio button
+    RETURNS: the value of the button
+'''
 def make_radio(parent, text1, text2):
     v = tk.IntVar()
     R1 = tk.Radiobutton(parent, text=text1, variable=v, value=1, command = check_radio).pack(anchor=tk.W)
     R2 = tk.Radiobutton(parent, text=text2, variable=v, value=2, command = check_radio).pack(anchor=tk.W)
     return v
 
+''' enter
+    Sets the return key to the check_all function
+    RETURNS: no return
+'''
 def enter(event):
     check_all()
 
+''' check_radio
+    Checks to make sure radio button has been pressed
+    RETURNS: true or false depending on input
+'''
 def check_radio():
     radio = act.get()
     if (radio == 1 or radio == 2):
@@ -33,7 +49,11 @@ def check_radio():
     else:
         print('Please pick an activity!')
         return False
-        
+
+''' check_val
+    Checks to make sure numerical values are entered and ints within range
+    RETURNS: true if done correctly
+'''        
 def check_val():
     # set default values
     rows_default = 20
@@ -58,7 +78,10 @@ def check_val():
         print('Wrong!: Rows and columns should be positive ints')
         return False
 
-# main function to check
+''' check_all
+    Makes sure radio values and text-fill values appropriate when user submits
+    RETURNS: no return
+'''
 def check_all():
     if check_val() and check_radio():
         root.destroy()
