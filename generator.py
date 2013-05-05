@@ -203,7 +203,6 @@ class Generator:
                     m.usable_squares.remove(m.usable_squares[proposal_square])
                     if len(m.usable_squares) == 0:
                         if m.end == (None,None) or m.end == (0,0):
-                            "usable_squares empty so place end"
                             m.end = m.coord
                         break
                     else:
@@ -237,7 +236,8 @@ class Generator:
                     insert_loc = insert_loc + 1
                     break
                 insert_loc = insert_loc + 1
-            m.usable_squares.insert(insert_loc,(square,dist))
+            if not((square,dist) in m.usable_squares):
+                m.usable_squares.insert(insert_loc,(square,dist))
             return
         
         ''' continue_path
@@ -291,7 +291,7 @@ class Generator:
             if should_jump < self.p_jump:
                 m.maze_incomplete = jump()
                 if m.maze_incomplete:
-                    new_path
+                    new_path()
             else:
                 continue_path()
             if display_maze_generation_in_real_time:
