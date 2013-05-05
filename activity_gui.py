@@ -13,12 +13,6 @@ def make_entry(parent, caption, width=None, **options):
     entry.pack(side=tk.TOP, padx=10, fill=tk.BOTH)
     return entry
 
-def make_option(parent,OPTIONS, *values):
-    variable = tk.StringVar(parent)
-    variable.set("Choose Activity")
-    w = apply(tk.OptionMenu, (parent,variable) + tuple(OPTIONS))
-    w.pack()
-
 def make_radio(parent, text1, text2):
     v = tk.IntVar()
     R1 = tk.Radiobutton(parent, text=text1, variable=v, value=1, command = check_radio).pack(anchor=tk.W)

@@ -14,15 +14,18 @@ def make_entry(parent, caption, width=None, **options):
     return entry
 
 def make_option(parent, OPTIONS,*values):
-    # master = tk.Tk()
     variable = tk.StringVar(parent)
     variable.set(OPTIONS[0]) # default value
     w = apply(tk.OptionMenu, (parent,variable) + tuple(OPTIONS))
     w.pack()
+    return variable
     
 def enter(event):
-    check_val() 
-
+    check_all()
+    
+def check_option():
+    solver = solver_chosen.get()
+    
 def not_empty(string):
     return len (string) > 0
 
@@ -65,13 +68,17 @@ def check_val():
         check_val.fittest = fittest_entered
         check_val.random = random_entered
         check_val.elites = elites_entered
-        root.destroy()
-        print('Genetic Algorithm Parameters Accepted')
-        return                 
+        return True                
     else:
         print('Wrong!: Parameters NOT Accepted. Check Rules!')
+        return False
 
-
+# main check
+def check_all():
+    if check_val():
+        check_option()
+        root.destroy()
+        print('Genetic Algorithm Parameters Accepted')
 
 # set root and window sizes    
 root = tk.Tk()
@@ -85,9 +92,9 @@ parent.pack(fill=tk.BOTH, expand=True)
                  
 #entries in window
 mlabel= tk.Label(parent,text='Choose Solver:').pack()
-opt = make_option(parent,["Pythagorean Solver",
-           "Smart Solver",
-           "Inverse Solver"],16)
+solver_chosen = make_option(parent,["smart",
+           "pythagorean",
+           "inverse"],16)
 mlabel= tk.Label(parent,text='\nEnter Algorithm Parameters:').pack()
 size = make_entry(parent, "Population Size (default = 10)", 16)
 fittest = make_entry(parent, "Number of Fittest (default = 5):", 16)
@@ -99,7 +106,7 @@ mlabel= tk.Label(parent, text = 'Population size and number of fittest must be i
 
     
 #button to enter
-b = tk.Button(parent, borderwidth=5, text="Enter", width=10, pady=10, command=check_val)
+b = tk.Button(parent, borderwidth=5, text="Enter", width=10, pady=10, command=check_all)
 b.pack(side=tk.BOTTOM)
 size.bind('<Return>', enter)
 fittest.focus_set()
