@@ -6,6 +6,7 @@ from settings import *
 from walker import *
 from path_finder import *
 from sys import exit
+import os
 
 class Generator:
     
@@ -297,6 +298,7 @@ class Generator:
             else:
                 continue_path()
             if display_maze_generation_in_real_time:
+                run_system_command('cls','clear')
                 display_object.display(m)
         
     ''' pythagorean_solve

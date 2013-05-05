@@ -6,6 +6,14 @@ maze_num_rows = None
 maze_num_cols = None
 maze_solver = None
 
+from sys import platform
+from os import system
+
+def run_system_command(pc, maclinux) :
+    if platform == 'win32' :
+        system(pc)
+    else :
+        system(maclinux)
 
 import activity_gui
 run_genetic_algorithm = activity_gui.check_radio.run_genetic

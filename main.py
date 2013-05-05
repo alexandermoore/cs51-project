@@ -35,9 +35,6 @@ else:
     g = generator.Generator([startx,starty,jump,forward,birds,rd,end])
     display_object.display(g.mazes[0])
 
-# for mac
-os.system("open "+'Maze_output.html');
-# for windows
-os.system("start "+'Maze_output.html');
+run_system_command('start Maze_output.html', 'open Maze_output.html')
   
     
