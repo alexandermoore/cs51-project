@@ -48,10 +48,13 @@ class Generation :
     -elites (int) : Assigned to self.num_elites
     '''    
     def __init__(self,pop_sz,num_fit,num_rnd,elites) :
-        self.num_fittest = num_fit
         self.pop_size = pop_sz
+        self.num_fittest = num_fit
         self.num_random = num_rnd
         self.num_elites = elites
+        print ["POP_SIZE: ",self.pop_size]
+        print ["NUM_FITTEST: ",self.num_fittest]
+        print ["NUM_ELITES: ",self.num_elites]
     
     ''' update_fittest
     Updates self.fittest with the most fit Generators in self.generators (the population).
@@ -128,7 +131,7 @@ class Generation :
         for i in range(0, self.pop_size - self.num_random - self.num_elites) :
             children.append(self.__spawn_child(prob_fittest))
             
-        new_gen = Generation(self.num_fittest,self.pop_size,self.num_random,self.num_elites)
+        new_gen = Generation(self.pop_size,self.num_fittest,self.num_random,self.num_elites)
         new_gen.generators = children + self.__make_random_generators(self.num_random) + self.fittest[:self.num_elites]
         return new_gen
     

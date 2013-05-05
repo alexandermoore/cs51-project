@@ -9,7 +9,7 @@ except SystemExit as e:
     print(e)
 else:
     display_maze_generation_in_real_time = False
-    display_all_outputted_mazes = False
+    display_all_outputted_mazes = True
     maze_num_rows = GUI.check_val.rows
     maze_num_cols = GUI.check_val.cols
     num_mazes = 10
