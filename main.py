@@ -4,7 +4,7 @@ from htmldisp import *
 import sys
 
 # DEBUGGING IS OFF
-debug_on = True
+debug_on = False
 
 ''' debug_print
 Prints the text if debugging or ignoring is enabled.
