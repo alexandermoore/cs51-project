@@ -3,7 +3,6 @@ from htmldisp import *
 import webbrowser
 import os
 import activity_gui
-from custom_gui import *
 
 
 # Related to Activity GUI
