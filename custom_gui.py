@@ -42,7 +42,15 @@ def within_range(num):
 
 def check_box():
     steps = display_steps.get()
+    if steps == 1:
+        check_box.disp_steps = True
+    else:
+        check_box.disp_steps = False
     solution = display_sol.get()
+    if solution == 1:
+        check_box.disp_sol = True
+    else:
+        check_box.disp_sol = False
     
 def check_val():
     # set default values

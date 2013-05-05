@@ -25,12 +25,15 @@ def enter(event):
 def check_radio():
     radio = act.get()
     if (radio == 1 or radio == 2):
+        if radio == 1:
+            check_radio.run_genetic = True
+        else:
+            check_radio.run_genetic = False
         return True
     else:
         print('Please pick an activity!')
         return False
         
-    
 def check_val():
     # set default values
     rows_default = 20
