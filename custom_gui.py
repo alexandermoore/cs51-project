@@ -5,6 +5,10 @@ except ImportError:
 # from http://effbot.org/tkinterbook/entry.htm
 import string
 
+''' make_entry
+    Makes a text-fill box
+    RETURNS: the entry
+'''
 def make_entry(parent, caption, width=None, **options):
     tk.Label(parent, text=caption).pack(side=tk.TOP)
     entry = tk.Entry(parent, **options)
@@ -13,26 +17,34 @@ def make_entry(parent, caption, width=None, **options):
     entry.pack(side=tk.TOP, padx=10, fill=tk.BOTH)
     return entry
 
-def make_option(parent, OPTIONS,*values):
-    # master = tk.Tk()
-    variable = tk.StringVar(parent)
-    variable.set(OPTIONS[0]) # default value
-    w = apply(tk.OptionMenu, (parent,variable) + tuple(OPTIONS))
-    w.pack()
-
+''' make_check
+    Makes a check box
+    RETURNS: the value of the button.Value = 1 if selected and 0 otherwise
+'''
 def make_check(parent, texting):
     var = tk.IntVar()
     c = tk.Checkbutton(parent, text=texting, variable=var, command = check_box)
     c.pack()
     return var
-    # By default, the variable is set to 1 if the button is selected, and 0 otherwise.
-    
-def enter(event):
-    check_all() 
 
+''' enter
+    Sets the return key to the check_all function
+    RETURNS: no return
+'''    
+def enter(event):
+    check_all()
+
+''' not_empty
+    Checks whether user left field blank
+    RETURNS: true if not empty
+'''
 def not_empty(string):
     return len (string) > 0
 
+''' within_range
+    Checks whether inputted values are within range
+    RETURNS: true if suitably entered
+'''
 def within_range(num):
     filled = filter(not_empty,num)
     if all(((float(param) >= 0 and float(param) <= 1)) for param in filled):
@@ -40,15 +52,31 @@ def within_range(num):
     else:
         return False
 
+''' check_box
+    Determines whether steps and solution should be shown
+    RETURNS: true/false depending on desired display
+'''
 def check_box():
     steps = display_steps.get()
+    if steps == 1:
+        check_box.disp_steps = True
+    else:
+        check_box.disp_steps = False
     solution = display_sol.get()
-    
+    if solution == 1:
+        check_box.disp_sol = True
+    else:
+        check_box.disp_sol = False
+
+''' check_val
+    Checks to make sure numerical values are entered and ints within range
+    RETURNS: true if done correctly
+'''     
 def check_val():
     # set default values
     startx_default = 0.0
     starty_default = 0.0
-    jump_default = 0.3
+    jump_default = 0.2
     forward_default = 0.7
     birds_default = 0.8
     rd_default = 0.7
@@ -94,7 +122,10 @@ def check_val():
         print('Wrong!: Probabilities should be floats between 0 & 1')
         return False
 
-# main check function
+''' check_all
+    Makes sure radio values and text-fill values appropriate when user submits
+    RETURNS: no return
+'''
 def check_all():
  if check_val():
      root.destroy()

@@ -5,6 +5,10 @@ except ImportError:
 # from http://effbot.org/tkinterbook/entry.htm
 import string
 
+''' make_entry
+    Makes a text-fill box
+    RETURNS: the entry
+'''
 def make_entry(parent, caption, width=None, **options):
     tk.Label(parent, text=caption).pack(side=tk.TOP)
     entry = tk.Entry(parent, **options)
@@ -13,22 +17,35 @@ def make_entry(parent, caption, width=None, **options):
     entry.pack(side=tk.TOP, padx=10, fill=tk.BOTH)
     return entry
 
+''' make_option
+    Makes a drop down list
+    RETURNS: the value of the drop-down
+'''
 def make_option(parent, OPTIONS,*values):
     variable = tk.StringVar(parent)
     variable.set(OPTIONS[0]) # default value
     w = apply(tk.OptionMenu, (parent,variable) + tuple(OPTIONS))
     w.pack()
     return variable
-    
+
+''' enter
+    Sets the return key to the check_all function
+    RETURNS: no return
+'''        
 def enter(event):
     check_all()
-    
-def check_option():
-    solver = solver_chosen.get()
-    
-def not_empty(string):
-    return len (string) > 0
 
+''' check_option
+    Sets chosen solver to variable
+    RETURNS: no return
+'''    
+def check_option():
+    check_option.solver = solver_chosen.get()
+    
+''' within_range
+    Checks whether inputted values are within range
+    RETURNS: true if suitably entered
+'''
 def within_range(num):
     size = int (num[0])
     fittest = int (num[1])
@@ -39,6 +56,10 @@ def within_range(num):
     else:
         return False
     
+''' check_val
+    Checks to make sure numerical values are entered and ints within range
+    RETURNS: true if done correctly
+'''         
 def check_val():
     # set default values
     size_default = 10
@@ -62,7 +83,7 @@ def check_val():
     if elites.get() != "":
         elites_entered = int (elites.get())
         
-    print "Parameters Entered:\nsize = %s\nfittest = %s\nrandom = %s\nelites = %s"%(size.get(),fittest.get(),random.get(), elites.get())
+    print "Genetic Parameters Entered:\nsize = %s\nfittest = %s\nrandom = %s\nelites = %s"%(size.get(),fittest.get(),random.get(), elites.get())
     if within_range([size_entered, fittest_entered,random_entered, elites_entered]):
         check_val.size = size_entered
         check_val.fittest = fittest_entered
@@ -70,10 +91,13 @@ def check_val():
         check_val.elites = elites_entered
         return True                
     else:
-        print('Wrong!: Parameters NOT Accepted. Check Rules!')
+        print('Wrong!: Genetic Parameters NOT Accepted. Check Rules!')
         return False
 
-# main check
+''' check_all
+    Makes sure radio values and text-fill values appropriate when user submits
+    RETURNS: no return
+'''
 def check_all():
     if check_val():
         check_option()

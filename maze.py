@@ -20,7 +20,7 @@ class Maze:
     end = (0,0)
 
     # Current coordinates of maze solver or generator
-    coordinates = (None,None)
+    coord = (None,None)
     
     # Current direction maze generator is facing
     direction = None
