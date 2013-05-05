@@ -167,9 +167,9 @@ class SmartSolver:
         m.runtime = math.sqrt(self.smart_solver_runtime)
         print self.smart_solver_runtime
 
-#maze = m
+
 smart_solver = SmartSolver()
-#smart_solver.smart_solver(maze)	
+
 
 
 	    
