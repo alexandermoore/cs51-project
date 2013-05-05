@@ -219,7 +219,7 @@ class Generator:
         def new_path():
             while not(check_dir(m.coord,m.direction)):
                 m.direction = (m.direction + 1) % 4
-            coorinates = move(m.coord,m.direction)
+            m.coord = move(m.coord,m.direction)
             return
         
         ''' add_square
