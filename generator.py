@@ -6,7 +6,6 @@ from settings import *
 from walker import *
 from path_finder import *
 from sys import exit
-import os
 
 class Generator:
     
