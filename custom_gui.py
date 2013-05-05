@@ -28,7 +28,7 @@ def make_check(parent, texting):
     # By default, the variable is set to 1 if the button is selected, and 0 otherwise.
     
 def enter(event):
-    check_val() 
+    check_all() 
 
 def not_empty(string):
     return len (string) > 0
@@ -43,16 +43,6 @@ def within_range(num):
 def check_box():
     steps = display_steps.get()
     solution = display_sol.get()
-    if steps = 1:
-        if solution = 1:
-            return True
-        else:
-            print('Do you want to display the solution?')
-            return False
-    else:
-        print('Do you want to display steps?')
-        return False
-    
     
 def check_val():
     # set default values
@@ -104,6 +94,13 @@ def check_val():
         print('Wrong!: Probabilities should be floats between 0 & 1')
         return False
 
+# main check function
+def check_all():
+ if check_val():
+     root.destroy()
+     print('Maze Parameters Accepted')
+     check_box()
+
 # set root and window sizes    
 root = tk.Tk()
 root.minsize(300,540)
@@ -127,7 +124,7 @@ display_steps = make_check(parent,"Display Maze Creation Steps")
 display_sol = make_check(parent, "Display Maze Solution")
     
 #button to enter
-b = tk.Button(parent, borderwidth=5, text="Enter", width=10, pady=10, command=check_val)
+b = tk.Button(parent, borderwidth=5, text="Enter", width=10, pady=10, command=check_all)
 b.pack(side=tk.BOTTOM)
 startx.bind('<Return>', enter)
 starty.focus_set()
