@@ -1,8 +1,12 @@
-'''
-Note this is a file to allow me to change global settings without having to
-import main (and hence run the whole program).
-'''
- 
+# Make global variables in scope
+display_maze_generation_in_real_time = None
+display_maze_solution = None
+run_genetic_algorithm = None
+maze_num_rows = None
+maze_num_cols = None
+maze_solver = None
+
+
 try:
     from activity_gui import *
 except SystemExit as e:
@@ -23,4 +27,5 @@ if run_genetic_algorithm:
 else:
     num_mazes = 1
     display_all_outputted_mazes = True
+    smart_solver = pythagorean
     
