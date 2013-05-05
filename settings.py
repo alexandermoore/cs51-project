@@ -7,20 +7,17 @@ maze_num_cols = None
 maze_solver = None
 
 
-try:
-    from activity_gui import *
-    from custom_gui import *
-    from genetic_gui import *
-except SystemExit as e:
-    print(e)
-else:
-    display_maze_generation_in_real_time = check_box.disp_steps
-    display_maze_solution = check_box.disp_sol
-    run_genetic_algorithm = check_radio.run_genetic
-    maze_num_rows = check_val.rows
-    maze_num_cols = check_val.cols
-    # solver options: "inverse", "pythagorean", or "smart"
-    maze_solver = check_option.solver
+import activity_gui
+import custom_gui
+import genetic_gui
+
+display_maze_generation_in_real_time = custom_gui.check_box.disp_steps
+display_maze_solution = custom_gui.check_box.disp_sol
+run_genetic_algorithm = activity_gui.check_radio.run_genetic
+maze_num_rows = activity_gui.check_val.rows
+maze_num_cols = activity_gui.check_val.cols
+# solver options: "inverse", "pythagorean", or "smart"
+maze_solver = genetic_gui.check_option.solver
 
 
 if run_genetic_algorithm:
@@ -30,5 +27,5 @@ if run_genetic_algorithm:
 else:
     num_mazes = 1
     display_all_outputted_mazes = True
-    smart_solver = pythagorean
+    smart_solver = "pythagorean"
     
