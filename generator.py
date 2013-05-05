@@ -67,12 +67,12 @@ class Generator:
             if display_all_outputted_mazes:
                 display_object.display(m)
             if maze_solver == "smart":
-                smart_solver.smart_solver(m)
+                walker.walker(m)
                 pf.path_finder_solve(m)
             elif maze_solver == "pythagorean":
                 self.pythagorean_solve(m)
             elif maze_solver == "inverse":
-                smart_solver.smart_solver(m)
+                walker.walker(m)
                 pf.path_finder_solve(m)
                 m.runtime = (-1)*m.runtime
             elif maze_solver == "display":

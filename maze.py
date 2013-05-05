@@ -31,7 +31,11 @@ class Maze:
     
     '''***************** METHODS *****************'''
     
-    # A board customized to a specific initial state
+    ''' __init__
+    Constructor. Initializes the parameters and creates each of mazes, including runtime. It then
+    calculates the average runtime. The only input is a list of seven floats between 0 and 1.
+    RETURNS: No return value.
+    ''' 
     def __init__(self):
         self.board = self.make_board()
         self.runtime = 0
