@@ -25,8 +25,13 @@ class Maze:
     # Current direction maze generator is facing
     direction = None
     
+    # Number of squares left before end is placed
     end_placement_countdown = None
+    
+    # Whether or not maze is complete
     maze_incomplete = True
+    
+    # Runtime of maze. May be increased by multiple sources.
     runtime = None
     
     '''***************** METHODS *****************'''
@@ -41,7 +46,7 @@ class Maze:
         if display_maze_generation_in_real_time:
             end = (0,0)
 
-
+    
     def make_board(self):
         board = []
         for val in range(maze_num_rows):
