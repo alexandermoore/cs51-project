@@ -52,9 +52,6 @@ class Generation :
         self.num_fittest = num_fit
         self.num_random = num_rnd
         self.num_elites = elites
-        print ["POP_SIZE: ",self.pop_size]
-        print ["NUM_FITTEST: ",self.num_fittest]
-        print ["NUM_ELITES: ",self.num_elites]
     
     ''' update_fittest
     Updates self.fittest with the most fit Generators in self.generators (the population).

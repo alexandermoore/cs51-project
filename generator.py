@@ -70,7 +70,6 @@ class Generator:
             pf.path_finder_solve(m)
             self.mazes.append(m)
         self.mazes.sort(key = lambda x: x.runtime)
-        self.mazes.reverse()
         self.avg_runtime = self.calc_avg_runtime()
 	
     ''' calc_avg_runtime

@@ -116,20 +116,26 @@ def main(pop_size, num_fittest, num_random, num_elites) :
         # Spawn the next generation from the previous generation (even if it was bad!)
         current_gen = current_gen.spawn_next_generation()
 
-
+    
+    # This is specfic to our project, which uses 7 parameters.
+    annotations = ["
+    for i in range(0, 7) :
+        annotated_params = (annotations[i], best_generator.parameter_list[i])
+        
     debug_print("\n\nBEST GENERATOR: ", True)
-    debug_print(best_generator.parameter_list, True)
+    debug_print(annotated_params, True)
     debug_print(best_generator.avg_runtime, True)
     debug_print("ALL MAZES:", True)
 
     # Display the fittest mazes
     display_obj = MazeDisplay()
     htmldisplay_obj = HTMLDisplay()
-    for m in best_generator.mazes :
-        display_obj.display(m)
-    debug_print("\nVERY BEST MAZE:\n", True)
-    display_obj.display(best_generator.mazes[0])
-    htmldisplay_obj.display(best_generator.mazes[0])
+    num_of_mazes = len(best_generator.mazes)
+    for m in range(0,num_of_mazes) :
+        if m == num_of_mazes - 1 :
+            debug_print("\nVERY BEST MAZE:\n", True)
+        display_obj.display(best_generator.mazes[m])
+    htmldisplay_obj.display(best_generator.mazes[num_of_mazes - 1])
 
 # Actually run the code with the correct parameters.
 main(pop_size, num_fittest, num_fittest, num_elites)
