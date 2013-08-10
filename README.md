@@ -1,4 +1,7 @@
 cs51-project
 ============
 
-Group project form CS51. Old code.
+Old code. Group project from CS51 implementing a Genetic Algorithm for creating difficult mazes. 
+Heuristic is one of a couple Maze Solvers.
+Maze Generator parameters are manipulated by the Genetic Algorithm based on the output of the Heuristic.
+Algorithm terminates when a plateau in progress is reached.
