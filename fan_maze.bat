@@ -1,0 +1,1 @@
+python generator.py 1.0 1.0 0.9 0.5 0.5 0.5 1.0
